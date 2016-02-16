@@ -1,0 +1,625 @@
+
+*** Running vivado
+    with args -log lc4_alu.vds -m64 -mode batch -messageDb vivado.pb -notrace -source lc4_alu.tcl
+
+
+****** Vivado v2015.4 (64-bit)
+  **** SW Build 1412921 on Wed Nov 18 09:44:32 MST 2015
+  **** IP Build 1412160 on Tue Nov 17 13:47:24 MST 2015
+    ** Copyright 1986-2015 Xilinx, Inc. All Rights Reserved.
+
+source lc4_alu.tcl -notrace
+Command: synth_design -top lc4_alu -part xc7z020clg484-1
+Starting synth_design
+Attempting to get a license for feature 'Synthesis' and/or device 'xc7z020'
+INFO: [Common 17-349] Got license for feature 'Synthesis' and/or device 'xc7z020'
+WARNING: [Synth 8-2820] unknown nettype nones ignored [/home/cis371/cis371/lab2/lc4_divider.v:16]
+---------------------------------------------------------------------------------
+Starting RTL Elaboration : Time (s): cpu = 00:00:04 ; elapsed = 00:00:04 . Memory (MB): peak = 999.559 ; gain = 153.883 ; free physical = 5325 ; free virtual = 10673
+---------------------------------------------------------------------------------
+INFO: [Synth 8-638] synthesizing module 'lc4_alu' [/home/cis371/cis371/lab2/lc4_alu.v:188]
+INFO: [Synth 8-638] synthesizing module 'lc4_divider' [/home/cis371/cis371/lab2/lc4_divider.v:46]
+INFO: [Synth 8-638] synthesizing module 'lc4_divider_one_iter' [/home/cis371/cis371/lab2/lc4_divider.v:21]
+INFO: [Synth 8-256] done synthesizing module 'lc4_divider_one_iter' (1#1) [/home/cis371/cis371/lab2/lc4_divider.v:21]
+INFO: [Synth 8-256] done synthesizing module 'lc4_divider' (2#1) [/home/cis371/cis371/lab2/lc4_divider.v:46]
+INFO: [Synth 8-638] synthesizing module 'lc4_branch_op' [/home/cis371/cis371/lab2/lc4_alu.v:44]
+INFO: [Synth 8-256] done synthesizing module 'lc4_branch_op' (3#1) [/home/cis371/cis371/lab2/lc4_alu.v:44]
+INFO: [Synth 8-638] synthesizing module 'lc4_arith_op' [/home/cis371/cis371/lab2/lc4_alu.v:52]
+INFO: [Synth 8-256] done synthesizing module 'lc4_arith_op' (4#1) [/home/cis371/cis371/lab2/lc4_alu.v:52]
+INFO: [Synth 8-638] synthesizing module 'lc4_compare_op' [/home/cis371/cis371/lab2/lc4_alu.v:65]
+INFO: [Synth 8-256] done synthesizing module 'lc4_compare_op' (5#1) [/home/cis371/cis371/lab2/lc4_alu.v:65]
+INFO: [Synth 8-638] synthesizing module 'lc4_jsr_op' [/home/cis371/cis371/lab2/lc4_alu.v:95]
+INFO: [Synth 8-638] synthesizing module 'lc4_barrel_shift' [/home/cis371/cis371/lab2/lc4_alu.v:21]
+INFO: [Synth 8-256] done synthesizing module 'lc4_barrel_shift' (6#1) [/home/cis371/cis371/lab2/lc4_alu.v:21]
+INFO: [Synth 8-256] done synthesizing module 'lc4_jsr_op' (7#1) [/home/cis371/cis371/lab2/lc4_alu.v:95]
+INFO: [Synth 8-638] synthesizing module 'lc4_logic_op' [/home/cis371/cis371/lab2/lc4_alu.v:109]
+INFO: [Synth 8-256] done synthesizing module 'lc4_logic_op' (8#1) [/home/cis371/cis371/lab2/lc4_alu.v:109]
+INFO: [Synth 8-638] synthesizing module 'lc4_memory_op' [/home/cis371/cis371/lab2/lc4_alu.v:121]
+INFO: [Synth 8-256] done synthesizing module 'lc4_memory_op' (9#1) [/home/cis371/cis371/lab2/lc4_alu.v:121]
+INFO: [Synth 8-638] synthesizing module 'lc4_rti_op' [/home/cis371/cis371/lab2/lc4_alu.v:129]
+INFO: [Synth 8-256] done synthesizing module 'lc4_rti_op' (10#1) [/home/cis371/cis371/lab2/lc4_alu.v:129]
+INFO: [Synth 8-638] synthesizing module 'lc4_const_op' [/home/cis371/cis371/lab2/lc4_alu.v:136]
+INFO: [Synth 8-256] done synthesizing module 'lc4_const_op' (11#1) [/home/cis371/cis371/lab2/lc4_alu.v:136]
+INFO: [Synth 8-638] synthesizing module 'lc4_shift_op' [/home/cis371/cis371/lab2/lc4_alu.v:143]
+INFO: [Synth 8-256] done synthesizing module 'lc4_shift_op' (12#1) [/home/cis371/cis371/lab2/lc4_alu.v:143]
+INFO: [Synth 8-638] synthesizing module 'lc4_jmp_op' [/home/cis371/cis371/lab2/lc4_alu.v:159]
+INFO: [Synth 8-256] done synthesizing module 'lc4_jmp_op' (13#1) [/home/cis371/cis371/lab2/lc4_alu.v:159]
+INFO: [Synth 8-638] synthesizing module 'lc4_hiconst_op' [/home/cis371/cis371/lab2/lc4_alu.v:168]
+INFO: [Synth 8-256] done synthesizing module 'lc4_hiconst_op' (14#1) [/home/cis371/cis371/lab2/lc4_alu.v:168]
+INFO: [Synth 8-638] synthesizing module 'lc4_trap_op' [/home/cis371/cis371/lab2/lc4_alu.v:181]
+INFO: [Synth 8-256] done synthesizing module 'lc4_trap_op' (15#1) [/home/cis371/cis371/lab2/lc4_alu.v:181]
+INFO: [Synth 8-256] done synthesizing module 'lc4_alu' (16#1) [/home/cis371/cis371/lab2/lc4_alu.v:188]
+---------------------------------------------------------------------------------
+Finished RTL Elaboration : Time (s): cpu = 00:00:05 ; elapsed = 00:00:05 . Memory (MB): peak = 1025.816 ; gain = 180.141 ; free physical = 5297 ; free virtual = 10647
+---------------------------------------------------------------------------------
+
+Report Check Netlist: 
++------+------------------+-------+---------+-------+------------------+
+|      |Item              |Errors |Warnings |Status |Description       |
++------+------------------+-------+---------+-------+------------------+
+|1     |multi_driven_nets |      0|        0|Passed |Multi driven nets |
++------+------------------+-------+---------+-------+------------------+
+---------------------------------------------------------------------------------
+Finished RTL Optimization Phase 1 : Time (s): cpu = 00:00:05 ; elapsed = 00:00:05 . Memory (MB): peak = 1025.816 ; gain = 180.141 ; free physical = 5296 ; free virtual = 10646
+---------------------------------------------------------------------------------
+INFO: [Device 21-403] Loading part xc7z020clg484-1
+INFO: [Project 1-570] Preparing netlist for logic optimization
+
+Processing XDC Constraints
+Initializing timing engine
+Parsing XDC File [/home/cis371/cis371/lab2/constraints/lc4_system.xdc]
+WARNING: [Vivado 12-584] No ports matched 'LDOUT[7]'. [/home/cis371/cis371/lab2/constraints/lc4_system.xdc:1]
+CRITICAL WARNING: [Common 17-55] 'set_property' expects at least one object. [/home/cis371/cis371/lab2/constraints/lc4_system.xdc:1]
+Resolution: If [get_<value>] was used to populate the object, check to make sure this command returns at least one valid object.
+WARNING: [Vivado 12-584] No ports matched 'LDOUT[6]'. [/home/cis371/cis371/lab2/constraints/lc4_system.xdc:2]
+CRITICAL WARNING: [Common 17-55] 'set_property' expects at least one object. [/home/cis371/cis371/lab2/constraints/lc4_system.xdc:2]
+Resolution: If [get_<value>] was used to populate the object, check to make sure this command returns at least one valid object.
+WARNING: [Vivado 12-584] No ports matched 'LDOUT[5]'. [/home/cis371/cis371/lab2/constraints/lc4_system.xdc:3]
+CRITICAL WARNING: [Common 17-55] 'set_property' expects at least one object. [/home/cis371/cis371/lab2/constraints/lc4_system.xdc:3]
+Resolution: If [get_<value>] was used to populate the object, check to make sure this command returns at least one valid object.
+WARNING: [Vivado 12-584] No ports matched 'LDOUT[4]'. [/home/cis371/cis371/lab2/constraints/lc4_system.xdc:4]
+CRITICAL WARNING: [Common 17-55] 'set_property' expects at least one object. [/home/cis371/cis371/lab2/constraints/lc4_system.xdc:4]
+Resolution: If [get_<value>] was used to populate the object, check to make sure this command returns at least one valid object.
+WARNING: [Vivado 12-584] No ports matched 'LDOUT[3]'. [/home/cis371/cis371/lab2/constraints/lc4_system.xdc:5]
+CRITICAL WARNING: [Common 17-55] 'set_property' expects at least one object. [/home/cis371/cis371/lab2/constraints/lc4_system.xdc:5]
+Resolution: If [get_<value>] was used to populate the object, check to make sure this command returns at least one valid object.
+WARNING: [Vivado 12-584] No ports matched 'LDOUT[2]'. [/home/cis371/cis371/lab2/constraints/lc4_system.xdc:6]
+CRITICAL WARNING: [Common 17-55] 'set_property' expects at least one object. [/home/cis371/cis371/lab2/constraints/lc4_system.xdc:6]
+Resolution: If [get_<value>] was used to populate the object, check to make sure this command returns at least one valid object.
+WARNING: [Vivado 12-584] No ports matched 'LDOUT[1]'. [/home/cis371/cis371/lab2/constraints/lc4_system.xdc:7]
+CRITICAL WARNING: [Common 17-55] 'set_property' expects at least one object. [/home/cis371/cis371/lab2/constraints/lc4_system.xdc:7]
+Resolution: If [get_<value>] was used to populate the object, check to make sure this command returns at least one valid object.
+WARNING: [Vivado 12-584] No ports matched 'LDOUT[0]'. [/home/cis371/cis371/lab2/constraints/lc4_system.xdc:8]
+CRITICAL WARNING: [Common 17-55] 'set_property' expects at least one object. [/home/cis371/cis371/lab2/constraints/lc4_system.xdc:8]
+Resolution: If [get_<value>] was used to populate the object, check to make sure this command returns at least one valid object.
+WARNING: [Vivado 12-584] No ports matched 'SWITCH_IN[7]'. [/home/cis371/cis371/lab2/constraints/lc4_system.xdc:9]
+CRITICAL WARNING: [Common 17-55] 'set_property' expects at least one object. [/home/cis371/cis371/lab2/constraints/lc4_system.xdc:9]
+Resolution: If [get_<value>] was used to populate the object, check to make sure this command returns at least one valid object.
+WARNING: [Vivado 12-584] No ports matched 'SWITCH_IN[6]'. [/home/cis371/cis371/lab2/constraints/lc4_system.xdc:10]
+CRITICAL WARNING: [Common 17-55] 'set_property' expects at least one object. [/home/cis371/cis371/lab2/constraints/lc4_system.xdc:10]
+Resolution: If [get_<value>] was used to populate the object, check to make sure this command returns at least one valid object.
+WARNING: [Vivado 12-584] No ports matched 'SWITCH_IN[5]'. [/home/cis371/cis371/lab2/constraints/lc4_system.xdc:11]
+CRITICAL WARNING: [Common 17-55] 'set_property' expects at least one object. [/home/cis371/cis371/lab2/constraints/lc4_system.xdc:11]
+Resolution: If [get_<value>] was used to populate the object, check to make sure this command returns at least one valid object.
+WARNING: [Vivado 12-584] No ports matched 'SWITCH_IN[4]'. [/home/cis371/cis371/lab2/constraints/lc4_system.xdc:12]
+CRITICAL WARNING: [Common 17-55] 'set_property' expects at least one object. [/home/cis371/cis371/lab2/constraints/lc4_system.xdc:12]
+Resolution: If [get_<value>] was used to populate the object, check to make sure this command returns at least one valid object.
+WARNING: [Vivado 12-584] No ports matched 'SWITCH_IN[3]'. [/home/cis371/cis371/lab2/constraints/lc4_system.xdc:13]
+CRITICAL WARNING: [Common 17-55] 'set_property' expects at least one object. [/home/cis371/cis371/lab2/constraints/lc4_system.xdc:13]
+Resolution: If [get_<value>] was used to populate the object, check to make sure this command returns at least one valid object.
+WARNING: [Vivado 12-584] No ports matched 'SWITCH_IN[2]'. [/home/cis371/cis371/lab2/constraints/lc4_system.xdc:14]
+CRITICAL WARNING: [Common 17-55] 'set_property' expects at least one object. [/home/cis371/cis371/lab2/constraints/lc4_system.xdc:14]
+Resolution: If [get_<value>] was used to populate the object, check to make sure this command returns at least one valid object.
+WARNING: [Vivado 12-584] No ports matched 'SWITCH_IN[1]'. [/home/cis371/cis371/lab2/constraints/lc4_system.xdc:15]
+CRITICAL WARNING: [Common 17-55] 'set_property' expects at least one object. [/home/cis371/cis371/lab2/constraints/lc4_system.xdc:15]
+Resolution: If [get_<value>] was used to populate the object, check to make sure this command returns at least one valid object.
+WARNING: [Vivado 12-584] No ports matched 'SWITCH_IN[0]'. [/home/cis371/cis371/lab2/constraints/lc4_system.xdc:16]
+CRITICAL WARNING: [Common 17-55] 'set_property' expects at least one object. [/home/cis371/cis371/lab2/constraints/lc4_system.xdc:16]
+Resolution: If [get_<value>] was used to populate the object, check to make sure this command returns at least one valid object.
+WARNING: [Vivado 12-584] No ports matched 'VGA_OUT_BLUE[3]'. [/home/cis371/cis371/lab2/constraints/lc4_system.xdc:17]
+CRITICAL WARNING: [Common 17-55] 'set_property' expects at least one object. [/home/cis371/cis371/lab2/constraints/lc4_system.xdc:17]
+Resolution: If [get_<value>] was used to populate the object, check to make sure this command returns at least one valid object.
+WARNING: [Vivado 12-584] No ports matched 'VGA_OUT_BLUE[2]'. [/home/cis371/cis371/lab2/constraints/lc4_system.xdc:18]
+CRITICAL WARNING: [Common 17-55] 'set_property' expects at least one object. [/home/cis371/cis371/lab2/constraints/lc4_system.xdc:18]
+Resolution: If [get_<value>] was used to populate the object, check to make sure this command returns at least one valid object.
+WARNING: [Vivado 12-584] No ports matched 'VGA_OUT_BLUE[1]'. [/home/cis371/cis371/lab2/constraints/lc4_system.xdc:19]
+CRITICAL WARNING: [Common 17-55] 'set_property' expects at least one object. [/home/cis371/cis371/lab2/constraints/lc4_system.xdc:19]
+Resolution: If [get_<value>] was used to populate the object, check to make sure this command returns at least one valid object.
+WARNING: [Vivado 12-584] No ports matched 'VGA_OUT_BLUE[0]'. [/home/cis371/cis371/lab2/constraints/lc4_system.xdc:20]
+CRITICAL WARNING: [Common 17-55] 'set_property' expects at least one object. [/home/cis371/cis371/lab2/constraints/lc4_system.xdc:20]
+Resolution: If [get_<value>] was used to populate the object, check to make sure this command returns at least one valid object.
+WARNING: [Vivado 12-584] No ports matched 'VGA_OUT_GREEN[3]'. [/home/cis371/cis371/lab2/constraints/lc4_system.xdc:21]
+CRITICAL WARNING: [Common 17-55] 'set_property' expects at least one object. [/home/cis371/cis371/lab2/constraints/lc4_system.xdc:21]
+Resolution: If [get_<value>] was used to populate the object, check to make sure this command returns at least one valid object.
+WARNING: [Vivado 12-584] No ports matched 'VGA_OUT_GREEN[2]'. [/home/cis371/cis371/lab2/constraints/lc4_system.xdc:22]
+CRITICAL WARNING: [Common 17-55] 'set_property' expects at least one object. [/home/cis371/cis371/lab2/constraints/lc4_system.xdc:22]
+Resolution: If [get_<value>] was used to populate the object, check to make sure this command returns at least one valid object.
+WARNING: [Vivado 12-584] No ports matched 'VGA_OUT_GREEN[1]'. [/home/cis371/cis371/lab2/constraints/lc4_system.xdc:23]
+CRITICAL WARNING: [Common 17-55] 'set_property' expects at least one object. [/home/cis371/cis371/lab2/constraints/lc4_system.xdc:23]
+Resolution: If [get_<value>] was used to populate the object, check to make sure this command returns at least one valid object.
+WARNING: [Vivado 12-584] No ports matched 'VGA_OUT_GREEN[0]'. [/home/cis371/cis371/lab2/constraints/lc4_system.xdc:24]
+CRITICAL WARNING: [Common 17-55] 'set_property' expects at least one object. [/home/cis371/cis371/lab2/constraints/lc4_system.xdc:24]
+Resolution: If [get_<value>] was used to populate the object, check to make sure this command returns at least one valid object.
+WARNING: [Vivado 12-584] No ports matched 'VGA_OUT_RED[3]'. [/home/cis371/cis371/lab2/constraints/lc4_system.xdc:25]
+CRITICAL WARNING: [Common 17-55] 'set_property' expects at least one object. [/home/cis371/cis371/lab2/constraints/lc4_system.xdc:25]
+Resolution: If [get_<value>] was used to populate the object, check to make sure this command returns at least one valid object.
+WARNING: [Vivado 12-584] No ports matched 'VGA_OUT_RED[2]'. [/home/cis371/cis371/lab2/constraints/lc4_system.xdc:26]
+CRITICAL WARNING: [Common 17-55] 'set_property' expects at least one object. [/home/cis371/cis371/lab2/constraints/lc4_system.xdc:26]
+Resolution: If [get_<value>] was used to populate the object, check to make sure this command returns at least one valid object.
+WARNING: [Vivado 12-584] No ports matched 'VGA_OUT_RED[1]'. [/home/cis371/cis371/lab2/constraints/lc4_system.xdc:27]
+CRITICAL WARNING: [Common 17-55] 'set_property' expects at least one object. [/home/cis371/cis371/lab2/constraints/lc4_system.xdc:27]
+Resolution: If [get_<value>] was used to populate the object, check to make sure this command returns at least one valid object.
+WARNING: [Vivado 12-584] No ports matched 'VGA_OUT_RED[0]'. [/home/cis371/cis371/lab2/constraints/lc4_system.xdc:28]
+CRITICAL WARNING: [Common 17-55] 'set_property' expects at least one object. [/home/cis371/cis371/lab2/constraints/lc4_system.xdc:28]
+Resolution: If [get_<value>] was used to populate the object, check to make sure this command returns at least one valid object.
+WARNING: [Vivado 12-584] No ports matched 'ZED_PB[4]'. [/home/cis371/cis371/lab2/constraints/lc4_system.xdc:29]
+CRITICAL WARNING: [Common 17-55] 'set_property' expects at least one object. [/home/cis371/cis371/lab2/constraints/lc4_system.xdc:29]
+Resolution: If [get_<value>] was used to populate the object, check to make sure this command returns at least one valid object.
+WARNING: [Vivado 12-584] No ports matched 'ZED_PB[3]'. [/home/cis371/cis371/lab2/constraints/lc4_system.xdc:30]
+CRITICAL WARNING: [Common 17-55] 'set_property' expects at least one object. [/home/cis371/cis371/lab2/constraints/lc4_system.xdc:30]
+Resolution: If [get_<value>] was used to populate the object, check to make sure this command returns at least one valid object.
+WARNING: [Vivado 12-584] No ports matched 'ZED_PB[2]'. [/home/cis371/cis371/lab2/constraints/lc4_system.xdc:31]
+CRITICAL WARNING: [Common 17-55] 'set_property' expects at least one object. [/home/cis371/cis371/lab2/constraints/lc4_system.xdc:31]
+Resolution: If [get_<value>] was used to populate the object, check to make sure this command returns at least one valid object.
+WARNING: [Vivado 12-584] No ports matched 'ZED_PB[1]'. [/home/cis371/cis371/lab2/constraints/lc4_system.xdc:32]
+CRITICAL WARNING: [Common 17-55] 'set_property' expects at least one object. [/home/cis371/cis371/lab2/constraints/lc4_system.xdc:32]
+Resolution: If [get_<value>] was used to populate the object, check to make sure this command returns at least one valid object.
+WARNING: [Vivado 12-584] No ports matched 'ZED_PB[0]'. [/home/cis371/cis371/lab2/constraints/lc4_system.xdc:33]
+CRITICAL WARNING: [Common 17-55] 'set_property' expects at least one object. [/home/cis371/cis371/lab2/constraints/lc4_system.xdc:33]
+Resolution: If [get_<value>] was used to populate the object, check to make sure this command returns at least one valid object.
+WARNING: [Vivado 12-584] No ports matched 'CLK_100MHz'. [/home/cis371/cis371/lab2/constraints/lc4_system.xdc:34]
+CRITICAL WARNING: [Common 17-55] 'set_property' expects at least one object. [/home/cis371/cis371/lab2/constraints/lc4_system.xdc:34]
+Resolution: If [get_<value>] was used to populate the object, check to make sure this command returns at least one valid object.
+WARNING: [Vivado 12-584] No ports matched 'VGA_HSYNCH'. [/home/cis371/cis371/lab2/constraints/lc4_system.xdc:35]
+CRITICAL WARNING: [Common 17-55] 'set_property' expects at least one object. [/home/cis371/cis371/lab2/constraints/lc4_system.xdc:35]
+Resolution: If [get_<value>] was used to populate the object, check to make sure this command returns at least one valid object.
+WARNING: [Vivado 12-584] No ports matched 'VGA_VSYNCH'. [/home/cis371/cis371/lab2/constraints/lc4_system.xdc:36]
+CRITICAL WARNING: [Common 17-55] 'set_property' expects at least one object. [/home/cis371/cis371/lab2/constraints/lc4_system.xdc:36]
+Resolution: If [get_<value>] was used to populate the object, check to make sure this command returns at least one valid object.
+WARNING: [Vivado 12-584] No ports matched 'LDOUT[7]'. [/home/cis371/cis371/lab2/constraints/lc4_system.xdc:37]
+CRITICAL WARNING: [Common 17-55] 'set_property' expects at least one object. [/home/cis371/cis371/lab2/constraints/lc4_system.xdc:37]
+Resolution: If [get_<value>] was used to populate the object, check to make sure this command returns at least one valid object.
+WARNING: [Vivado 12-584] No ports matched 'LDOUT[6]'. [/home/cis371/cis371/lab2/constraints/lc4_system.xdc:38]
+CRITICAL WARNING: [Common 17-55] 'set_property' expects at least one object. [/home/cis371/cis371/lab2/constraints/lc4_system.xdc:38]
+Resolution: If [get_<value>] was used to populate the object, check to make sure this command returns at least one valid object.
+WARNING: [Vivado 12-584] No ports matched 'LDOUT[5]'. [/home/cis371/cis371/lab2/constraints/lc4_system.xdc:39]
+CRITICAL WARNING: [Common 17-55] 'set_property' expects at least one object. [/home/cis371/cis371/lab2/constraints/lc4_system.xdc:39]
+Resolution: If [get_<value>] was used to populate the object, check to make sure this command returns at least one valid object.
+WARNING: [Vivado 12-584] No ports matched 'LDOUT[4]'. [/home/cis371/cis371/lab2/constraints/lc4_system.xdc:40]
+CRITICAL WARNING: [Common 17-55] 'set_property' expects at least one object. [/home/cis371/cis371/lab2/constraints/lc4_system.xdc:40]
+Resolution: If [get_<value>] was used to populate the object, check to make sure this command returns at least one valid object.
+WARNING: [Vivado 12-584] No ports matched 'LDOUT[3]'. [/home/cis371/cis371/lab2/constraints/lc4_system.xdc:41]
+CRITICAL WARNING: [Common 17-55] 'set_property' expects at least one object. [/home/cis371/cis371/lab2/constraints/lc4_system.xdc:41]
+Resolution: If [get_<value>] was used to populate the object, check to make sure this command returns at least one valid object.
+WARNING: [Vivado 12-584] No ports matched 'LDOUT[2]'. [/home/cis371/cis371/lab2/constraints/lc4_system.xdc:42]
+CRITICAL WARNING: [Common 17-55] 'set_property' expects at least one object. [/home/cis371/cis371/lab2/constraints/lc4_system.xdc:42]
+Resolution: If [get_<value>] was used to populate the object, check to make sure this command returns at least one valid object.
+WARNING: [Vivado 12-584] No ports matched 'LDOUT[1]'. [/home/cis371/cis371/lab2/constraints/lc4_system.xdc:43]
+CRITICAL WARNING: [Common 17-55] 'set_property' expects at least one object. [/home/cis371/cis371/lab2/constraints/lc4_system.xdc:43]
+Resolution: If [get_<value>] was used to populate the object, check to make sure this command returns at least one valid object.
+WARNING: [Vivado 12-584] No ports matched 'LDOUT[0]'. [/home/cis371/cis371/lab2/constraints/lc4_system.xdc:44]
+CRITICAL WARNING: [Common 17-55] 'set_property' expects at least one object. [/home/cis371/cis371/lab2/constraints/lc4_system.xdc:44]
+Resolution: If [get_<value>] was used to populate the object, check to make sure this command returns at least one valid object.
+WARNING: [Vivado 12-584] No ports matched 'SWITCH_IN[7]'. [/home/cis371/cis371/lab2/constraints/lc4_system.xdc:45]
+CRITICAL WARNING: [Common 17-55] 'set_property' expects at least one object. [/home/cis371/cis371/lab2/constraints/lc4_system.xdc:45]
+Resolution: If [get_<value>] was used to populate the object, check to make sure this command returns at least one valid object.
+WARNING: [Vivado 12-584] No ports matched 'SWITCH_IN[6]'. [/home/cis371/cis371/lab2/constraints/lc4_system.xdc:46]
+CRITICAL WARNING: [Common 17-55] 'set_property' expects at least one object. [/home/cis371/cis371/lab2/constraints/lc4_system.xdc:46]
+Resolution: If [get_<value>] was used to populate the object, check to make sure this command returns at least one valid object.
+WARNING: [Vivado 12-584] No ports matched 'SWITCH_IN[5]'. [/home/cis371/cis371/lab2/constraints/lc4_system.xdc:47]
+CRITICAL WARNING: [Common 17-55] 'set_property' expects at least one object. [/home/cis371/cis371/lab2/constraints/lc4_system.xdc:47]
+Resolution: If [get_<value>] was used to populate the object, check to make sure this command returns at least one valid object.
+WARNING: [Vivado 12-584] No ports matched 'SWITCH_IN[4]'. [/home/cis371/cis371/lab2/constraints/lc4_system.xdc:48]
+CRITICAL WARNING: [Common 17-55] 'set_property' expects at least one object. [/home/cis371/cis371/lab2/constraints/lc4_system.xdc:48]
+Resolution: If [get_<value>] was used to populate the object, check to make sure this command returns at least one valid object.
+WARNING: [Vivado 12-584] No ports matched 'SWITCH_IN[3]'. [/home/cis371/cis371/lab2/constraints/lc4_system.xdc:49]
+CRITICAL WARNING: [Common 17-55] 'set_property' expects at least one object. [/home/cis371/cis371/lab2/constraints/lc4_system.xdc:49]
+Resolution: If [get_<value>] was used to populate the object, check to make sure this command returns at least one valid object.
+WARNING: [Vivado 12-584] No ports matched 'SWITCH_IN[2]'. [/home/cis371/cis371/lab2/constraints/lc4_system.xdc:50]
+CRITICAL WARNING: [Common 17-55] 'set_property' expects at least one object. [/home/cis371/cis371/lab2/constraints/lc4_system.xdc:50]
+Resolution: If [get_<value>] was used to populate the object, check to make sure this command returns at least one valid object.
+WARNING: [Vivado 12-584] No ports matched 'SWITCH_IN[1]'. [/home/cis371/cis371/lab2/constraints/lc4_system.xdc:51]
+CRITICAL WARNING: [Common 17-55] 'set_property' expects at least one object. [/home/cis371/cis371/lab2/constraints/lc4_system.xdc:51]
+Resolution: If [get_<value>] was used to populate the object, check to make sure this command returns at least one valid object.
+WARNING: [Vivado 12-584] No ports matched 'SWITCH_IN[0]'. [/home/cis371/cis371/lab2/constraints/lc4_system.xdc:52]
+CRITICAL WARNING: [Common 17-55] 'set_property' expects at least one object. [/home/cis371/cis371/lab2/constraints/lc4_system.xdc:52]
+Resolution: If [get_<value>] was used to populate the object, check to make sure this command returns at least one valid object.
+WARNING: [Vivado 12-584] No ports matched 'VGA_OUT_BLUE[3]'. [/home/cis371/cis371/lab2/constraints/lc4_system.xdc:53]
+CRITICAL WARNING: [Common 17-55] 'set_property' expects at least one object. [/home/cis371/cis371/lab2/constraints/lc4_system.xdc:53]
+Resolution: If [get_<value>] was used to populate the object, check to make sure this command returns at least one valid object.
+WARNING: [Vivado 12-584] No ports matched 'VGA_OUT_BLUE[2]'. [/home/cis371/cis371/lab2/constraints/lc4_system.xdc:54]
+CRITICAL WARNING: [Common 17-55] 'set_property' expects at least one object. [/home/cis371/cis371/lab2/constraints/lc4_system.xdc:54]
+Resolution: If [get_<value>] was used to populate the object, check to make sure this command returns at least one valid object.
+WARNING: [Vivado 12-584] No ports matched 'VGA_OUT_BLUE[1]'. [/home/cis371/cis371/lab2/constraints/lc4_system.xdc:55]
+CRITICAL WARNING: [Common 17-55] 'set_property' expects at least one object. [/home/cis371/cis371/lab2/constraints/lc4_system.xdc:55]
+Resolution: If [get_<value>] was used to populate the object, check to make sure this command returns at least one valid object.
+WARNING: [Vivado 12-584] No ports matched 'VGA_OUT_BLUE[0]'. [/home/cis371/cis371/lab2/constraints/lc4_system.xdc:56]
+CRITICAL WARNING: [Common 17-55] 'set_property' expects at least one object. [/home/cis371/cis371/lab2/constraints/lc4_system.xdc:56]
+Resolution: If [get_<value>] was used to populate the object, check to make sure this command returns at least one valid object.
+WARNING: [Vivado 12-584] No ports matched 'VGA_OUT_GREEN[3]'. [/home/cis371/cis371/lab2/constraints/lc4_system.xdc:57]
+CRITICAL WARNING: [Common 17-55] 'set_property' expects at least one object. [/home/cis371/cis371/lab2/constraints/lc4_system.xdc:57]
+Resolution: If [get_<value>] was used to populate the object, check to make sure this command returns at least one valid object.
+WARNING: [Vivado 12-584] No ports matched 'VGA_OUT_GREEN[2]'. [/home/cis371/cis371/lab2/constraints/lc4_system.xdc:58]
+CRITICAL WARNING: [Common 17-55] 'set_property' expects at least one object. [/home/cis371/cis371/lab2/constraints/lc4_system.xdc:58]
+Resolution: If [get_<value>] was used to populate the object, check to make sure this command returns at least one valid object.
+WARNING: [Vivado 12-584] No ports matched 'VGA_OUT_GREEN[1]'. [/home/cis371/cis371/lab2/constraints/lc4_system.xdc:59]
+CRITICAL WARNING: [Common 17-55] 'set_property' expects at least one object. [/home/cis371/cis371/lab2/constraints/lc4_system.xdc:59]
+Resolution: If [get_<value>] was used to populate the object, check to make sure this command returns at least one valid object.
+WARNING: [Vivado 12-584] No ports matched 'VGA_OUT_GREEN[0]'. [/home/cis371/cis371/lab2/constraints/lc4_system.xdc:60]
+CRITICAL WARNING: [Common 17-55] 'set_property' expects at least one object. [/home/cis371/cis371/lab2/constraints/lc4_system.xdc:60]
+Resolution: If [get_<value>] was used to populate the object, check to make sure this command returns at least one valid object.
+WARNING: [Vivado 12-584] No ports matched 'VGA_OUT_RED[3]'. [/home/cis371/cis371/lab2/constraints/lc4_system.xdc:61]
+CRITICAL WARNING: [Common 17-55] 'set_property' expects at least one object. [/home/cis371/cis371/lab2/constraints/lc4_system.xdc:61]
+Resolution: If [get_<value>] was used to populate the object, check to make sure this command returns at least one valid object.
+WARNING: [Vivado 12-584] No ports matched 'VGA_OUT_RED[2]'. [/home/cis371/cis371/lab2/constraints/lc4_system.xdc:62]
+CRITICAL WARNING: [Common 17-55] 'set_property' expects at least one object. [/home/cis371/cis371/lab2/constraints/lc4_system.xdc:62]
+Resolution: If [get_<value>] was used to populate the object, check to make sure this command returns at least one valid object.
+WARNING: [Vivado 12-584] No ports matched 'VGA_OUT_RED[1]'. [/home/cis371/cis371/lab2/constraints/lc4_system.xdc:63]
+CRITICAL WARNING: [Common 17-55] 'set_property' expects at least one object. [/home/cis371/cis371/lab2/constraints/lc4_system.xdc:63]
+Resolution: If [get_<value>] was used to populate the object, check to make sure this command returns at least one valid object.
+WARNING: [Vivado 12-584] No ports matched 'VGA_OUT_RED[0]'. [/home/cis371/cis371/lab2/constraints/lc4_system.xdc:64]
+CRITICAL WARNING: [Common 17-55] 'set_property' expects at least one object. [/home/cis371/cis371/lab2/constraints/lc4_system.xdc:64]
+Resolution: If [get_<value>] was used to populate the object, check to make sure this command returns at least one valid object.
+WARNING: [Vivado 12-584] No ports matched 'ZED_PB[4]'. [/home/cis371/cis371/lab2/constraints/lc4_system.xdc:65]
+CRITICAL WARNING: [Common 17-55] 'set_property' expects at least one object. [/home/cis371/cis371/lab2/constraints/lc4_system.xdc:65]
+Resolution: If [get_<value>] was used to populate the object, check to make sure this command returns at least one valid object.
+WARNING: [Vivado 12-584] No ports matched 'ZED_PB[3]'. [/home/cis371/cis371/lab2/constraints/lc4_system.xdc:66]
+CRITICAL WARNING: [Common 17-55] 'set_property' expects at least one object. [/home/cis371/cis371/lab2/constraints/lc4_system.xdc:66]
+Resolution: If [get_<value>] was used to populate the object, check to make sure this command returns at least one valid object.
+WARNING: [Vivado 12-584] No ports matched 'ZED_PB[2]'. [/home/cis371/cis371/lab2/constraints/lc4_system.xdc:67]
+CRITICAL WARNING: [Common 17-55] 'set_property' expects at least one object. [/home/cis371/cis371/lab2/constraints/lc4_system.xdc:67]
+Resolution: If [get_<value>] was used to populate the object, check to make sure this command returns at least one valid object.
+WARNING: [Vivado 12-584] No ports matched 'ZED_PB[1]'. [/home/cis371/cis371/lab2/constraints/lc4_system.xdc:68]
+CRITICAL WARNING: [Common 17-55] 'set_property' expects at least one object. [/home/cis371/cis371/lab2/constraints/lc4_system.xdc:68]
+Resolution: If [get_<value>] was used to populate the object, check to make sure this command returns at least one valid object.
+WARNING: [Vivado 12-584] No ports matched 'ZED_PB[0]'. [/home/cis371/cis371/lab2/constraints/lc4_system.xdc:69]
+CRITICAL WARNING: [Common 17-55] 'set_property' expects at least one object. [/home/cis371/cis371/lab2/constraints/lc4_system.xdc:69]
+Resolution: If [get_<value>] was used to populate the object, check to make sure this command returns at least one valid object.
+WARNING: [Vivado 12-584] No ports matched 'CLK_100MHz'. [/home/cis371/cis371/lab2/constraints/lc4_system.xdc:70]
+CRITICAL WARNING: [Common 17-55] 'set_property' expects at least one object. [/home/cis371/cis371/lab2/constraints/lc4_system.xdc:70]
+Resolution: If [get_<value>] was used to populate the object, check to make sure this command returns at least one valid object.
+WARNING: [Vivado 12-584] No ports matched 'VGA_HSYNCH'. [/home/cis371/cis371/lab2/constraints/lc4_system.xdc:71]
+CRITICAL WARNING: [Common 17-55] 'set_property' expects at least one object. [/home/cis371/cis371/lab2/constraints/lc4_system.xdc:71]
+Resolution: If [get_<value>] was used to populate the object, check to make sure this command returns at least one valid object.
+WARNING: [Vivado 12-584] No ports matched 'VGA_VSYNCH'. [/home/cis371/cis371/lab2/constraints/lc4_system.xdc:72]
+CRITICAL WARNING: [Common 17-55] 'set_property' expects at least one object. [/home/cis371/cis371/lab2/constraints/lc4_system.xdc:72]
+Resolution: If [get_<value>] was used to populate the object, check to make sure this command returns at least one valid object.
+Finished Parsing XDC File [/home/cis371/cis371/lab2/constraints/lc4_system.xdc]
+Completed Processing XDC Constraints
+
+INFO: [Project 1-111] Unisim Transformation Summary:
+No Unisim elements were transformed.
+
+Constraint Validation Runtime : Time (s): cpu = 00:00:00 ; elapsed = 00:00:00 . Memory (MB): peak = 1323.660 ; gain = 0.000 ; free physical = 4981 ; free virtual = 10375
+INFO: Launching helper process for spawning children vivado processes
+INFO: Helper process launched with PID 5421 
+---------------------------------------------------------------------------------
+Finished Constraint Validation : Time (s): cpu = 00:00:11 ; elapsed = 00:00:13 . Memory (MB): peak = 1323.664 ; gain = 477.988 ; free physical = 4977 ; free virtual = 10371
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Loading Part and Timing Information
+---------------------------------------------------------------------------------
+Loading part: xc7z020clg484-1
+---------------------------------------------------------------------------------
+Finished Loading Part and Timing Information : Time (s): cpu = 00:00:11 ; elapsed = 00:00:13 . Memory (MB): peak = 1323.664 ; gain = 477.988 ; free physical = 4977 ; free virtual = 10371
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Applying 'set_property' XDC Constraints
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished applying 'set_property' XDC Constraints : Time (s): cpu = 00:00:11 ; elapsed = 00:00:13 . Memory (MB): peak = 1323.664 ; gain = 477.988 ; free physical = 4977 ; free virtual = 10371
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished RTL Optimization Phase 2 : Time (s): cpu = 00:00:11 ; elapsed = 00:00:13 . Memory (MB): peak = 1323.664 ; gain = 477.988 ; free physical = 4972 ; free virtual = 10366
+---------------------------------------------------------------------------------
+
+Report RTL Partitions: 
++-+--------------+------------+----------+
+| |RTL Partition |Replication |Instances |
++-+--------------+------------+----------+
++-+--------------+------------+----------+
+---------------------------------------------------------------------------------
+Start RTL Component Statistics 
+---------------------------------------------------------------------------------
+Detailed RTL Component Info : 
++---Adders : 
+	   3 Input     16 Bit       Adders := 20    
+	   2 Input     16 Bit       Adders := 3     
++---XORs : 
+	   2 Input     16 Bit         XORs := 1     
++---Muxes : 
+	   2 Input     16 Bit        Muxes := 75    
+	   4 Input     16 Bit        Muxes := 3     
+	   2 Input      1 Bit        Muxes := 16    
+---------------------------------------------------------------------------------
+Finished RTL Component Statistics 
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start RTL Hierarchical Component Statistics 
+---------------------------------------------------------------------------------
+Hierarchical RTL Component report 
+Module lc4_alu 
+Detailed RTL Component Info : 
++---Muxes : 
+	   2 Input     16 Bit        Muxes := 3     
+Module lc4_divider_one_iter 
+Detailed RTL Component Info : 
++---Adders : 
+	   3 Input     16 Bit       Adders := 1     
++---Muxes : 
+	   2 Input     16 Bit        Muxes := 1     
+	   2 Input      1 Bit        Muxes := 1     
+Module lc4_divider 
+Detailed RTL Component Info : 
++---Muxes : 
+	   2 Input     16 Bit        Muxes := 2     
+Module lc4_branch_op 
+Detailed RTL Component Info : 
++---Adders : 
+	   3 Input     16 Bit       Adders := 1     
+Module lc4_arith_op 
+Detailed RTL Component Info : 
++---Adders : 
+	   2 Input     16 Bit       Adders := 2     
+	   3 Input     16 Bit       Adders := 1     
++---Muxes : 
+	   4 Input     16 Bit        Muxes := 1     
+	   2 Input     16 Bit        Muxes := 1     
+Module lc4_compare_op 
+Detailed RTL Component Info : 
++---Adders : 
+	   3 Input     16 Bit       Adders := 1     
++---Muxes : 
+	   2 Input     16 Bit        Muxes := 4     
+	   4 Input     16 Bit        Muxes := 1     
+Module lc4_barrel_shift 
+Detailed RTL Component Info : 
++---Muxes : 
+	   2 Input     16 Bit        Muxes := 15    
+Module lc4_jsr_op 
+Detailed RTL Component Info : 
++---Muxes : 
+	   2 Input     16 Bit        Muxes := 1     
+Module lc4_logic_op 
+Detailed RTL Component Info : 
++---XORs : 
+	   2 Input     16 Bit         XORs := 1     
++---Muxes : 
+	   2 Input     16 Bit        Muxes := 1     
+	   4 Input     16 Bit        Muxes := 1     
+Module lc4_memory_op 
+Detailed RTL Component Info : 
++---Adders : 
+	   2 Input     16 Bit       Adders := 1     
+Module lc4_shift_op 
+Detailed RTL Component Info : 
++---Muxes : 
+	   2 Input     16 Bit        Muxes := 1     
+Module lc4_jmp_op 
+Detailed RTL Component Info : 
++---Adders : 
+	   3 Input     16 Bit       Adders := 1     
++---Muxes : 
+	   2 Input     16 Bit        Muxes := 1     
+---------------------------------------------------------------------------------
+Finished RTL Hierarchical Component Statistics
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Part Resource Summary
+---------------------------------------------------------------------------------
+Part Resources:
+DSPs: 220 (col length:60)
+BRAMs: 280 (col length: RAMB18 60 RAMB36 30)
+---------------------------------------------------------------------------------
+Finished Part Resource Summary
+---------------------------------------------------------------------------------
+Start Parallel Synthesis Optimization  : Time (s): cpu = 00:00:12 ; elapsed = 00:00:13 . Memory (MB): peak = 1323.668 ; gain = 477.992 ; free physical = 4973 ; free virtual = 10368
+---------------------------------------------------------------------------------
+Start Cross Boundary Optimization
+---------------------------------------------------------------------------------
+DSP Report: Generating DSP arith_res/o_result1, operation Mode is: A*B.
+DSP Report: operator arith_res/o_result1 is absorbed into DSP arith_res/o_result1.
+---------------------------------------------------------------------------------
+Finished Cross Boundary Optimization : Time (s): cpu = 00:00:12 ; elapsed = 00:00:13 . Memory (MB): peak = 1323.668 ; gain = 477.992 ; free physical = 4973 ; free virtual = 10368
+---------------------------------------------------------------------------------
+Finished Parallel Reinference  : Time (s): cpu = 00:00:12 ; elapsed = 00:00:13 . Memory (MB): peak = 1323.668 ; gain = 477.992 ; free physical = 4973 ; free virtual = 10368
+
+Report RTL Partitions: 
++-+--------------+------------+----------+
+| |RTL Partition |Replication |Instances |
++-+--------------+------------+----------+
++-+--------------+------------+----------+
+---------------------------------------------------------------------------------
+Start ROM, RAM, DSP and Shift Register Reporting
+---------------------------------------------------------------------------------
+
+DSP:
++-------------+-------------+--------------+--------+--------+--------+--------+--------+------+------+------+------+-------+------+------+
+|Module Name  | DSP Mapping | Neg Edge Clk | A Size | B Size | C Size | D Size | P Size | AREG | BREG | CREG | DREG | ADREG | MREG | PREG | 
++-------------+-------------+--------------+--------+--------+--------+--------+--------+------+------+------+------+-------+------+------+
+|lc4_arith_op | A*B         | No           | 16     | 16     | 48     | 25     | 32     | 0    | 0    | 1    | 1    | 1     | 0    | 0    | 
++-------------+-------------+--------------+--------+--------+--------+--------+--------+------+------+------+------+-------+------+------+
+
+Note: The table above shows the DSPs inferred at the current stage of the synthesis flow. Some DSP may be reimplemented as non DSP primitives later in the synthesis flow. Multiple instantiated DSPs are reported only once.
+---------------------------------------------------------------------------------
+Finished ROM, RAM, DSP and Shift Register Reporting
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Area Optimization
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Area Optimization : Time (s): cpu = 00:00:14 ; elapsed = 00:00:15 . Memory (MB): peak = 1323.668 ; gain = 477.992 ; free physical = 4971 ; free virtual = 10367
+---------------------------------------------------------------------------------
+Finished Parallel Area Optimization  : Time (s): cpu = 00:00:14 ; elapsed = 00:00:15 . Memory (MB): peak = 1323.668 ; gain = 477.992 ; free physical = 4971 ; free virtual = 10367
+
+Report RTL Partitions: 
++-+--------------+------------+----------+
+| |RTL Partition |Replication |Instances |
++-+--------------+------------+----------+
++-+--------------+------------+----------+
+---------------------------------------------------------------------------------
+Start Timing Optimization
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Applying XDC Timing Constraints
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Applying XDC Timing Constraints : Time (s): cpu = 00:00:23 ; elapsed = 00:00:24 . Memory (MB): peak = 1352.660 ; gain = 506.984 ; free physical = 4930 ; free virtual = 10335
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Timing Optimization : Time (s): cpu = 00:00:23 ; elapsed = 00:00:24 . Memory (MB): peak = 1353.660 ; gain = 507.984 ; free physical = 4930 ; free virtual = 10335
+---------------------------------------------------------------------------------
+
+Report RTL Partitions: 
++-+--------------+------------+----------+
+| |RTL Partition |Replication |Instances |
++-+--------------+------------+----------+
++-+--------------+------------+----------+
+---------------------------------------------------------------------------------
+Start Technology Mapping
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Technology Mapping : Time (s): cpu = 00:00:23 ; elapsed = 00:00:25 . Memory (MB): peak = 1371.684 ; gain = 526.008 ; free physical = 4910 ; free virtual = 10315
+---------------------------------------------------------------------------------
+Finished Parallel Technology Mapping Optimization  : Time (s): cpu = 00:00:23 ; elapsed = 00:00:25 . Memory (MB): peak = 1371.684 ; gain = 526.008 ; free physical = 4910 ; free virtual = 10315
+
+Report RTL Partitions: 
++-+--------------+------------+----------+
+| |RTL Partition |Replication |Instances |
++-+--------------+------------+----------+
++-+--------------+------------+----------+
+Finished Parallel Synthesis Optimization  : Time (s): cpu = 00:00:23 ; elapsed = 00:00:25 . Memory (MB): peak = 1371.684 ; gain = 526.008 ; free physical = 4910 ; free virtual = 10315
+---------------------------------------------------------------------------------
+Start IO Insertion
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Flattening Before IO Insertion
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Flattening Before IO Insertion
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Final Netlist Cleanup
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Final Netlist Cleanup
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished IO Insertion : Time (s): cpu = 00:00:23 ; elapsed = 00:00:25 . Memory (MB): peak = 1371.684 ; gain = 526.008 ; free physical = 4910 ; free virtual = 10315
+---------------------------------------------------------------------------------
+
+Report Check Netlist: 
++------+------------------+-------+---------+-------+------------------+
+|      |Item              |Errors |Warnings |Status |Description       |
++------+------------------+-------+---------+-------+------------------+
+|1     |multi_driven_nets |      0|        0|Passed |Multi driven nets |
++------+------------------+-------+---------+-------+------------------+
+---------------------------------------------------------------------------------
+Start Renaming Generated Instances
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Renaming Generated Instances : Time (s): cpu = 00:00:23 ; elapsed = 00:00:25 . Memory (MB): peak = 1371.684 ; gain = 526.008 ; free physical = 4910 ; free virtual = 10315
+---------------------------------------------------------------------------------
+
+Report RTL Partitions: 
++-+--------------+------------+----------+
+| |RTL Partition |Replication |Instances |
++-+--------------+------------+----------+
++-+--------------+------------+----------+
+---------------------------------------------------------------------------------
+Start Rebuilding User Hierarchy
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Rebuilding User Hierarchy : Time (s): cpu = 00:00:23 ; elapsed = 00:00:25 . Memory (MB): peak = 1371.684 ; gain = 526.008 ; free physical = 4910 ; free virtual = 10315
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Renaming Generated Ports
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Renaming Generated Ports : Time (s): cpu = 00:00:24 ; elapsed = 00:00:25 . Memory (MB): peak = 1371.684 ; gain = 526.008 ; free physical = 4910 ; free virtual = 10315
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Handling Custom Attributes
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Handling Custom Attributes : Time (s): cpu = 00:00:24 ; elapsed = 00:00:25 . Memory (MB): peak = 1371.684 ; gain = 526.008 ; free physical = 4910 ; free virtual = 10315
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Renaming Generated Nets
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Renaming Generated Nets : Time (s): cpu = 00:00:24 ; elapsed = 00:00:25 . Memory (MB): peak = 1371.684 ; gain = 526.008 ; free physical = 4910 ; free virtual = 10315
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Writing Synthesis Report
+---------------------------------------------------------------------------------
+
+Report BlackBoxes: 
++-+--------------+----------+
+| |BlackBox name |Instances |
++-+--------------+----------+
++-+--------------+----------+
+
+Report Cell Usage: 
++------+--------+------+
+|      |Cell    |Count |
++------+--------+------+
+|1     |CARRY4  |   132|
+|2     |DSP48E1 |     1|
+|3     |LUT1    |    20|
+|4     |LUT2    |   183|
+|5     |LUT3    |   144|
+|6     |LUT4    |   154|
+|7     |LUT5    |   201|
+|8     |LUT6    |   509|
+|9     |MUXF7   |    17|
+|10    |IBUF    |    64|
+|11    |OBUF    |    16|
++------+--------+------+
+
+Report Instance Areas: 
++------+--------------+------------------------+------+
+|      |Instance      |Module                  |Cells |
++------+--------------+------------------------+------+
+|1     |top           |                        |  1441|
+|2     |  arith_res   |lc4_arith_op            |   134|
+|3     |  compare_res |lc4_compare_op          |    41|
+|4     |  div         |lc4_divider             |   873|
+|5     |    div1      |lc4_divider_one_iter    |   752|
+|6     |    div10     |lc4_divider_one_iter_0  |     7|
+|7     |    div11     |lc4_divider_one_iter_1  |     4|
+|8     |    div12     |lc4_divider_one_iter_2  |     4|
+|9     |    div13     |lc4_divider_one_iter_3  |     7|
+|10    |    div14     |lc4_divider_one_iter_4  |     4|
+|11    |    div15     |lc4_divider_one_iter_5  |     4|
+|12    |    div16     |lc4_divider_one_iter_6  |    29|
+|13    |    div2      |lc4_divider_one_iter_7  |     6|
+|14    |    div3      |lc4_divider_one_iter_8  |    26|
+|15    |    div4      |lc4_divider_one_iter_9  |     7|
+|16    |    div5      |lc4_divider_one_iter_10 |     4|
+|17    |    div6      |lc4_divider_one_iter_11 |     4|
+|18    |    div7      |lc4_divider_one_iter_12 |     7|
+|19    |    div8      |lc4_divider_one_iter_13 |     4|
+|20    |    div9      |lc4_divider_one_iter_14 |     4|
+|21    |  memory_res  |lc4_memory_op           |    23|
++------+--------------+------------------------+------+
+---------------------------------------------------------------------------------
+Finished Writing Synthesis Report : Time (s): cpu = 00:00:24 ; elapsed = 00:00:25 . Memory (MB): peak = 1371.684 ; gain = 526.008 ; free physical = 4910 ; free virtual = 10315
+---------------------------------------------------------------------------------
+Synthesis finished with 0 errors, 0 critical warnings and 0 warnings.
+Synthesis Optimization Runtime : Time (s): cpu = 00:00:20 ; elapsed = 00:00:20 . Memory (MB): peak = 1371.684 ; gain = 110.391 ; free physical = 4909 ; free virtual = 10314
+Synthesis Optimization Complete : Time (s): cpu = 00:00:24 ; elapsed = 00:00:25 . Memory (MB): peak = 1371.684 ; gain = 526.008 ; free physical = 4909 ; free virtual = 10314
+INFO: [Project 1-571] Translating synthesized netlist
+INFO: [Netlist 29-17] Analyzing 197 Unisim elements for replacement
+INFO: [Netlist 29-28] Unisim Transformation completed in 0 CPU seconds
+INFO: [Project 1-570] Preparing netlist for logic optimization
+INFO: [Opt 31-138] Pushed 0 inverter(s) to 0 load pin(s).
+INFO: [Project 1-111] Unisim Transformation Summary:
+No Unisim elements were transformed.
+
+INFO: [Common 17-83] Releasing license: Synthesis
+43 Infos, 73 Warnings, 72 Critical Warnings and 0 Errors encountered.
+synth_design completed successfully
+synth_design: Time (s): cpu = 00:00:24 ; elapsed = 00:00:25 . Memory (MB): peak = 1371.688 ; gain = 454.676 ; free physical = 4907 ; free virtual = 10314
+report_utilization: Time (s): cpu = 00:00:00.05 ; elapsed = 00:00:00.08 . Memory (MB): peak = 1403.703 ; gain = 0.000 ; free physical = 4904 ; free virtual = 10312
+INFO: [Common 17-206] Exiting Vivado at Tue Feb 16 01:44:52 2016...

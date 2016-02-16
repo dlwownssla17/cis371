@@ -1,5 +1,4 @@
-/* TODO: Names of all group members
- * TODO: PennKeys of all group members
+/* Contributors: Jae Joon Lee (jjlee), Hannes Leipold (leipoldh), Becky Baumher (rbaumher)
  *
  * lc4_regfile.v
  * Implements an 8-register register file parameterized on word size.
