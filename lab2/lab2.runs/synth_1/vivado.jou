@@ -2,8 +2,8 @@
 # Vivado v2015.4 (64-bit)
 # SW Build 1412921 on Wed Nov 18 09:44:32 MST 2015
 # IP Build 1412160 on Tue Nov 17 13:47:24 MST 2015
-# Start of session at: Tue Feb 16 01:44:20 2016
-# Process ID: 5413
+# Start of session at: Tue Feb 16 06:47:22 2016
+# Process ID: 9107
 # Current directory: /home/cis371/cis371/lab2/lab2.runs/synth_1
 # Command line: vivado -log lc4_alu.vds -mode batch -messageDb vivado.pb -notrace -source lc4_alu.tcl
 # Log file: /home/cis371/cis371/lab2/lab2.runs/synth_1/lc4_alu.vds

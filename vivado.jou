@@ -14,3 +14,50 @@ open_project /home/cis371/cis371/lab2/lab2.xpr
 add_files -norecurse /home/cis371/cis371/lab2/lc4_single.v
 add_files -norecurse /home/cis371/cis371/lab2/lc4_single.v
 add_files -norecurse /home/cis371/cis371/lab2/lc4_single.v
+reset_run synth_1
+launch_runs synth_1
+wait_on_run synth_1
+reset_run synth_1
+launch_runs synth_1
+wait_on_run synth_1
+reset_run synth_1
+launch_runs synth_1
+wait_on_run synth_1
+reset_run synth_1
+launch_runs synth_1
+wait_on_run synth_1
+# Disabling source management mode.  This is to allow the top design properties to be set without GUI intervention.
+set_property source_mgmt_mode None [current_project]
+set_property top testbench_v [get_filesets sim_1]
+set_property top_lib xil_defaultlib [get_filesets sim_1]
+# Re-enabling previously disabled source management mode.
+set_property source_mgmt_mode All [current_project]
+update_compile_order -fileset sim_1
+launch_simulation
+source testbench_v.tcl
+run all
+reset_run synth_1
+launch_runs synth_1
+wait_on_run synth_1
+close_sim
+launch_simulation
+source testbench_v.tcl
+reset_run synth_1
+launch_runs synth_1
+wait_on_run synth_1
+close_sim
+launch_simulation
+source testbench_v.tcl
+run all
+run all
+close_sim
+launch_simulation
+source testbench_v.tcl
+run all
+reset_run synth_1
+launch_runs synth_1
+wait_on_run synth_1
+close_sim
+launch_simulation
+source testbench_v.tcl
+run all

@@ -22,3 +22,548 @@ add_files -norecurse /home/cis371/cis371/lab2/lc4_single.v
 WARNING: [filemgmt 56-12] File '/home/cis371/cis371/lab2/lc4_single.v' cannot be added to the project because it already exists in the project, skipping this file
 add_files -norecurse /home/cis371/cis371/lab2/lc4_single.v
 WARNING: [filemgmt 56-12] File '/home/cis371/cis371/lab2/lc4_single.v' cannot be added to the project because it already exists in the project, skipping this file
+reset_run synth_1
+launch_runs synth_1
+INFO: [HDL 9-2216] Analyzing Verilog file "/home/cis371/cis371/lab2/include/bram.v" into library work [/home/cis371/cis371/lab2/include/bram.v:1]
+INFO: [HDL 9-1065] Parsing verilog file "/home/cis371/cis371/lab2/include/../set_testcase.v" included at line 4. [/home/cis371/cis371/lab2/include/bram.v:4]
+INFO: [HDL 9-2216] Analyzing Verilog file "/home/cis371/cis371/lab2/include/clkdiv.v" into library work [/home/cis371/cis371/lab2/include/clkdiv.v:1]
+INFO: [HDL 9-2216] Analyzing Verilog file "/home/cis371/cis371/lab2/include/clkgen.v" into library work [/home/cis371/cis371/lab2/include/clkgen.v:1]
+INFO: [HDL 9-2216] Analyzing Verilog file "/home/cis371/cis371/lab2/include/clock_util.v" into library work [/home/cis371/cis371/lab2/include/clock_util.v:1]
+INFO: [HDL 9-2216] Analyzing Verilog file "/home/cis371/cis371/lab2/include/delay_eight_cycles.v" into library work [/home/cis371/cis371/lab2/include/delay_eight_cycles.v:1]
+INFO: [HDL 9-2216] Analyzing Verilog file "/home/cis371/cis371/lab2/include/fake_pb_kbd.v" into library work [/home/cis371/cis371/lab2/include/fake_pb_kbd.v:1]
+INFO: [HDL 9-2216] Analyzing Verilog file "/home/cis371/cis371/lab2/lc4_alu.v" into library work [/home/cis371/cis371/lab2/lc4_alu.v:1]
+INFO: [HDL 9-2216] Analyzing Verilog file "/home/cis371/cis371/lab2/include/lc4_decoder.v" into library work [/home/cis371/cis371/lab2/include/lc4_decoder.v:1]
+INFO: [HDL 9-2216] Analyzing Verilog file "/home/cis371/cis371/lab2/lc4_divider.v" into library work [/home/cis371/cis371/lab2/lc4_divider.v:1]
+INFO: [HDL 9-2216] Analyzing Verilog file "/home/cis371/cis371/lab2/include/lc4_memory.v" into library work [/home/cis371/cis371/lab2/include/lc4_memory.v:1]
+INFO: [HDL 9-2216] Analyzing Verilog file "/home/cis371/cis371/lab2/include/lc4_prettyprint_errors.v" into library work [/home/cis371/cis371/lab2/include/lc4_prettyprint_errors.v:1]
+INFO: [HDL 9-2216] Analyzing Verilog file "/home/cis371/cis371/lab2/lc4_regfile.v" into library work [/home/cis371/cis371/lab2/lc4_regfile.v:1]
+INFO: [HDL 9-2216] Analyzing Verilog file "/home/cis371/cis371/lab2/lc4_single.v" into library work [/home/cis371/cis371/lab2/lc4_single.v:1]
+INFO: [HDL 9-2216] Analyzing Verilog file "/home/cis371/cis371/lab2/include/lc4_system.v" into library work [/home/cis371/cis371/lab2/include/lc4_system.v:1]
+INFO: [HDL 9-2216] Analyzing Verilog file "/home/cis371/cis371/lab2/include/one_pulse.v" into library work [/home/cis371/cis371/lab2/include/one_pulse.v:1]
+INFO: [HDL 9-2216] Analyzing Verilog file "/home/cis371/cis371/lab2/include/register.v" into library work [/home/cis371/cis371/lab2/include/register.v:1]
+INFO: [HDL 9-2216] Analyzing Verilog file "/home/cis371/cis371/lab2/include/set_testcase.v" into library work [/home/cis371/cis371/lab2/include/set_testcase.v:1]
+INFO: [HDL 9-2216] Analyzing Verilog file "/home/cis371/cis371/lab2/include/svga_timing_generation.v" into library work [/home/cis371/cis371/lab2/include/svga_timing_generation.v:1]
+INFO: [HDL 9-2216] Analyzing Verilog file "/home/cis371/cis371/lab2/include/timer.v" into library work [/home/cis371/cis371/lab2/include/timer.v:1]
+INFO: [HDL 9-2216] Analyzing Verilog file "/home/cis371/cis371/lab2/include/vga_controller.v" into library work [/home/cis371/cis371/lab2/include/vga_controller.v:1]
+INFO: [HDL 9-2216] Analyzing Verilog file "/home/cis371/cis371/lab2/include/video_out.v" into library work [/home/cis371/cis371/lab2/include/video_out.v:1]
+[Tue Feb 16 02:40:23 2016] Launched synth_1...
+Run output will be captured here: /home/cis371/cis371/lab2/lab2.runs/synth_1/runme.log
+reset_run synth_1
+launch_runs synth_1
+INFO: [HDL 9-2216] Analyzing Verilog file "/home/cis371/cis371/lab2/include/bram.v" into library work [/home/cis371/cis371/lab2/include/bram.v:1]
+INFO: [HDL 9-1065] Parsing verilog file "/home/cis371/cis371/lab2/include/../set_testcase.v" included at line 4. [/home/cis371/cis371/lab2/include/bram.v:4]
+INFO: [HDL 9-2216] Analyzing Verilog file "/home/cis371/cis371/lab2/include/clkdiv.v" into library work [/home/cis371/cis371/lab2/include/clkdiv.v:1]
+INFO: [HDL 9-2216] Analyzing Verilog file "/home/cis371/cis371/lab2/include/clkgen.v" into library work [/home/cis371/cis371/lab2/include/clkgen.v:1]
+INFO: [HDL 9-2216] Analyzing Verilog file "/home/cis371/cis371/lab2/include/clock_util.v" into library work [/home/cis371/cis371/lab2/include/clock_util.v:1]
+INFO: [HDL 9-2216] Analyzing Verilog file "/home/cis371/cis371/lab2/include/delay_eight_cycles.v" into library work [/home/cis371/cis371/lab2/include/delay_eight_cycles.v:1]
+INFO: [HDL 9-2216] Analyzing Verilog file "/home/cis371/cis371/lab2/include/fake_pb_kbd.v" into library work [/home/cis371/cis371/lab2/include/fake_pb_kbd.v:1]
+INFO: [HDL 9-2216] Analyzing Verilog file "/home/cis371/cis371/lab2/lc4_alu.v" into library work [/home/cis371/cis371/lab2/lc4_alu.v:1]
+INFO: [HDL 9-2216] Analyzing Verilog file "/home/cis371/cis371/lab2/include/lc4_decoder.v" into library work [/home/cis371/cis371/lab2/include/lc4_decoder.v:1]
+INFO: [HDL 9-2216] Analyzing Verilog file "/home/cis371/cis371/lab2/lc4_divider.v" into library work [/home/cis371/cis371/lab2/lc4_divider.v:1]
+INFO: [HDL 9-2216] Analyzing Verilog file "/home/cis371/cis371/lab2/include/lc4_memory.v" into library work [/home/cis371/cis371/lab2/include/lc4_memory.v:1]
+INFO: [HDL 9-2216] Analyzing Verilog file "/home/cis371/cis371/lab2/include/lc4_prettyprint_errors.v" into library work [/home/cis371/cis371/lab2/include/lc4_prettyprint_errors.v:1]
+INFO: [HDL 9-2216] Analyzing Verilog file "/home/cis371/cis371/lab2/lc4_regfile.v" into library work [/home/cis371/cis371/lab2/lc4_regfile.v:1]
+INFO: [HDL 9-2216] Analyzing Verilog file "/home/cis371/cis371/lab2/lc4_single.v" into library work [/home/cis371/cis371/lab2/lc4_single.v:1]
+INFO: [HDL 9-2216] Analyzing Verilog file "/home/cis371/cis371/lab2/include/lc4_system.v" into library work [/home/cis371/cis371/lab2/include/lc4_system.v:1]
+INFO: [HDL 9-2216] Analyzing Verilog file "/home/cis371/cis371/lab2/include/one_pulse.v" into library work [/home/cis371/cis371/lab2/include/one_pulse.v:1]
+INFO: [HDL 9-2216] Analyzing Verilog file "/home/cis371/cis371/lab2/include/register.v" into library work [/home/cis371/cis371/lab2/include/register.v:1]
+INFO: [HDL 9-2216] Analyzing Verilog file "/home/cis371/cis371/lab2/include/set_testcase.v" into library work [/home/cis371/cis371/lab2/include/set_testcase.v:1]
+INFO: [HDL 9-2216] Analyzing Verilog file "/home/cis371/cis371/lab2/include/svga_timing_generation.v" into library work [/home/cis371/cis371/lab2/include/svga_timing_generation.v:1]
+INFO: [HDL 9-2216] Analyzing Verilog file "/home/cis371/cis371/lab2/include/timer.v" into library work [/home/cis371/cis371/lab2/include/timer.v:1]
+INFO: [HDL 9-2216] Analyzing Verilog file "/home/cis371/cis371/lab2/include/vga_controller.v" into library work [/home/cis371/cis371/lab2/include/vga_controller.v:1]
+INFO: [HDL 9-2216] Analyzing Verilog file "/home/cis371/cis371/lab2/include/video_out.v" into library work [/home/cis371/cis371/lab2/include/video_out.v:1]
+[Tue Feb 16 06:28:55 2016] Launched synth_1...
+Run output will be captured here: /home/cis371/cis371/lab2/lab2.runs/synth_1/runme.log
+reset_run synth_1
+launch_runs synth_1
+INFO: [HDL 9-2216] Analyzing Verilog file "/home/cis371/cis371/lab2/include/bram.v" into library work [/home/cis371/cis371/lab2/include/bram.v:1]
+INFO: [HDL 9-1065] Parsing verilog file "/home/cis371/cis371/lab2/include/../set_testcase.v" included at line 4. [/home/cis371/cis371/lab2/include/bram.v:4]
+INFO: [HDL 9-2216] Analyzing Verilog file "/home/cis371/cis371/lab2/include/clkdiv.v" into library work [/home/cis371/cis371/lab2/include/clkdiv.v:1]
+INFO: [HDL 9-2216] Analyzing Verilog file "/home/cis371/cis371/lab2/include/clkgen.v" into library work [/home/cis371/cis371/lab2/include/clkgen.v:1]
+INFO: [HDL 9-2216] Analyzing Verilog file "/home/cis371/cis371/lab2/include/clock_util.v" into library work [/home/cis371/cis371/lab2/include/clock_util.v:1]
+INFO: [HDL 9-2216] Analyzing Verilog file "/home/cis371/cis371/lab2/include/delay_eight_cycles.v" into library work [/home/cis371/cis371/lab2/include/delay_eight_cycles.v:1]
+INFO: [HDL 9-2216] Analyzing Verilog file "/home/cis371/cis371/lab2/include/fake_pb_kbd.v" into library work [/home/cis371/cis371/lab2/include/fake_pb_kbd.v:1]
+INFO: [HDL 9-2216] Analyzing Verilog file "/home/cis371/cis371/lab2/lc4_alu.v" into library work [/home/cis371/cis371/lab2/lc4_alu.v:1]
+INFO: [HDL 9-2216] Analyzing Verilog file "/home/cis371/cis371/lab2/include/lc4_decoder.v" into library work [/home/cis371/cis371/lab2/include/lc4_decoder.v:1]
+INFO: [HDL 9-2216] Analyzing Verilog file "/home/cis371/cis371/lab2/lc4_divider.v" into library work [/home/cis371/cis371/lab2/lc4_divider.v:1]
+INFO: [HDL 9-2216] Analyzing Verilog file "/home/cis371/cis371/lab2/include/lc4_memory.v" into library work [/home/cis371/cis371/lab2/include/lc4_memory.v:1]
+INFO: [HDL 9-2216] Analyzing Verilog file "/home/cis371/cis371/lab2/include/lc4_prettyprint_errors.v" into library work [/home/cis371/cis371/lab2/include/lc4_prettyprint_errors.v:1]
+INFO: [HDL 9-2216] Analyzing Verilog file "/home/cis371/cis371/lab2/lc4_regfile.v" into library work [/home/cis371/cis371/lab2/lc4_regfile.v:1]
+INFO: [HDL 9-2216] Analyzing Verilog file "/home/cis371/cis371/lab2/lc4_single.v" into library work [/home/cis371/cis371/lab2/lc4_single.v:1]
+INFO: [HDL 9-2216] Analyzing Verilog file "/home/cis371/cis371/lab2/include/lc4_system.v" into library work [/home/cis371/cis371/lab2/include/lc4_system.v:1]
+INFO: [HDL 9-2216] Analyzing Verilog file "/home/cis371/cis371/lab2/include/one_pulse.v" into library work [/home/cis371/cis371/lab2/include/one_pulse.v:1]
+INFO: [HDL 9-2216] Analyzing Verilog file "/home/cis371/cis371/lab2/include/register.v" into library work [/home/cis371/cis371/lab2/include/register.v:1]
+INFO: [HDL 9-2216] Analyzing Verilog file "/home/cis371/cis371/lab2/include/set_testcase.v" into library work [/home/cis371/cis371/lab2/include/set_testcase.v:1]
+INFO: [HDL 9-2216] Analyzing Verilog file "/home/cis371/cis371/lab2/include/svga_timing_generation.v" into library work [/home/cis371/cis371/lab2/include/svga_timing_generation.v:1]
+INFO: [HDL 9-2216] Analyzing Verilog file "/home/cis371/cis371/lab2/include/timer.v" into library work [/home/cis371/cis371/lab2/include/timer.v:1]
+INFO: [HDL 9-2216] Analyzing Verilog file "/home/cis371/cis371/lab2/include/vga_controller.v" into library work [/home/cis371/cis371/lab2/include/vga_controller.v:1]
+INFO: [HDL 9-2216] Analyzing Verilog file "/home/cis371/cis371/lab2/include/video_out.v" into library work [/home/cis371/cis371/lab2/include/video_out.v:1]
+[Tue Feb 16 06:34:47 2016] Launched synth_1...
+Run output will be captured here: /home/cis371/cis371/lab2/lab2.runs/synth_1/runme.log
+reset_run synth_1
+launch_runs synth_1
+INFO: [HDL 9-2216] Analyzing Verilog file "/home/cis371/cis371/lab2/include/bram.v" into library work [/home/cis371/cis371/lab2/include/bram.v:1]
+INFO: [HDL 9-1065] Parsing verilog file "/home/cis371/cis371/lab2/include/../set_testcase.v" included at line 4. [/home/cis371/cis371/lab2/include/bram.v:4]
+INFO: [HDL 9-2216] Analyzing Verilog file "/home/cis371/cis371/lab2/include/clkdiv.v" into library work [/home/cis371/cis371/lab2/include/clkdiv.v:1]
+INFO: [HDL 9-2216] Analyzing Verilog file "/home/cis371/cis371/lab2/include/clkgen.v" into library work [/home/cis371/cis371/lab2/include/clkgen.v:1]
+INFO: [HDL 9-2216] Analyzing Verilog file "/home/cis371/cis371/lab2/include/clock_util.v" into library work [/home/cis371/cis371/lab2/include/clock_util.v:1]
+INFO: [HDL 9-2216] Analyzing Verilog file "/home/cis371/cis371/lab2/include/delay_eight_cycles.v" into library work [/home/cis371/cis371/lab2/include/delay_eight_cycles.v:1]
+INFO: [HDL 9-2216] Analyzing Verilog file "/home/cis371/cis371/lab2/include/fake_pb_kbd.v" into library work [/home/cis371/cis371/lab2/include/fake_pb_kbd.v:1]
+INFO: [HDL 9-2216] Analyzing Verilog file "/home/cis371/cis371/lab2/lc4_alu.v" into library work [/home/cis371/cis371/lab2/lc4_alu.v:1]
+INFO: [HDL 9-2216] Analyzing Verilog file "/home/cis371/cis371/lab2/include/lc4_decoder.v" into library work [/home/cis371/cis371/lab2/include/lc4_decoder.v:1]
+INFO: [HDL 9-2216] Analyzing Verilog file "/home/cis371/cis371/lab2/lc4_divider.v" into library work [/home/cis371/cis371/lab2/lc4_divider.v:1]
+INFO: [HDL 9-2216] Analyzing Verilog file "/home/cis371/cis371/lab2/include/lc4_memory.v" into library work [/home/cis371/cis371/lab2/include/lc4_memory.v:1]
+INFO: [HDL 9-2216] Analyzing Verilog file "/home/cis371/cis371/lab2/include/lc4_prettyprint_errors.v" into library work [/home/cis371/cis371/lab2/include/lc4_prettyprint_errors.v:1]
+INFO: [HDL 9-2216] Analyzing Verilog file "/home/cis371/cis371/lab2/lc4_regfile.v" into library work [/home/cis371/cis371/lab2/lc4_regfile.v:1]
+INFO: [HDL 9-2216] Analyzing Verilog file "/home/cis371/cis371/lab2/lc4_single.v" into library work [/home/cis371/cis371/lab2/lc4_single.v:1]
+INFO: [HDL 9-2216] Analyzing Verilog file "/home/cis371/cis371/lab2/include/lc4_system.v" into library work [/home/cis371/cis371/lab2/include/lc4_system.v:1]
+INFO: [HDL 9-2216] Analyzing Verilog file "/home/cis371/cis371/lab2/include/one_pulse.v" into library work [/home/cis371/cis371/lab2/include/one_pulse.v:1]
+INFO: [HDL 9-2216] Analyzing Verilog file "/home/cis371/cis371/lab2/include/register.v" into library work [/home/cis371/cis371/lab2/include/register.v:1]
+INFO: [HDL 9-2216] Analyzing Verilog file "/home/cis371/cis371/lab2/include/set_testcase.v" into library work [/home/cis371/cis371/lab2/include/set_testcase.v:1]
+INFO: [HDL 9-2216] Analyzing Verilog file "/home/cis371/cis371/lab2/include/svga_timing_generation.v" into library work [/home/cis371/cis371/lab2/include/svga_timing_generation.v:1]
+INFO: [HDL 9-2216] Analyzing Verilog file "/home/cis371/cis371/lab2/include/timer.v" into library work [/home/cis371/cis371/lab2/include/timer.v:1]
+INFO: [HDL 9-2216] Analyzing Verilog file "/home/cis371/cis371/lab2/include/vga_controller.v" into library work [/home/cis371/cis371/lab2/include/vga_controller.v:1]
+INFO: [HDL 9-2216] Analyzing Verilog file "/home/cis371/cis371/lab2/include/video_out.v" into library work [/home/cis371/cis371/lab2/include/video_out.v:1]
+[Tue Feb 16 06:39:22 2016] Launched synth_1...
+Run output will be captured here: /home/cis371/cis371/lab2/lab2.runs/synth_1/runme.log
+set_property top testbench_v [get_filesets sim_1]
+set_property top_lib xil_defaultlib [get_filesets sim_1]
+update_compile_order -fileset sim_1
+launch_simulation
+INFO: [USF-XSim-27] Simulation object is 'sim_1'
+INFO: [USF-XSim-37] Inspecting design source files for 'testbench_v' in fileset 'sim_1'...
+INFO: [USF-XSim-97] Finding global include files...
+INFO: [USF-XSim-98] Fetching design files from 'sim_1'...
+INFO: [USF-XSim-2] XSim::Compile design
+INFO: [USF-XSim-61] Executing 'COMPILE' step in '/home/cis371/cis371/lab2/lab2.sim/sim_1/behav'
+xvlog -m64 --relax -prj testbench_v_vlog.prj
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/cis371/cis371/lab2/include/register.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module Nbit_reg
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/cis371/cis371/lab2/lc4_regfile.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module lc4_regfile
+INFO: [VRFC 10-311] analyzing module Nbit_mux8to1
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/cis371/cis371/lab2/test_lc4_regfile.tf" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module testbench_v
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/cis371/cis371/lab2/lab2.sim/sim_1/behav/glbl.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module glbl
+INFO: [USF-XSim-3] XSim::Elaborate design
+INFO: [USF-XSim-61] Executing 'ELABORATE' step in '/home/cis371/cis371/lab2/lab2.sim/sim_1/behav'
+Vivado Simulator 2015.4
+Copyright 1986-1999, 2001-2015 Xilinx, Inc. All Rights Reserved.
+Running: /opt/Xilinx/Vivado/2015.4/bin/unwrapped/lnx64.o/xelab -wto 420eb0f6520b452394b3fec2c2426dec --debug typical --relax --mt 8 -L xil_defaultlib -L unisims_ver -L unimacro_ver -L secureip --snapshot testbench_v_behav xil_defaultlib.testbench_v xil_defaultlib.glbl -log elaborate.log 
+Using 8 slave threads.
+Starting static elaboration
+Completed static elaboration
+Starting simulation data flow analysis
+Completed simulation data flow analysis
+Time Resolution for simulation is 1ps
+Compiling module xil_defaultlib.Nbit_reg(n=16)
+Compiling module xil_defaultlib.Nbit_mux8to1(n=16)
+Compiling module xil_defaultlib.lc4_regfile
+Compiling module xil_defaultlib.testbench_v
+Compiling module xil_defaultlib.glbl
+Built simulation snapshot testbench_v_behav
+
+****** Webtalk v2015.4 (64-bit)
+  **** SW Build 1412921 on Wed Nov 18 09:44:32 MST 2015
+  **** IP Build 1412160 on Tue Nov 17 13:47:24 MST 2015
+    ** Copyright 1986-2015 Xilinx, Inc. All Rights Reserved.
+
+source /home/cis371/cis371/lab2/lab2.sim/sim_1/behav/xsim.dir/testbench_v_behav/webtalk/xsim_webtalk.tcl -notrace
+INFO: [Common 17-206] Exiting Webtalk at Tue Feb 16 06:41:22 2016...
+INFO: [USF-XSim-4] XSim::Simulate design
+INFO: [USF-XSim-61] Executing 'SIMULATE' step in '/home/cis371/cis371/lab2/lab2.sim/sim_1/behav'
+INFO: [USF-XSim-98] *** Running xsim
+   with args "testbench_v_behav -key {Behavioral:sim_1:Functional:testbench_v} -tclbatch {testbench_v.tcl} -log {simulate.log}"
+INFO: [USF-XSim-8] Loading simulator feature
+Vivado Simulator 2015.4
+Time resolution is 1 ps
+source testbench_v.tcl
+# set curr_wave [current_wave_config]
+# if { [string length $curr_wave] == 0 } {
+#   if { [llength [get_objects]] > 0} {
+#     add_wave /
+#     set_property needs_save false [current_wave_config]
+#   } else {
+#      send_msg_id Add_Wave-1 WARNING "No top level signals found. Simulator will start without a wave window. If you want to open a wave window go to 'File->New Waveform Configuration' or type 'create_wave_config' in the TCL console."
+#   }
+# }
+# run 1000ns
+INFO: [USF-XSim-96] XSim completed. Design snapshot 'testbench_v_behav' loaded.
+INFO: [USF-XSim-97] XSim simulation ran for 1000ns
+run all
+Simulation finished:        1011 test cases           0 errors [../../../test_data/test_lc4_regfile.input]
+$finish called at time : 10217 ns : File "/home/cis371/cis371/lab2/test_lc4_regfile.tf" Line 123
+reset_run synth_1
+launch_runs synth_1
+INFO: [HDL 9-2216] Analyzing Verilog file "/home/cis371/cis371/lab2/include/bram.v" into library work [/home/cis371/cis371/lab2/include/bram.v:1]
+INFO: [HDL 9-1065] Parsing verilog file "/home/cis371/cis371/lab2/include/../set_testcase.v" included at line 4. [/home/cis371/cis371/lab2/include/bram.v:4]
+INFO: [HDL 9-2216] Analyzing Verilog file "/home/cis371/cis371/lab2/include/clkdiv.v" into library work [/home/cis371/cis371/lab2/include/clkdiv.v:1]
+INFO: [HDL 9-2216] Analyzing Verilog file "/home/cis371/cis371/lab2/include/clkgen.v" into library work [/home/cis371/cis371/lab2/include/clkgen.v:1]
+INFO: [HDL 9-2216] Analyzing Verilog file "/home/cis371/cis371/lab2/include/clock_util.v" into library work [/home/cis371/cis371/lab2/include/clock_util.v:1]
+INFO: [HDL 9-2216] Analyzing Verilog file "/home/cis371/cis371/lab2/include/delay_eight_cycles.v" into library work [/home/cis371/cis371/lab2/include/delay_eight_cycles.v:1]
+INFO: [HDL 9-2216] Analyzing Verilog file "/home/cis371/cis371/lab2/include/fake_pb_kbd.v" into library work [/home/cis371/cis371/lab2/include/fake_pb_kbd.v:1]
+INFO: [HDL 9-2216] Analyzing Verilog file "/home/cis371/cis371/lab2/lc4_alu.v" into library work [/home/cis371/cis371/lab2/lc4_alu.v:1]
+INFO: [HDL 9-2216] Analyzing Verilog file "/home/cis371/cis371/lab2/include/lc4_decoder.v" into library work [/home/cis371/cis371/lab2/include/lc4_decoder.v:1]
+INFO: [HDL 9-2216] Analyzing Verilog file "/home/cis371/cis371/lab2/lc4_divider.v" into library work [/home/cis371/cis371/lab2/lc4_divider.v:1]
+INFO: [HDL 9-2216] Analyzing Verilog file "/home/cis371/cis371/lab2/include/lc4_memory.v" into library work [/home/cis371/cis371/lab2/include/lc4_memory.v:1]
+INFO: [HDL 9-2216] Analyzing Verilog file "/home/cis371/cis371/lab2/include/lc4_prettyprint_errors.v" into library work [/home/cis371/cis371/lab2/include/lc4_prettyprint_errors.v:1]
+INFO: [HDL 9-2216] Analyzing Verilog file "/home/cis371/cis371/lab2/lc4_regfile.v" into library work [/home/cis371/cis371/lab2/lc4_regfile.v:1]
+INFO: [HDL 9-2216] Analyzing Verilog file "/home/cis371/cis371/lab2/lc4_single.v" into library work [/home/cis371/cis371/lab2/lc4_single.v:1]
+INFO: [HDL 9-2216] Analyzing Verilog file "/home/cis371/cis371/lab2/include/lc4_system.v" into library work [/home/cis371/cis371/lab2/include/lc4_system.v:1]
+INFO: [HDL 9-2216] Analyzing Verilog file "/home/cis371/cis371/lab2/include/one_pulse.v" into library work [/home/cis371/cis371/lab2/include/one_pulse.v:1]
+INFO: [HDL 9-2216] Analyzing Verilog file "/home/cis371/cis371/lab2/include/register.v" into library work [/home/cis371/cis371/lab2/include/register.v:1]
+INFO: [HDL 9-2216] Analyzing Verilog file "/home/cis371/cis371/lab2/include/set_testcase.v" into library work [/home/cis371/cis371/lab2/include/set_testcase.v:1]
+INFO: [HDL 9-2216] Analyzing Verilog file "/home/cis371/cis371/lab2/include/svga_timing_generation.v" into library work [/home/cis371/cis371/lab2/include/svga_timing_generation.v:1]
+INFO: [HDL 9-2216] Analyzing Verilog file "/home/cis371/cis371/lab2/include/timer.v" into library work [/home/cis371/cis371/lab2/include/timer.v:1]
+INFO: [HDL 9-2216] Analyzing Verilog file "/home/cis371/cis371/lab2/include/vga_controller.v" into library work [/home/cis371/cis371/lab2/include/vga_controller.v:1]
+INFO: [HDL 9-2216] Analyzing Verilog file "/home/cis371/cis371/lab2/include/video_out.v" into library work [/home/cis371/cis371/lab2/include/video_out.v:1]
+[Tue Feb 16 06:42:09 2016] Launched synth_1...
+Run output will be captured here: /home/cis371/cis371/lab2/lab2.runs/synth_1/runme.log
+close_sim
+INFO: [Simtcl 6-16] Simulation closed
+launch_simulation
+INFO: [USF-XSim-27] Simulation object is 'sim_1'
+INFO: [USF-XSim-37] Inspecting design source files for 'testbench_v' in fileset 'sim_1'...
+INFO: [USF-XSim-97] Finding global include files...
+INFO: [USF-XSim-98] Fetching design files from 'sim_1'...
+INFO: [USF-XSim-2] XSim::Compile design
+INFO: [USF-XSim-61] Executing 'COMPILE' step in '/home/cis371/cis371/lab2/lab2.sim/sim_1/behav'
+xvlog -m64 --relax -prj testbench_v_vlog.prj
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/cis371/cis371/lab2/include/register.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module Nbit_reg
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/cis371/cis371/lab2/lc4_regfile.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module lc4_regfile
+INFO: [VRFC 10-311] analyzing module Nbit_mux8to1
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/cis371/cis371/lab2/test_lc4_regfile.tf" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module testbench_v
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/cis371/cis371/lab2/lab2.sim/sim_1/behav/glbl.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module glbl
+INFO: [USF-XSim-3] XSim::Elaborate design
+INFO: [USF-XSim-61] Executing 'ELABORATE' step in '/home/cis371/cis371/lab2/lab2.sim/sim_1/behav'
+Vivado Simulator 2015.4
+Copyright 1986-1999, 2001-2015 Xilinx, Inc. All Rights Reserved.
+Running: /opt/Xilinx/Vivado/2015.4/bin/unwrapped/lnx64.o/xelab -wto 420eb0f6520b452394b3fec2c2426dec --debug typical --relax --mt 8 -L xil_defaultlib -L unisims_ver -L unimacro_ver -L secureip --snapshot testbench_v_behav xil_defaultlib.testbench_v xil_defaultlib.glbl -log elaborate.log 
+Using 8 slave threads.
+Starting static elaboration
+Completed static elaboration
+Starting simulation data flow analysis
+Completed simulation data flow analysis
+Time Resolution for simulation is 1ps
+Compiling module xil_defaultlib.Nbit_reg(n=16)
+Compiling module xil_defaultlib.Nbit_mux8to1(n=16)
+Compiling module xil_defaultlib.lc4_regfile
+Compiling module xil_defaultlib.testbench_v
+Compiling module xil_defaultlib.glbl
+Built simulation snapshot testbench_v_behav
+
+****** Webtalk v2015.4 (64-bit)
+  **** SW Build 1412921 on Wed Nov 18 09:44:32 MST 2015
+  **** IP Build 1412160 on Tue Nov 17 13:47:24 MST 2015
+    ** Copyright 1986-2015 Xilinx, Inc. All Rights Reserved.
+
+source /home/cis371/cis371/lab2/lab2.sim/sim_1/behav/xsim.dir/testbench_v_behav/webtalk/xsim_webtalk.tcl -notrace
+INFO: [Common 17-206] Exiting Webtalk at Tue Feb 16 06:43:26 2016...
+INFO: [USF-XSim-4] XSim::Simulate design
+INFO: [USF-XSim-61] Executing 'SIMULATE' step in '/home/cis371/cis371/lab2/lab2.sim/sim_1/behav'
+INFO: [USF-XSim-98] *** Running xsim
+   with args "testbench_v_behav -key {Behavioral:sim_1:Functional:testbench_v} -tclbatch {testbench_v.tcl} -log {simulate.log}"
+INFO: [USF-XSim-8] Loading simulator feature
+Vivado Simulator 2015.4
+Time resolution is 1 ps
+source testbench_v.tcl
+# set curr_wave [current_wave_config]
+# if { [string length $curr_wave] == 0 } {
+#   if { [llength [get_objects]] > 0} {
+#     add_wave /
+#     set_property needs_save false [current_wave_config]
+#   } else {
+#      send_msg_id Add_Wave-1 WARNING "No top level signals found. Simulator will start without a wave window. If you want to open a wave window go to 'File->New Waveform Configuration' or type 'create_wave_config' in the TCL console."
+#   }
+# }
+# run 1000ns
+Error at line           8: Value of register 7 on output 1 should have been 0000, but was 0007 instead
+Error at line          13: Value of register 7 on output 2 should have been 003f, but was 0007 instead
+Error at line          24: Value of register 7 on output 1 should have been 003f, but was 0007 instead
+Error at line          26: Value of register 7 on output 2 should have been 003f, but was 0007 instead
+Error at line          27: Value of register 7 on output 2 should have been 003f, but was 0007 instead
+Error at line          29: Value of register 7 on output 2 should have been 003f, but was 0007 instead
+Error at line          31: Value of register 7 on output 2 should have been 003f, but was 0007 instead
+Error at line          34: Value of register 7 on output 1 should have been 003f, but was 0007 instead
+Error at line          42: Value of register 7 on output 1 should have been 15ed, but was 20de instead
+Error at line          46: Value of register 7 on output 1 should have been 15ed, but was 20de instead
+Error at line          52: Value of register 7 on output 1 should have been 15ed, but was 20de instead
+Error at line          52: Value of register 7 on output 2 should have been 15ed, but was 20de instead
+Error at line          55: Value of register 7 on output 1 should have been 15ed, but was 20de instead
+Error at line          56: Value of register 7 on output 1 should have been 15ed, but was 20de instead
+Error at line          59: Value of register 7 on output 2 should have been 15ed, but was 20de instead
+Error at line          63: Value of register 7 on output 1 should have been 15ed, but was 20de instead
+Error at line          64: Value of register 7 on output 1 should have been 15ed, but was 20de instead
+Error at line          64: Value of register 7 on output 2 should have been 15ed, but was 20de instead
+Error at line          69: Value of register 7 on output 1 should have been 0200, but was 20de instead
+Error at line          72: Value of register 7 on output 1 should have been 0200, but was 20de instead
+Error at line          74: Value of register 7 on output 1 should have been dc57, but was 25e9 instead
+Error at line          75: Value of register 7 on output 1 should have been dc57, but was 25e9 instead
+Error at line          76: Value of register 7 on output 2 should have been dc57, but was 25e9 instead
+Error at line          81: Value of register 7 on output 2 should have been dd34, but was 0658 instead
+Error at line          82: Value of register 7 on output 1 should have been dd34, but was 0658 instead
+Error at line          83: Value of register 7 on output 2 should have been dd34, but was 0658 instead
+INFO: [USF-XSim-96] XSim completed. Design snapshot 'testbench_v_behav' loaded.
+INFO: [USF-XSim-97] XSim simulation ran for 1000ns
+reset_run synth_1
+launch_runs synth_1
+INFO: [HDL 9-2216] Analyzing Verilog file "/home/cis371/cis371/lab2/include/bram.v" into library work [/home/cis371/cis371/lab2/include/bram.v:1]
+INFO: [HDL 9-1065] Parsing verilog file "/home/cis371/cis371/lab2/include/../set_testcase.v" included at line 4. [/home/cis371/cis371/lab2/include/bram.v:4]
+INFO: [HDL 9-2216] Analyzing Verilog file "/home/cis371/cis371/lab2/include/clkdiv.v" into library work [/home/cis371/cis371/lab2/include/clkdiv.v:1]
+INFO: [HDL 9-2216] Analyzing Verilog file "/home/cis371/cis371/lab2/include/clkgen.v" into library work [/home/cis371/cis371/lab2/include/clkgen.v:1]
+INFO: [HDL 9-2216] Analyzing Verilog file "/home/cis371/cis371/lab2/include/clock_util.v" into library work [/home/cis371/cis371/lab2/include/clock_util.v:1]
+INFO: [HDL 9-2216] Analyzing Verilog file "/home/cis371/cis371/lab2/include/delay_eight_cycles.v" into library work [/home/cis371/cis371/lab2/include/delay_eight_cycles.v:1]
+INFO: [HDL 9-2216] Analyzing Verilog file "/home/cis371/cis371/lab2/include/fake_pb_kbd.v" into library work [/home/cis371/cis371/lab2/include/fake_pb_kbd.v:1]
+INFO: [HDL 9-2216] Analyzing Verilog file "/home/cis371/cis371/lab2/lc4_alu.v" into library work [/home/cis371/cis371/lab2/lc4_alu.v:1]
+INFO: [HDL 9-2216] Analyzing Verilog file "/home/cis371/cis371/lab2/include/lc4_decoder.v" into library work [/home/cis371/cis371/lab2/include/lc4_decoder.v:1]
+INFO: [HDL 9-2216] Analyzing Verilog file "/home/cis371/cis371/lab2/lc4_divider.v" into library work [/home/cis371/cis371/lab2/lc4_divider.v:1]
+INFO: [HDL 9-2216] Analyzing Verilog file "/home/cis371/cis371/lab2/include/lc4_memory.v" into library work [/home/cis371/cis371/lab2/include/lc4_memory.v:1]
+INFO: [HDL 9-2216] Analyzing Verilog file "/home/cis371/cis371/lab2/include/lc4_prettyprint_errors.v" into library work [/home/cis371/cis371/lab2/include/lc4_prettyprint_errors.v:1]
+INFO: [HDL 9-2216] Analyzing Verilog file "/home/cis371/cis371/lab2/lc4_regfile.v" into library work [/home/cis371/cis371/lab2/lc4_regfile.v:1]
+INFO: [HDL 9-2216] Analyzing Verilog file "/home/cis371/cis371/lab2/lc4_single.v" into library work [/home/cis371/cis371/lab2/lc4_single.v:1]
+INFO: [HDL 9-2216] Analyzing Verilog file "/home/cis371/cis371/lab2/include/lc4_system.v" into library work [/home/cis371/cis371/lab2/include/lc4_system.v:1]
+INFO: [HDL 9-2216] Analyzing Verilog file "/home/cis371/cis371/lab2/include/one_pulse.v" into library work [/home/cis371/cis371/lab2/include/one_pulse.v:1]
+INFO: [HDL 9-2216] Analyzing Verilog file "/home/cis371/cis371/lab2/include/register.v" into library work [/home/cis371/cis371/lab2/include/register.v:1]
+INFO: [HDL 9-2216] Analyzing Verilog file "/home/cis371/cis371/lab2/include/set_testcase.v" into library work [/home/cis371/cis371/lab2/include/set_testcase.v:1]
+INFO: [HDL 9-2216] Analyzing Verilog file "/home/cis371/cis371/lab2/include/svga_timing_generation.v" into library work [/home/cis371/cis371/lab2/include/svga_timing_generation.v:1]
+INFO: [HDL 9-2216] Analyzing Verilog file "/home/cis371/cis371/lab2/include/timer.v" into library work [/home/cis371/cis371/lab2/include/timer.v:1]
+INFO: [HDL 9-2216] Analyzing Verilog file "/home/cis371/cis371/lab2/include/vga_controller.v" into library work [/home/cis371/cis371/lab2/include/vga_controller.v:1]
+INFO: [HDL 9-2216] Analyzing Verilog file "/home/cis371/cis371/lab2/include/video_out.v" into library work [/home/cis371/cis371/lab2/include/video_out.v:1]
+[Tue Feb 16 06:43:50 2016] Launched synth_1...
+Run output will be captured here: /home/cis371/cis371/lab2/lab2.runs/synth_1/runme.log
+close_sim
+INFO: [Simtcl 6-16] Simulation closed
+launch_simulation
+INFO: [USF-XSim-27] Simulation object is 'sim_1'
+INFO: [USF-XSim-37] Inspecting design source files for 'testbench_v' in fileset 'sim_1'...
+INFO: [USF-XSim-97] Finding global include files...
+INFO: [USF-XSim-98] Fetching design files from 'sim_1'...
+INFO: [USF-XSim-2] XSim::Compile design
+INFO: [USF-XSim-61] Executing 'COMPILE' step in '/home/cis371/cis371/lab2/lab2.sim/sim_1/behav'
+xvlog -m64 --relax -prj testbench_v_vlog.prj
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/cis371/cis371/lab2/include/register.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module Nbit_reg
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/cis371/cis371/lab2/lc4_regfile.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module lc4_regfile
+INFO: [VRFC 10-311] analyzing module Nbit_mux8to1
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/cis371/cis371/lab2/test_lc4_regfile.tf" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module testbench_v
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/cis371/cis371/lab2/lab2.sim/sim_1/behav/glbl.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module glbl
+INFO: [USF-XSim-3] XSim::Elaborate design
+INFO: [USF-XSim-61] Executing 'ELABORATE' step in '/home/cis371/cis371/lab2/lab2.sim/sim_1/behav'
+Vivado Simulator 2015.4
+Copyright 1986-1999, 2001-2015 Xilinx, Inc. All Rights Reserved.
+Running: /opt/Xilinx/Vivado/2015.4/bin/unwrapped/lnx64.o/xelab -wto 420eb0f6520b452394b3fec2c2426dec --debug typical --relax --mt 8 -L xil_defaultlib -L unisims_ver -L unimacro_ver -L secureip --snapshot testbench_v_behav xil_defaultlib.testbench_v xil_defaultlib.glbl -log elaborate.log 
+Using 8 slave threads.
+Starting static elaboration
+Completed static elaboration
+Starting simulation data flow analysis
+Completed simulation data flow analysis
+Time Resolution for simulation is 1ps
+Compiling module xil_defaultlib.Nbit_reg(n=16)
+Compiling module xil_defaultlib.Nbit_mux8to1(n=16)
+Compiling module xil_defaultlib.lc4_regfile
+Compiling module xil_defaultlib.testbench_v
+Compiling module xil_defaultlib.glbl
+Built simulation snapshot testbench_v_behav
+
+****** Webtalk v2015.4 (64-bit)
+  **** SW Build 1412921 on Wed Nov 18 09:44:32 MST 2015
+  **** IP Build 1412160 on Tue Nov 17 13:47:24 MST 2015
+    ** Copyright 1986-2015 Xilinx, Inc. All Rights Reserved.
+
+source /home/cis371/cis371/lab2/lab2.sim/sim_1/behav/xsim.dir/testbench_v_behav/webtalk/xsim_webtalk.tcl -notrace
+INFO: [Common 17-206] Exiting Webtalk at Tue Feb 16 06:45:26 2016...
+INFO: [USF-XSim-4] XSim::Simulate design
+INFO: [USF-XSim-61] Executing 'SIMULATE' step in '/home/cis371/cis371/lab2/lab2.sim/sim_1/behav'
+INFO: [USF-XSim-98] *** Running xsim
+   with args "testbench_v_behav -key {Behavioral:sim_1:Functional:testbench_v} -tclbatch {testbench_v.tcl} -log {simulate.log}"
+INFO: [USF-XSim-8] Loading simulator feature
+Vivado Simulator 2015.4
+Time resolution is 1 ps
+source testbench_v.tcl
+# set curr_wave [current_wave_config]
+# if { [string length $curr_wave] == 0 } {
+#   if { [llength [get_objects]] > 0} {
+#     add_wave /
+#     set_property needs_save false [current_wave_config]
+#   } else {
+#      send_msg_id Add_Wave-1 WARNING "No top level signals found. Simulator will start without a wave window. If you want to open a wave window go to 'File->New Waveform Configuration' or type 'create_wave_config' in the TCL console."
+#   }
+# }
+# run 1000ns
+INFO: [USF-XSim-96] XSim completed. Design snapshot 'testbench_v_behav' loaded.
+INFO: [USF-XSim-97] XSim simulation ran for 1000ns
+run all
+Simulation finished:        1011 test cases           0 errors [../../../test_data/test_lc4_regfile.input]
+$finish called at time : 10217 ns : File "/home/cis371/cis371/lab2/test_lc4_regfile.tf" Line 123
+run all
+INFO: [Common 17-41] Interrupt caught. Command should exit soon.
+run: Time (s): cpu = 00:00:09 ; elapsed = 00:00:09 . Memory (MB): peak = 5913.992 ; gain = 8.000 ; free physical = 4989 ; free virtual = 10763
+INFO: [Common 17-344] 'run' was cancelled
+close_sim
+INFO: [Simtcl 6-16] Simulation closed
+launch_simulation
+INFO: [USF-XSim-27] Simulation object is 'sim_1'
+INFO: [USF-XSim-37] Inspecting design source files for 'testbench_v' in fileset 'sim_1'...
+INFO: [USF-XSim-97] Finding global include files...
+INFO: [USF-XSim-98] Fetching design files from 'sim_1'...
+INFO: [USF-XSim-2] XSim::Compile design
+INFO: [USF-XSim-61] Executing 'COMPILE' step in '/home/cis371/cis371/lab2/lab2.sim/sim_1/behav'
+xvlog -m64 --relax -prj testbench_v_vlog.prj
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/cis371/cis371/lab2/include/register.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module Nbit_reg
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/cis371/cis371/lab2/lc4_regfile.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module lc4_regfile
+INFO: [VRFC 10-311] analyzing module Nbit_mux8to1
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/cis371/cis371/lab2/test_lc4_regfile.tf" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module testbench_v
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/cis371/cis371/lab2/lab2.sim/sim_1/behav/glbl.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module glbl
+INFO: [USF-XSim-3] XSim::Elaborate design
+INFO: [USF-XSim-61] Executing 'ELABORATE' step in '/home/cis371/cis371/lab2/lab2.sim/sim_1/behav'
+Vivado Simulator 2015.4
+Copyright 1986-1999, 2001-2015 Xilinx, Inc. All Rights Reserved.
+Running: /opt/Xilinx/Vivado/2015.4/bin/unwrapped/lnx64.o/xelab -wto 420eb0f6520b452394b3fec2c2426dec --debug typical --relax --mt 8 -L xil_defaultlib -L unisims_ver -L unimacro_ver -L secureip --snapshot testbench_v_behav xil_defaultlib.testbench_v xil_defaultlib.glbl -log elaborate.log 
+Using 8 slave threads.
+Starting static elaboration
+Completed static elaboration
+Starting simulation data flow analysis
+Completed simulation data flow analysis
+Time Resolution for simulation is 1ps
+Compiling module xil_defaultlib.Nbit_reg(n=16)
+Compiling module xil_defaultlib.Nbit_mux8to1(n=16)
+Compiling module xil_defaultlib.lc4_regfile
+Compiling module xil_defaultlib.testbench_v
+Compiling module xil_defaultlib.glbl
+Built simulation snapshot testbench_v_behav
+
+****** Webtalk v2015.4 (64-bit)
+  **** SW Build 1412921 on Wed Nov 18 09:44:32 MST 2015
+  **** IP Build 1412160 on Tue Nov 17 13:47:24 MST 2015
+    ** Copyright 1986-2015 Xilinx, Inc. All Rights Reserved.
+
+source /home/cis371/cis371/lab2/lab2.sim/sim_1/behav/xsim.dir/testbench_v_behav/webtalk/xsim_webtalk.tcl -notrace
+INFO: [Common 17-206] Exiting Webtalk at Tue Feb 16 06:45:52 2016...
+INFO: [USF-XSim-4] XSim::Simulate design
+INFO: [USF-XSim-61] Executing 'SIMULATE' step in '/home/cis371/cis371/lab2/lab2.sim/sim_1/behav'
+INFO: [USF-XSim-98] *** Running xsim
+   with args "testbench_v_behav -key {Behavioral:sim_1:Functional:testbench_v} -tclbatch {testbench_v.tcl} -log {simulate.log}"
+INFO: [USF-XSim-8] Loading simulator feature
+Vivado Simulator 2015.4
+Time resolution is 1 ps
+source testbench_v.tcl
+# set curr_wave [current_wave_config]
+# if { [string length $curr_wave] == 0 } {
+#   if { [llength [get_objects]] > 0} {
+#     add_wave /
+#     set_property needs_save false [current_wave_config]
+#   } else {
+#      send_msg_id Add_Wave-1 WARNING "No top level signals found. Simulator will start without a wave window. If you want to open a wave window go to 'File->New Waveform Configuration' or type 'create_wave_config' in the TCL console."
+#   }
+# }
+# run 1000ns
+INFO: [USF-XSim-96] XSim completed. Design snapshot 'testbench_v_behav' loaded.
+INFO: [USF-XSim-97] XSim simulation ran for 1000ns
+run all
+Simulation finished:        1011 test cases           0 errors [../../../test_data/test_lc4_regfile.input]
+$finish called at time : 10217 ns : File "/home/cis371/cis371/lab2/test_lc4_regfile.tf" Line 123
+reset_run synth_1
+launch_runs synth_1
+INFO: [HDL 9-2216] Analyzing Verilog file "/home/cis371/cis371/lab2/include/bram.v" into library work [/home/cis371/cis371/lab2/include/bram.v:1]
+INFO: [HDL 9-1065] Parsing verilog file "/home/cis371/cis371/lab2/include/../set_testcase.v" included at line 4. [/home/cis371/cis371/lab2/include/bram.v:4]
+INFO: [HDL 9-2216] Analyzing Verilog file "/home/cis371/cis371/lab2/include/clkdiv.v" into library work [/home/cis371/cis371/lab2/include/clkdiv.v:1]
+INFO: [HDL 9-2216] Analyzing Verilog file "/home/cis371/cis371/lab2/include/clkgen.v" into library work [/home/cis371/cis371/lab2/include/clkgen.v:1]
+INFO: [HDL 9-2216] Analyzing Verilog file "/home/cis371/cis371/lab2/include/clock_util.v" into library work [/home/cis371/cis371/lab2/include/clock_util.v:1]
+INFO: [HDL 9-2216] Analyzing Verilog file "/home/cis371/cis371/lab2/include/delay_eight_cycles.v" into library work [/home/cis371/cis371/lab2/include/delay_eight_cycles.v:1]
+INFO: [HDL 9-2216] Analyzing Verilog file "/home/cis371/cis371/lab2/include/fake_pb_kbd.v" into library work [/home/cis371/cis371/lab2/include/fake_pb_kbd.v:1]
+INFO: [HDL 9-2216] Analyzing Verilog file "/home/cis371/cis371/lab2/lc4_alu.v" into library work [/home/cis371/cis371/lab2/lc4_alu.v:1]
+INFO: [HDL 9-2216] Analyzing Verilog file "/home/cis371/cis371/lab2/include/lc4_decoder.v" into library work [/home/cis371/cis371/lab2/include/lc4_decoder.v:1]
+INFO: [HDL 9-2216] Analyzing Verilog file "/home/cis371/cis371/lab2/lc4_divider.v" into library work [/home/cis371/cis371/lab2/lc4_divider.v:1]
+INFO: [HDL 9-2216] Analyzing Verilog file "/home/cis371/cis371/lab2/include/lc4_memory.v" into library work [/home/cis371/cis371/lab2/include/lc4_memory.v:1]
+INFO: [HDL 9-2216] Analyzing Verilog file "/home/cis371/cis371/lab2/include/lc4_prettyprint_errors.v" into library work [/home/cis371/cis371/lab2/include/lc4_prettyprint_errors.v:1]
+INFO: [HDL 9-2216] Analyzing Verilog file "/home/cis371/cis371/lab2/lc4_regfile.v" into library work [/home/cis371/cis371/lab2/lc4_regfile.v:1]
+INFO: [HDL 9-2216] Analyzing Verilog file "/home/cis371/cis371/lab2/lc4_single.v" into library work [/home/cis371/cis371/lab2/lc4_single.v:1]
+INFO: [HDL 9-2216] Analyzing Verilog file "/home/cis371/cis371/lab2/include/lc4_system.v" into library work [/home/cis371/cis371/lab2/include/lc4_system.v:1]
+INFO: [HDL 9-2216] Analyzing Verilog file "/home/cis371/cis371/lab2/include/one_pulse.v" into library work [/home/cis371/cis371/lab2/include/one_pulse.v:1]
+INFO: [HDL 9-2216] Analyzing Verilog file "/home/cis371/cis371/lab2/include/register.v" into library work [/home/cis371/cis371/lab2/include/register.v:1]
+INFO: [HDL 9-2216] Analyzing Verilog file "/home/cis371/cis371/lab2/include/set_testcase.v" into library work [/home/cis371/cis371/lab2/include/set_testcase.v:1]
+INFO: [HDL 9-2216] Analyzing Verilog file "/home/cis371/cis371/lab2/include/svga_timing_generation.v" into library work [/home/cis371/cis371/lab2/include/svga_timing_generation.v:1]
+INFO: [HDL 9-2216] Analyzing Verilog file "/home/cis371/cis371/lab2/include/timer.v" into library work [/home/cis371/cis371/lab2/include/timer.v:1]
+INFO: [HDL 9-2216] Analyzing Verilog file "/home/cis371/cis371/lab2/include/vga_controller.v" into library work [/home/cis371/cis371/lab2/include/vga_controller.v:1]
+INFO: [HDL 9-2216] Analyzing Verilog file "/home/cis371/cis371/lab2/include/video_out.v" into library work [/home/cis371/cis371/lab2/include/video_out.v:1]
+[Tue Feb 16 06:47:22 2016] Launched synth_1...
+Run output will be captured here: /home/cis371/cis371/lab2/lab2.runs/synth_1/runme.log
+close_sim
+INFO: [Simtcl 6-16] Simulation closed
+launch_simulation
+INFO: [USF-XSim-27] Simulation object is 'sim_1'
+INFO: [USF-XSim-37] Inspecting design source files for 'testbench_v' in fileset 'sim_1'...
+INFO: [USF-XSim-97] Finding global include files...
+INFO: [USF-XSim-98] Fetching design files from 'sim_1'...
+INFO: [USF-XSim-2] XSim::Compile design
+INFO: [USF-XSim-61] Executing 'COMPILE' step in '/home/cis371/cis371/lab2/lab2.sim/sim_1/behav'
+xvlog -m64 --relax -prj testbench_v_vlog.prj
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/cis371/cis371/lab2/include/register.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module Nbit_reg
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/cis371/cis371/lab2/lc4_regfile.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module lc4_regfile
+INFO: [VRFC 10-311] analyzing module Nbit_mux8to1
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/cis371/cis371/lab2/test_lc4_regfile.tf" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module testbench_v
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/cis371/cis371/lab2/lab2.sim/sim_1/behav/glbl.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module glbl
+INFO: [USF-XSim-3] XSim::Elaborate design
+INFO: [USF-XSim-61] Executing 'ELABORATE' step in '/home/cis371/cis371/lab2/lab2.sim/sim_1/behav'
+Vivado Simulator 2015.4
+Copyright 1986-1999, 2001-2015 Xilinx, Inc. All Rights Reserved.
+Running: /opt/Xilinx/Vivado/2015.4/bin/unwrapped/lnx64.o/xelab -wto 420eb0f6520b452394b3fec2c2426dec --debug typical --relax --mt 8 -L xil_defaultlib -L unisims_ver -L unimacro_ver -L secureip --snapshot testbench_v_behav xil_defaultlib.testbench_v xil_defaultlib.glbl -log elaborate.log 
+Using 8 slave threads.
+Starting static elaboration
+Completed static elaboration
+Starting simulation data flow analysis
+Completed simulation data flow analysis
+Time Resolution for simulation is 1ps
+Compiling module xil_defaultlib.Nbit_reg(n=16)
+Compiling module xil_defaultlib.Nbit_mux8to1(n=16)
+Compiling module xil_defaultlib.lc4_regfile
+Compiling module xil_defaultlib.testbench_v
+Compiling module xil_defaultlib.glbl
+Built simulation snapshot testbench_v_behav
+
+****** Webtalk v2015.4 (64-bit)
+  **** SW Build 1412921 on Wed Nov 18 09:44:32 MST 2015
+  **** IP Build 1412160 on Tue Nov 17 13:47:24 MST 2015
+    ** Copyright 1986-2015 Xilinx, Inc. All Rights Reserved.
+
+source /home/cis371/cis371/lab2/lab2.sim/sim_1/behav/xsim.dir/testbench_v_behav/webtalk/xsim_webtalk.tcl -notrace
+INFO: [Common 17-206] Exiting Webtalk at Tue Feb 16 06:48:15 2016...
+INFO: [USF-XSim-4] XSim::Simulate design
+INFO: [USF-XSim-61] Executing 'SIMULATE' step in '/home/cis371/cis371/lab2/lab2.sim/sim_1/behav'
+INFO: [USF-XSim-98] *** Running xsim
+   with args "testbench_v_behav -key {Behavioral:sim_1:Functional:testbench_v} -tclbatch {testbench_v.tcl} -log {simulate.log}"
+INFO: [USF-XSim-8] Loading simulator feature
+Vivado Simulator 2015.4
+Time resolution is 1 ps
+source testbench_v.tcl
+# set curr_wave [current_wave_config]
+# if { [string length $curr_wave] == 0 } {
+#   if { [llength [get_objects]] > 0} {
+#     add_wave /
+#     set_property needs_save false [current_wave_config]
+#   } else {
+#      send_msg_id Add_Wave-1 WARNING "No top level signals found. Simulator will start without a wave window. If you want to open a wave window go to 'File->New Waveform Configuration' or type 'create_wave_config' in the TCL console."
+#   }
+# }
+# run 1000ns
+INFO: [USF-XSim-96] XSim completed. Design snapshot 'testbench_v_behav' loaded.
+INFO: [USF-XSim-97] XSim simulation ran for 1000ns
+run all
+Simulation finished:        1011 test cases           0 errors [../../../test_data/test_lc4_regfile.input]
+$finish called at time : 10217 ns : File "/home/cis371/cis371/lab2/test_lc4_regfile.tf" Line 123

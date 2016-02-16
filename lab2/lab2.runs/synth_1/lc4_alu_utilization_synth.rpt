@@ -1,7 +1,7 @@
 Copyright 1986-2015 Xilinx, Inc. All Rights Reserved.
 ---------------------------------------------------------------------------------------------------------
 | Tool Version : Vivado v.2015.4 (lin64) Build 1412921 Wed Nov 18 09:44:32 MST 2015
-| Date         : Tue Feb 16 01:44:52 2016
+| Date         : Tue Feb 16 06:47:54 2016
 | Host         : cis371-16sp-vm running 64-bit Ubuntu 15.10
 | Command      : report_utilization -file lc4_alu_utilization_synth.rpt -pb lc4_alu_utilization_synth.pb
 | Design       : lc4_alu
