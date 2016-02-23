@@ -71,8 +71,32 @@ module lc4_processor
     * TODO: INSERT YOUR CODE HERE *
     *******************************/
 
-
-
+    // From the decoder
+    wire [2:0] r1sel;
+    wire r1re;
+    wire [2:0] r2sel;
+    wire r2re;
+    wire [2:0] nzp_we;
+    wire [2:0] wsel;
+    wire regfile_we;
+    wire select_pc_plus_one;
+    wire is_load;
+    wire is_store;
+    wire is_branch;
+    wire is_control_insn;
+    
+    lc4_decoder decoder (i_cur_insn, r1sel, r1re, r2sel, r2re, wsel, regfile_we, nzp_we, select_pc_plus_one, is_load, is_store, is_branch, is_control_insn);
+    
+    // Reg_File: o_rs, o_rt for alu + memory, also ride 
+    wire [15:0] o_rs_data;
+    wire [15:0] o_rt_data;
+    // MUST BE COMPUTED, SET TO ZER0 FOR NOW
+    wire [15:0] i_wdata = 16'h0000;
+    lc4_regfile regfile (clk, gwe, rst, r1sel, o_rs_data, i_rt, o_rt_data, wsel, i_wdata, regfile_we);
+    
+    // ALU STUFF
+    
+    
    /* Add $display(...) calls in the always block below to
     * print out debug information at the end of every cycle.
     *
