@@ -15,23 +15,7 @@ set_property target_language Verilog [current_project]
 set_property board_part em.avnet.com:zed:part0:1.3 [current_project]
 set_property vhdl_version vhdl_2k [current_fileset]
 read_verilog -library xil_defaultlib {
-  C:/Users/Hannes/lab2/lab2/lc4_divider.v
   C:/Users/Hannes/lab2/lab2/include/register.v
-  C:/Users/Hannes/lab2/lab2/include/video_out.v
-  C:/Users/Hannes/lab2/lab2/include/svga_timing_generation.v
-  C:/Users/Hannes/lab2/lab2/lc4_regfile.v
-  C:/Users/Hannes/lab2/lab2/include/lc4_decoder.v
-  C:/Users/Hannes/lab2/lab2/lc4_alu.v
-  C:/Users/Hannes/lab2/lab2/include/delay_eight_cycles.v
-  C:/Users/Hannes/lab2/lab2/include/bram.v
-  C:/Users/Hannes/lab2/lab2/include/vga_controller.v
-  C:/Users/Hannes/lab2/lab2/include/timer.v
-  C:/Users/Hannes/lab2/lab2/include/one_pulse.v
-  C:/Users/Hannes/lab2/lab2/lc4_single.v
-  C:/Users/Hannes/lab2/lab2/include/lc4_memory.v
-  C:/Users/Hannes/lab2/lab2/include/clock_util.v
-  C:/Users/Hannes/lab2/lab2/include/clkgen.v
-  C:/Users/Hannes/lab2/lab2/include/clkdiv.v
   C:/Users/Hannes/lab2/lab2/include/fake_pb_kbd.v
 }
 read_xdc C:/Users/Hannes/lab2/lab2/constraints/lc4_system.xdc

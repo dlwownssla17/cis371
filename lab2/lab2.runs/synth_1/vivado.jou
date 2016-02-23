@@ -2,8 +2,8 @@
 # Vivado v2015.4 (64-bit)
 # SW Build 1412921 on Wed Nov 18 09:43:45 MST 2015
 # IP Build 1412160 on Tue Nov 17 13:47:24 MST 2015
-# Start of session at: Tue Feb 23 01:53:35 2016
-# Process ID: 16564
+# Start of session at: Tue Feb 23 15:26:51 2016
+# Process ID: 8800
 # Current directory: C:/Users/Hannes/lab2/lab2/lab2.runs/synth_1
 # Command line: vivado.exe -log fake_pb_kbd.vds -mode batch -messageDb vivado.pb -notrace -source fake_pb_kbd.tcl
 # Log file: C:/Users/Hannes/lab2/lab2/lab2.runs/synth_1/fake_pb_kbd.vds

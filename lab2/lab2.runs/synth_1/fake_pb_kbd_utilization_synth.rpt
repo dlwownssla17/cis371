@@ -1,7 +1,7 @@
 Copyright 1986-2015 Xilinx, Inc. All Rights Reserved.
 -----------------------------------------------------------------------------------------------------------------
 | Tool Version : Vivado v.2015.4 (win64) Build 1412921 Wed Nov 18 09:43:45 MST 2015
-| Date         : Tue Feb 23 01:54:59 2016
+| Date         : Tue Feb 23 15:27:37 2016
 | Host         : Hannes-PC running 64-bit major release  (build 9200)
 | Command      : report_utilization -file fake_pb_kbd_utilization_synth.rpt -pb fake_pb_kbd_utilization_synth.pb
 | Design       : fake_pb_kbd
