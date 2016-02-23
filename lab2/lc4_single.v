@@ -105,7 +105,7 @@ module lc4_processor
     // PC_MUX
     
     // Set test wires to correct outputs
-    assign  test_stall = 16'h0000;          // Testbench: is this a stall cycle? (don't compare the test values)
+    assign  test_stall = 2'b00;          // Testbench: is this a stall cycle? (don't compare the test values)
     assign  test_cur_pc = pc;               // Testbench: program counter
     assign  test_cur_insn = i_cur_insn;     // Testbench: instruction bits
     assign  test_regfile_we = regfile_we;   // Testbench: register file write enable
