@@ -84,18 +84,38 @@ module lc4_processor
     wire is_store;
     wire is_branch;
     wire is_control_insn;
-    
+  
     lc4_decoder decoder (i_cur_insn, r1sel, r1re, r2sel, r2re, wsel, regfile_we, nzp_we, select_pc_plus_one, is_load, is_store, is_branch, is_control_insn);
     
-    // Reg_File: o_rs, o_rt for alu + memory, also ride 
+    // Reg_File
     wire [15:0] o_rs_data;
     wire [15:0] o_rt_data;
     // MUST BE COMPUTED, SET TO ZER0 FOR NOW
     wire [15:0] i_wdata = 16'h0000;
-    lc4_regfile regfile (clk, gwe, rst, r1sel, o_rs_data, i_rt, o_rt_data, wsel, i_wdata, regfile_we);
+    lc4_regfile regfile (clk, gwe, rst, r1sel, o_rs_data, r2sel, o_rt_data, wsel, i_wdata, regfile_we);
     
     // ALU STUFF
+    wire [15:0] o_alu;
+    lc4_alu alu (i_cur_insn, pc, o_rs_data, o_rt_data, o_alu);
     
+    // MEMORY STUFF
+    
+    // BRANCH LOGIC
+    
+    // PC_MUX
+    
+    // Set test wires to correct outputs
+    assign  test_stall = 16'h0000;          // Testbench: is this a stall cycle? (don't compare the test values)
+    assign  test_cur_pc = pc;               // Testbench: program counter
+    assign  test_cur_insn = i_cur_insn;     // Testbench: instruction bits
+    assign  test_regfile_we = regfile_we;   // Testbench: register file write enable
+    assign  test_regfile_wsel = wsel;       // Testbench: which register to write in the register file 
+    assign  test_regfile_data = i_wdata;    // Testbench: value to write into the register file
+    assign  test_nzp_we = 1'b0;           // Testbench: NZP condition codes write enable
+    assign  test_nzp_new_bits = 3'b000;   // Testbench: value to write to NZP bits (Needs to be computed)
+    assign  test_dmem_we = 1'b0;            // Testbench: data memory write enable
+    assign  test_dmem_addr = 16'h0000;      // Testbench: address to read/write memory
+    assign  test_dmem_data = 16'h0000;      // Testbench: value read/writen from/to memory
     
    /* Add $display(...) calls in the always block below to
     * print out debug information at the end of every cycle.

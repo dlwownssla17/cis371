@@ -1,12 +1,12 @@
 #-----------------------------------------------------------
 # Vivado v2015.4 (64-bit)
-# SW Build 1412921 on Wed Nov 18 09:44:32 MST 2015
+# SW Build 1412921 on Wed Nov 18 09:43:45 MST 2015
 # IP Build 1412160 on Tue Nov 17 13:47:24 MST 2015
-# Start of session at: Tue Feb 16 06:47:22 2016
-# Process ID: 9107
-# Current directory: /home/cis371/cis371/lab2/lab2.runs/synth_1
-# Command line: vivado -log lc4_alu.vds -mode batch -messageDb vivado.pb -notrace -source lc4_alu.tcl
-# Log file: /home/cis371/cis371/lab2/lab2.runs/synth_1/lc4_alu.vds
-# Journal file: /home/cis371/cis371/lab2/lab2.runs/synth_1/vivado.jou
+# Start of session at: Tue Feb 23 01:53:35 2016
+# Process ID: 16564
+# Current directory: C:/Users/Hannes/lab2/lab2/lab2.runs/synth_1
+# Command line: vivado.exe -log fake_pb_kbd.vds -mode batch -messageDb vivado.pb -notrace -source fake_pb_kbd.tcl
+# Log file: C:/Users/Hannes/lab2/lab2/lab2.runs/synth_1/fake_pb_kbd.vds
+# Journal file: C:/Users/Hannes/lab2/lab2/lab2.runs/synth_1\vivado.jou
 #-----------------------------------------------------------
-source lc4_alu.tcl -notrace
+source fake_pb_kbd.tcl -notrace

@@ -6,21 +6,25 @@
 # Copyright 1986-2015 Xilinx, Inc. All Rights Reserved.
 # 
 
+echo "This script was generated under a different operating system."
+echo "Please update the PATH and LD_LIBRARY_PATH variables below, before executing this script"
+exit
+
 if [ -z "$PATH" ]; then
-  PATH=/opt/Xilinx/Vivado/2015.4/ids_lite/ISE/bin/lin64:/opt/Xilinx/Vivado/2015.4/bin
+  PATH=C:/Users/Hannes/Documents/Vivado/2015.4/ids_lite/ISE/bin/nt64;C:/Users/Hannes/Documents/Vivado/2015.4/ids_lite/ISE/lib/nt64:C:/Users/Hannes/Documents/Vivado/2015.4/bin
 else
-  PATH=/opt/Xilinx/Vivado/2015.4/ids_lite/ISE/bin/lin64:/opt/Xilinx/Vivado/2015.4/bin:$PATH
+  PATH=C:/Users/Hannes/Documents/Vivado/2015.4/ids_lite/ISE/bin/nt64;C:/Users/Hannes/Documents/Vivado/2015.4/ids_lite/ISE/lib/nt64:C:/Users/Hannes/Documents/Vivado/2015.4/bin:$PATH
 fi
 export PATH
 
 if [ -z "$LD_LIBRARY_PATH" ]; then
-  LD_LIBRARY_PATH=/opt/Xilinx/Vivado/2015.4/ids_lite/ISE/lib/lin64
+  LD_LIBRARY_PATH=
 else
-  LD_LIBRARY_PATH=/opt/Xilinx/Vivado/2015.4/ids_lite/ISE/lib/lin64:$LD_LIBRARY_PATH
+  LD_LIBRARY_PATH=:$LD_LIBRARY_PATH
 fi
 export LD_LIBRARY_PATH
 
-HD_PWD='/home/cis371/cis371/lab2/lab2.runs/synth_1'
+HD_PWD='C:/Users/Hannes/lab2/lab2/lab2.runs/synth_1'
 cd "$HD_PWD"
 
 HD_LOG=runme.log
@@ -36,4 +40,4 @@ EAStep()
      fi
 }
 
-EAStep vivado -log lc4_alu.vds -m64 -mode batch -messageDb vivado.pb -notrace -source lc4_alu.tcl
+EAStep vivado -log fake_pb_kbd.vds -m64 -mode batch -messageDb vivado.pb -notrace -source fake_pb_kbd.tcl

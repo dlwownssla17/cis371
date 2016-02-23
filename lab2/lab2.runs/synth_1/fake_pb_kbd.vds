@@ -1,13 +1,14 @@
-
-*** Running vivado
-    with args -log fake_pb_kbd.vds -m64 -mode batch -messageDb vivado.pb -notrace -source fake_pb_kbd.tcl
-
-
-****** Vivado v2015.4 (64-bit)
-  **** SW Build 1412921 on Wed Nov 18 09:43:45 MST 2015
-  **** IP Build 1412160 on Tue Nov 17 13:47:24 MST 2015
-    ** Copyright 1986-2015 Xilinx, Inc. All Rights Reserved.
-
+#-----------------------------------------------------------
+# Vivado v2015.4 (64-bit)
+# SW Build 1412921 on Wed Nov 18 09:43:45 MST 2015
+# IP Build 1412160 on Tue Nov 17 13:47:24 MST 2015
+# Start of session at: Tue Feb 23 01:53:35 2016
+# Process ID: 16564
+# Current directory: C:/Users/Hannes/lab2/lab2/lab2.runs/synth_1
+# Command line: vivado.exe -log fake_pb_kbd.vds -mode batch -messageDb vivado.pb -notrace -source fake_pb_kbd.tcl
+# Log file: C:/Users/Hannes/lab2/lab2/lab2.runs/synth_1/fake_pb_kbd.vds
+# Journal file: C:/Users/Hannes/lab2/lab2/lab2.runs/synth_1\vivado.jou
+#-----------------------------------------------------------
 source fake_pb_kbd.tcl -notrace
 Command: synth_design -top fake_pb_kbd -part xc7z020clg484-1
 Starting synth_design
