@@ -1,4 +1,4 @@
-/* INSERT NAME AND PENNKEY HERE */
+/* Hannes Leipold, 84591119 */
 
 `timescale 1ns / 1ps
 
@@ -12,215 +12,216 @@
  * instead of just "input" and "output".
  * 
  * All the provided infrastructure code has been updated.
- */
+*/
+
 `default_nettype none
 
-`define zero 1'd0
-`define one 1'd1
-
-module lc4_barrel_shift(input  wire [15:0] i_num,
-                        input  wire [3:0]  shift,
-                        input  wire        to_left,
-                        input  wire        is_arithmetic,
-                        output wire [15:0] o_num);
-                        
-   wire [15:0] num_shift_3, num_shift_2, num_shift_1;
-   
-   assign num_shift_3 = ~shift[3]     ? i_num :
-                        to_left       ? {i_num[7:0], {8{`zero}}} :
-                        is_arithmetic ? {{8{i_num[15]}}, i_num[15:8]} : {{8{`zero}}, i_num[15:8]};
-   assign num_shift_2 = ~shift[2]     ? num_shift_3 :
-                        to_left       ? {num_shift_3[11:0], {4{`zero}}} :
-                        is_arithmetic ? {{4{i_num[15]}}, num_shift_3[15:4]} : {{4{`zero}}, num_shift_3[15:4]};
-   assign num_shift_1 = ~shift[1]     ? num_shift_2 :
-                        to_left       ? {num_shift_2[13:0], {2{`zero}}} :
-                        is_arithmetic ? {{2{i_num[15]}}, num_shift_2[15:2]} : {{2{`zero}}, num_shift_2[15:2]};
-   assign o_num       = ~shift[0]     ? num_shift_1 :
-                        to_left       ? {num_shift_1[14:0], `zero} :
-                        is_arithmetic ? {i_num[15], num_shift_1[15:1]} : {`zero, num_shift_1[15:1]};
-   
-endmodule
-
-module lc4_branch_op(input  wire [15:0] i_insn,
-                     input  wire [15:0] i_pc,
-                     output wire [15:0] o_result);
-                  
-   assign o_result = i_pc + `one + {{7{i_insn[8]}}, i_insn[8:0]};
-   
-endmodule
-
-module lc4_arith_op(input  wire [15:0] i_insn,
-                    input  wire [15:0] i_r1data,
-                    input  wire [15:0] i_r2data,
-                    input  wire [15:0] quotient,
-                    output wire [15:0] o_result);
-                      
-   assign o_result = (i_insn[5:3] == 3'b000) ? i_r1data + i_r2data :
-                     (i_insn[5:3] == 3'b001) ? i_r1data * i_r2data :
-                     (i_insn[5:3] == 3'b010) ? i_r1data - i_r2data :
-                     (i_insn[5:3] == 3'b011) ? quotient : i_r1data + {{11{i_insn[4]}}, i_insn[4:0]};
-   
-endmodule
-
-module lc4_compare_op(input  wire [15:0] i_insn,
-                      input  wire [15:0] i_r1data,
-                      input  wire [15:0] i_r2data,
-                      output wire [15:0] o_result);
-                   
-   wire [15:0] gt = 16'h0001;
-   wire [15:0] lt = 16'hffff;
-   wire [15:0] eq = 16'h0000;
-   wire [16:0] r1data_u = {`zero, i_r1data};
-   wire [16:0] r2data_u = {`zero, i_r2data};
-   wire [7:0] imm_7_u = {`zero, i_insn[6:0]};
-   wire r1_r2_same_sign = i_r1data[15] == i_r2data[15];
-   wire [15:0] r1_imm_7_diff = i_r1data - {{9{i_insn[6]}}, i_insn[6:0]};
-   
-   wire [15:0] cmp_result   = (i_r1data == i_r2data)   ? eq :
-                              r1_r2_same_sign          ? cmpu_result :
-                              i_r1data[15]             ? lt : gt;
-   wire [15:0] cmpu_result  = (r1data_u == r2data_u)   ? eq :
-                              (r1data_u < r2data_u)    ? lt : gt;
-   wire [15:0] cmpi_result  = (r1_imm_7_diff == `zero) ? eq :
-                              r1_imm_7_diff[15]        ? lt : gt;
-   wire [15:0] cmpiu_result = (r1data_u == imm_7_u)    ? eq :
-                              (r1data_u < imm_7_u)     ? lt : gt;
-   
-   assign o_result = (i_insn[8:7] == 2'b00) ? cmp_result :
-                     (i_insn[8:7] == 2'b01) ? cmpu_result :
-                     (i_insn[8:7] == 2'b10) ? cmpi_result : cmpiu_result;
-   
-endmodule
-
-module lc4_jsr_op(input  wire [15:0] i_insn,
-                  input  wire [15:0] i_pc,
-                  input  wire [15:0] i_r1data,
-                  output wire [15:0] o_result);
-                  
-   wire [15:0] pc_msb_masked = i_pc & 16'h8000;
-   wire [15:0] imm_11_offset;
-               
-   assign o_result = ~i_insn[11] ? i_r1data : pc_msb_masked | imm_11_offset;
-   
-   lc4_barrel_shift shift ({{5{`zero}}, i_insn[10:0]}, 4'b0100, `one, `zero, imm_11_offset);
-   
-endmodule
-
-module lc4_logic_op(input  wire [15:0] i_insn,
-                    input  wire [15:0] i_r1data,
-                    input  wire [15:0] i_r2data,
-                    output wire [15:0] o_result);
-                 
-   assign o_result = (i_insn[5:3] == 3'b000) ? i_r1data & i_r2data :
-                     (i_insn[5:3] == 3'b001) ? ~i_r1data :
-                     (i_insn[5:3] == 3'b010) ? i_r1data | i_r2data :
-                     (i_insn[5:3] == 3'b011) ? i_r1data ^ i_r2data : i_r1data & {{11{i_insn[4]}}, i_insn[4:0]};
-   
-endmodule
-
-module lc4_memory_op(input  wire [15:0] i_insn,
-                     input  wire [15:0] i_r1data,
-                     output wire [15:0] o_result);
-                     
-   assign o_result = i_r1data + {{10{i_insn[5]}}, i_insn[5:0]};
-   
-endmodule
-
-module lc4_rti_op(input  wire [15:0] i_r1data,
-                  output wire [15:0] o_result);
-                  
-   assign o_result = i_r1data;
-   
-endmodule
-
-module lc4_const_op(input  wire [15:0] i_insn,
-                    output wire [15:0] o_result);
+module lc4_alu( input wire [15:0] i_isn,
+                input wire [15:0] i_pc,
+                input wire [15:0] i_r1data,
+                input wire [15:0] i_r2data,
+                output wire [15:0] o_result);
                     
-   assign o_result = {{7{i_insn[8]}}, i_insn[8:0]};
-   
+// opcode
+wire [3:0] opcode = i_isn[15:12];
+// most common subcode (not for compare & jumps)
+wire [5:0] test = i_isn[5:0];
+wire [2:0] subcode = i_isn[5:3];
+wire add2_code = i_isn[5];
+// Check for 0000 block branch set
+wire is_br = (opcode == 4'b0000);
+// Check for 0001 block airthmetic set
+wire is_arith = (opcode == 4'b0001);
+// ADD == 000
+wire is_add = is_arith ? (subcode == 3'b000) : 0;
+// MUL == 001
+wire is_mul = is_arith ? (subcode == 3'b001) : 0;
+// SUB == 010
+wire is_sub = is_arith ? (subcode == 3'b010) : 0;
+// DIV == 011 
+wire is_div = is_arith ? (subcode == 3'b011) : 0;
+// ADD2 == 1XX (instant!)
+wire is_add2 = is_arith ? (subcode[2] == 1) : 0; 
+
+// Check for 0010 block compare set (different subcode!)
+wire is_com = (opcode == 4'b0010);
+// Special subcode
+wire [8:7] comcode = i_isn[8:7];
+// CMP
+wire is_cmp = is_com ? (comcode == 3'b00) : 0;
+// CMPU
+wire is_cmpu = is_com ? (comcode == 3'b01) : 0;
+// CMPI (instant!)
+wire is_cmpi = is_com ? (comcode == 3'b10) : 0;
+// CMPIU (instant!)
+wire is_cmpiu = is_com ? (comcode == 3'b11) : 0;
+
+// Check for 0100 block subroutine set
+wire is_subrout = (opcode == 4'b0100);
+// JSRR 
+wire is_jsrr = is_subrout ? (i_isn[11] == 0) : 0;
+// JSR
+wire is_jsr = is_subrout ? (i_isn[11] == 1) : 0;
+
+// Check for 0101 block logic set
+wire is_logic = (opcode == 4'b0101);
+// AND == 000
+wire is_and = is_logic ? (subcode == 3'b000) : 0;
+// NOT == 001
+wire is_not = is_logic ? (subcode == 3'b001) : 0;
+// OR == 001
+wire is_or = is_logic ? (subcode == 3'b010) : 0;
+// XOR == 001
+wire is_xor = is_logic ? (subcode == 3'b011) : 0;
+// AND2 == 1XX (instant!)
+wire is_and2 = is_logic ? (subcode[2] == 1) : 0;
+
+// Check for 1010 block shifter set
+wire is_shift = (opcode == 4'b1010);
+wire [1:0] shift_code = subcode[2:1];
+// SLL (instant!)
+wire is_sll = is_shift ? (subcode[2:1] == 2'b00) : 0;
+// SRA (instant!) 
+wire is_sra = is_shift ? (shift_code == 2'b01) : 0;
+// SRL (instant!)
+wire is_srl = is_shift ? (shift_code == 2'b10) : 0;
+// SRL
+wire is_mod = is_shift ? (shift_code == 2'b11) : 0;
+
+/* LOOSE LEAF OPERATORS */
+// Check for 0110 LOAD instruction
+wire is_ldr = (opcode == 4'b0110);
+// Check for 0111 STORE instruction
+wire is_str = (opcode == 4'b0111);
+// Check for 1000 RTI instruction
+wire is_rti = (opcode == 4'b1000);
+// Check for 1001 CONST instruction
+wire is_const = (opcode == 4'b1001);
+// Check for 11000 JMPR instruction
+wire is_jmpr = (opcode == 4'b1100) && (i_isn[11] == 0);
+// Check for 11001 JMP instruction
+wire is_jmp = (opcode == 4'b1100) && (i_isn[11] == 1);
+// Check for 1101 HICONST instruction
+wire is_hicon = (opcode == 4'b1101);
+// Check for 1111 TRAP instruction
+wire is_trap = (opcode == 4'b1111); 
+
+/* ---------------------------------------- CALCULATIONS ------------------------------------------- */
+// DIVIDER
+wire [15:0] calc_div;
+wire [15:0] calc_mod;
+lc4_divider divider (i_r1data, i_r2data, calc_mod, calc_div);                                                
+
+// COMPARISONS
+wire [15:0] cmp_inst = {{9{i_isn[6]}},i_isn[6:0]};
+wire [15:0] cmp_instu = {{9{1'b0}},i_isn[6:0]};
+wire [15:0] calc_cmpu = (i_r1data > i_r2data) ? 1 :
+                        (i_r2data > i_r1data) ? -1 :
+                        0;
+wire [15:0] calc_cmpiu =    (i_r1data > cmp_instu) ? 1 :
+                            (cmp_instu > i_r1data) ? -1 :
+                            0;
+wire [15:0] calc_cmpii =   (i_r1data > cmp_inst) ? 1 :
+                            (cmp_inst > i_r1data) ? -1 :
+                            0;
+wire [15:0] calc_cmpu_inv = (i_r2data > i_r1data) ? 1 :
+                            (i_r1data > i_r2data) ? -1 :
+                            0;                        
+wire [15:0] calc_cmp = (i_r1data[15] == 0 && i_r2data[15] == 1) ? 1 :
+                       (i_r1data[15] == 1 && i_r2data[15] == 0) ? -1 :
+                       (i_r1data[15] == 0 && i_r2data[15] == 0) ? calc_cmpu : calc_cmpu;
+wire [15:0] calc_cmpi = (i_r1data[15] == 0 && cmp_inst[15] == 1) ? 1 :
+                        (i_r1data[15] == 1 && cmp_inst[15] == 0) ? -1 :
+                        (i_r1data[15] == 0 && cmp_inst[15] == 0) ? (calc_cmpii) : calc_cmpii;
+
+// JSR
+wire [15:0] calc_jsr;
+lc4_sll jsr_sll({{5{1'b0}},i_isn[10:0]},16'b0000000000000100, calc_jsr);
+
+// SHIFTERS
+wire [15:0] calc_sra;
+lc4_sra sra(i_r1data,{{12{1'b0}},i_isn[3:0]},calc_sra);
+wire [15:0] calc_srl;
+lc4_srl srl(i_r1data,{{12{1'b0}},i_isn[3:0]},calc_srl);
+wire [15:0] calc_sll;
+lc4_sll sll(i_r1data,{{12{1'b0}},i_isn[3:0]},calc_sll);
+
+// HICONST
+wire [15:0] calc_hicon_sll;
+lc4_sll hicon_sll({{8{1'b0}},i_isn[7:0]},16'b0000000000001000,calc_hicon_sll);
+
+// BIG NESTED LOOP?
+assign o_result =   (is_br)     ?   (i_pc + 1 + {{7{i_isn[8]}},i_isn[8:0]}) :
+                    (is_add)    ?   (i_r1data + i_r2data) :
+                    (is_mul)    ?   (i_r1data * i_r2data) :
+                    (is_sub)    ?   (i_r1data - i_r2data) :
+                    (is_div)    ?   (calc_div) :
+                    (is_add2)   ?   (i_r1data + {{11{i_isn[4]}},i_isn[4:0]}) :                    
+                    (is_cmp)    ?   (calc_cmp) :
+                    (is_cmpu)   ?   (calc_cmpu) :
+                    (is_cmpi)   ?   (calc_cmpi) :
+                    (is_cmpiu)  ?   (calc_cmpiu) :
+                    (is_jsrr)   ?   (i_r1data) :
+                    (is_jsr)    ?   ({i_pc[15],calc_jsr[14:0]}) :
+                    (is_and)    ?   (i_r1data & i_r2data) :
+                    (is_not)    ?   (~ i_r1data) :
+                    (is_or)     ?   (i_r1data | i_r2data) :
+                    (is_xor)    ?   (i_r1data ^ i_r2data) :
+                    (is_and2)   ?   (i_r1data & {{11{i_isn[4]}},i_isn[4:0]}) :
+                    (is_ldr)    ?   (i_r1data + {{10{i_isn[5]}},i_isn[5:0]}) :
+                    (is_str)    ?   (i_r1data + {{10{i_isn[5]}},i_isn[5:0]}) :
+                    (is_rti)    ?   (i_r1data) :
+                    (is_const)  ?   ({{7{i_isn[8]}},i_isn[8:0]}) :
+                    (is_sll)    ?   (calc_sll) :
+                    (is_sra)    ?   (calc_sra) :
+                    (is_srl)    ?   (calc_srl) :  
+                    (is_mod)    ?   (calc_mod) :
+                    (is_jmpr)   ?   (i_r1data) :
+                    (is_jmp)    ?   (i_pc + 1 + {{5{i_isn[10]}},i_isn[10:0]}) :
+                    (is_hicon)  ?   ((i_r1data & 16'b0000000011111111) | calc_hicon_sll) :
+                    (is_trap)   ?   (16'b1000000000000000 | {{8{1'b0}},i_isn[7:0]}) :
+                        0;
+
 endmodule
 
-module lc4_shift_op(input  wire [15:0] i_insn,
-                    input  wire [15:0] i_r1data,
-                    input  wire [15:0] i_r2data,
-                    input  wire [15:0] remainder,
-                    output wire [15:0] o_result);
-                    
-   wire [15:0] shift_result;
-   wire to_left = i_insn[5:4] == 2'b00;
-   wire is_arithmetic = i_insn[5:4] == 2'b01;
-   
-   assign o_result = (i_insn[5:4] == 2'b11) ? remainder : shift_result;
-   
-   lc4_barrel_shift shift (i_r1data, i_insn[3:0], to_left, is_arithmetic, shift_result);
-   
+// SHIFT LEFT LOGICAL
+module lc4_sll( input wire [15:0] i_val,
+                input wire [15:0] i_bit,
+                output wire [15:0] o_shift);
+
+wire [15:0] b1 = i_bit[3] ? {i_val[7:0],{8{1'b0}}} : i_val;
+wire [15:0] b2 = i_bit[2] ? {b1[11:0], {4{1'b0}}} : b1; 
+wire [15:0] b3 = i_bit[1] ? {b2[13:0], {2{1'b0}}} : b2;
+wire [15:0] b4 = i_bit[0] ? {b3[14:0], {1{1'b0}}} : b3;
+
+assign o_shift = b4;
+
 endmodule
 
-module lc4_jmp_op(input  wire [15:0] i_insn,
-                  input  wire [15:0] i_pc,
-                  input  wire [15:0] i_r1data,
-                  output wire [15:0] o_result);
-                  
-   assign o_result = ~i_insn[11] ? i_r1data : i_pc + `one + {{5{i_insn[10]}}, i_insn[10:0]};
-   
+// SHIFT RIGHT LOGICAL
+module lc4_srl( input wire [15:0] i_val,
+                input wire [15:0] i_bit,
+                output wire [15:0] o_shift);
+
+wire [15:0] b1 = i_bit[3] ? {{8{1'b0}}, i_val[15:8]} : i_val;
+wire [15:0] b2 = i_bit[2] ? {{4{1'b0}}, b1[15:4]} : b1; 
+wire [15:0] b3 = i_bit[1] ? {{2{1'b0}}, b2[15:2]} : b2;
+wire [15:0] b4 = i_bit[0] ? {{1{1'b0}}, b3[15:1]} : b3;
+
+assign o_shift = b4;
+
 endmodule
 
-module lc4_hiconst_op(input  wire [15:0] i_insn,
-                      input  wire [15:0] i_r1data,
-                      output wire [15:0] o_result);
-                      
-   wire [15:0] r1data_masked = i_r1data & 16'h00ff;
-   wire [15:0] imm_8_shifted;
-   
-   assign o_result = r1data_masked | imm_8_shifted;
-   
-   lc4_barrel_shift shift ({{8{`zero}}, i_insn[7:0]}, 4'b1000, `one, `zero, imm_8_shifted);
-   
-endmodule
+// SHIFT RIGHT ARITHMETIC
+module lc4_sra( input wire [15:0] i_val,
+                input wire [15:0] i_bit,
+                output wire [15:0] o_shift);
 
-module lc4_trap_op(input  wire [15:0] i_insn,
-                   output wire [15:0] o_result);
-                   
-   assign o_result = 16'h8000 | i_insn[7:0];
-   
-endmodule
+wire [15:0] b1 = i_bit[3] ? {{8{i_val[15]}}, i_val[15:8]} : i_val;
+wire [15:0] b2 = i_bit[2] ? {{4{b1[15]}}, b1[15:4]} : b1; 
+wire [15:0] b3 = i_bit[1] ? {{2{b2[15]}}, b2[15:2]} : b2;
+wire [15:0] b4 = i_bit[0] ? {{1{b3[15]}}, b3[15:1]} : b3;
 
-module lc4_alu(input  wire [15:0] i_insn,
-               input  wire [15:0] i_pc,
-               input  wire [15:0] i_r1data,
-               input  wire [15:0] i_r2data,
-               output wire [15:0] o_result);
-   
-   wire [15:0] remainder, quotient;
-   wire [15:0] branch_result, arith_result, compare_result, jsr_result, logic_result, memory_result,
-               rti_result, const_result, shift_result, jmp_result, hiconst_result, trap_result;
-   
-   assign o_result = (i_insn[15:12] == 4'b0000) ? branch_result :
-                     (i_insn[15:12] == 4'b0001) ? arith_result :
-                     (i_insn[15:12] == 4'b0010) ? compare_result :
-                     (i_insn[15:12] == 4'b0100) ? jsr_result :
-                     (i_insn[15:12] == 4'b0101) ? logic_result :
-                     (i_insn[15:12] == 4'b0110 |
-                      i_insn[15:12] == 4'b0111) ? memory_result :
-                     (i_insn[15:12] == 4'b1000) ? rti_result :
-                     (i_insn[15:12] == 4'b1001) ? const_result :
-                     (i_insn[15:12] == 4'b1010) ? shift_result :
-                     (i_insn[15:12] == 4'b1100) ? jmp_result :
-                     (i_insn[15:12] == 4'b1101) ? hiconst_result :
-                     (i_insn[15:12] == 4'b1111) ? trap_result : 16'd0;
-   
-   lc4_divider    div         (i_r1data, i_r2data, remainder, quotient);
-   lc4_branch_op  branch_res  (i_insn, i_pc, branch_result);
-   lc4_arith_op   arith_res   (i_insn, i_r1data, i_r2data, quotient, arith_result);
-   lc4_compare_op compare_res (i_insn, i_r1data, i_r2data, compare_result);
-   lc4_jsr_op     jsr_res     (i_insn, i_pc, i_r1data, jsr_result);
-   lc4_logic_op   logic_res   (i_insn, i_r1data, i_r2data, logic_result);
-   lc4_memory_op  memory_res  (i_insn, i_r1data, memory_result);
-   lc4_rti_op     rti_res     (i_r1data, rti_result);
-   lc4_const_op   const_res   (i_insn, const_result);
-   lc4_shift_op   shift_res   (i_insn, i_r1data, i_r2data, remainder, shift_result);
-   lc4_jmp_op     jmp_res     (i_insn, i_pc, i_r1data, jmp_result);
-   lc4_hiconst_op hiconst_res (i_insn, i_r1data, hiconst_result);
-   lc4_trap_op    trap_res    (i_insn, trap_result);
-   
+assign o_shift = b4;
+
 endmodule

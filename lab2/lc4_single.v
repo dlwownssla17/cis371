@@ -96,10 +96,10 @@ module lc4_processor
     
     lc4_regfile regfile (clk, gwe, rst, r1sel, o_rs_data, r2sel, o_rt_data, wsel, i_wdata, regfile_we);
     
-    // ALU STUFF
+    // ALU
     lc4_alu alu (i_cur_insn, pc, o_rs_data, o_rt_data, o_alu);
     
-    // MEMORY STUFF
+    // MEMORY
     assign o_dmem_towrite = ( is_load ) ? o_dmem_towrite :
                             ( is_store ) ? o_rt_data  :              
                             16'h0000;  // 0 if no load / store??? CHECK THIS
