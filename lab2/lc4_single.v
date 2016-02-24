@@ -91,7 +91,7 @@ module lc4_processor
     wire [15:0] o_rs_data;
     wire [15:0] o_rt_data;
     // MUST BE COMPUTED, SET TO ZER0 FOR NOW (really mux of alu or mem)
-    wire [15:0] i_wdata = o_alu;
+    wire [15:0] i_wdata = ( is_load  == 0 ) ? ( o_alu ) : ( 16'h0000 ); // need to change this for mem
     lc4_regfile regfile (clk, gwe, rst, r1sel, o_rs_data, r2sel, o_rt_data, wsel, i_wdata, regfile_we);
     
     // ALU STUFF
@@ -101,6 +101,9 @@ module lc4_processor
     // MEMORY STUFF
     
     // BRANCH LOGIC
+    wire [2:0] curr_nzp = 3'b001; // TODO: change this
+    wire o_branch = !( ( i_cur_insn[11:9] & curr_nzp ) == 3'b000);
+    
     
     // PC_MUX
     
@@ -109,6 +112,7 @@ module lc4_processor
     
     
     assign o_cur_pc = pc;
+    assign next_pc = pc + 1; // for now with ALU, not forever
     
     
     // Set test wires to correct outputs
@@ -120,9 +124,9 @@ module lc4_processor
     assign  test_regfile_data = i_wdata;    // Testbench: value to write into the register file
     assign  test_nzp_we = nzp_we;           // Testbench: NZP condition codes write enable
     
-    assign  test_nzp_new_bits[2] = o_alu[15];   // Testbench: value to write to NZP bits (Needs to be computed)
-    assign  test_nzp_new_bits[1] = (o_alu == 16'h0000);
-    assign  test_nzp_new_bits[0] = !o_alu[15];
+    assign  test_nzp_new_bits[2] = i_wdata[15];   // Testbench: value to write to NZP bits (Needs to be computed)
+    assign  test_nzp_new_bits[1] = (i_wdata == 16'h0000);
+    assign  test_nzp_new_bits[0] = !i_wdata[15];
     
     assign  test_dmem_we = 1'b0;            // Testbench: data memory write enable
     assign  test_dmem_addr = 16'h0000;      // Testbench: address to read/write memory
