@@ -76,7 +76,7 @@ module lc4_processor
     wire r1re;
     wire [2:0] r2sel;
     wire r2re;
-    wire [2:0] nzp_we;
+    wire nzp_we;
     wire [2:0] wsel;
     wire regfile_we;
     wire select_pc_plus_one;
@@ -90,8 +90,8 @@ module lc4_processor
     // Reg_File
     wire [15:0] o_rs_data;
     wire [15:0] o_rt_data;
-    // MUST BE COMPUTED, SET TO ZER0 FOR NOW
-    wire [15:0] i_wdata = 16'h0000;
+    // MUST BE COMPUTED, SET TO ZER0 FOR NOW (really mux of alu or mem)
+    wire [15:0] i_wdata = o_alu;
     lc4_regfile regfile (clk, gwe, rst, r1sel, o_rs_data, r2sel, o_rt_data, wsel, i_wdata, regfile_we);
     
     // ALU STUFF
@@ -104,6 +104,13 @@ module lc4_processor
     
     // PC_MUX
     
+    
+    //NZP
+    
+    
+    assign o_cur_pc = pc;
+    
+    
     // Set test wires to correct outputs
     assign  test_stall = 16'h0000;          // Testbench: is this a stall cycle? (don't compare the test values)
     assign  test_cur_pc = pc;               // Testbench: program counter
@@ -111,8 +118,12 @@ module lc4_processor
     assign  test_regfile_we = regfile_we;   // Testbench: register file write enable
     assign  test_regfile_wsel = wsel;       // Testbench: which register to write in the register file 
     assign  test_regfile_data = i_wdata;    // Testbench: value to write into the register file
-    assign  test_nzp_we = 1'b0;           // Testbench: NZP condition codes write enable
-    assign  test_nzp_new_bits = 3'b000;   // Testbench: value to write to NZP bits (Needs to be computed)
+    assign  test_nzp_we = nzp_we;           // Testbench: NZP condition codes write enable
+    
+    assign  test_nzp_new_bits[2] = o_alu[15];   // Testbench: value to write to NZP bits (Needs to be computed)
+    assign  test_nzp_new_bits[1] = (o_alu == 16'h0000);
+    assign  test_nzp_new_bits[0] = !o_alu[15];
+    
     assign  test_dmem_we = 1'b0;            // Testbench: data memory write enable
     assign  test_dmem_addr = 16'h0000;      // Testbench: address to read/write memory
     assign  test_dmem_data = 16'h0000;      // Testbench: value read/writen from/to memory
