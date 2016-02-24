@@ -87,6 +87,7 @@ module lc4_processor
   
     lc4_decoder decoder (i_cur_insn, r1sel, r1re, r2sel, r2re, wsel, regfile_we, nzp_we, select_pc_plus_one, is_load, is_store, is_branch, is_control_insn);
     
+    wire [15:0] o_alu;
     // Reg_File
     wire [15:0] o_rs_data;
     wire [15:0] o_rt_data;
@@ -96,21 +97,25 @@ module lc4_processor
     lc4_regfile regfile (clk, gwe, rst, r1sel, o_rs_data, r2sel, o_rt_data, wsel, i_wdata, regfile_we);
     
     // ALU STUFF
-    wire [15:0] o_alu;
     lc4_alu alu (i_cur_insn, pc, o_rs_data, o_rt_data, o_alu);
     
     // MEMORY STUFF
-    
+    assign o_dmem_towrite = ( is_load ) ? o_dmem_towrite :
+                            ( is_store ) ? o_rt_data  :              
+                            16'h0000;  // 0 if no load / store??? CHECK THIS
+    assign o_dmem_addr = ( is_load | is_store ) ? o_alu : 16'h0000;
+    assign o_dmem_we = is_store;
+      
     // BRANCH LOGIC
     wire [2:0] curr_nzp = 3'b001; // TODO: change this
     wire o_branch = !( ( i_cur_insn[11:9] & curr_nzp ) == 3'b000);
     
     
     // PC_MUX
-    
+    assign next_pc = ( (is_control_insn) ? 1 : (o_branch && is_branch) ) ? o_alu : pc + 1;
     
     assign o_cur_pc = pc;
-    assign next_pc = pc + 1; // for now with ALU, not forever
+   // assign next_pc = pc + 1; // for now with ALU, not forever
     
     
     // Set test wires to correct outputs
@@ -126,10 +131,9 @@ module lc4_processor
     assign  test_nzp_new_bits[1] = (i_wdata == 16'h0000);
     assign  test_nzp_new_bits[0] = (!i_wdata[15]) & (!test_nzp_new_bits[1]) ; // wrong in our schematic
     
-    assign  test_dmem_we = 1'b0;            // Testbench: data memory write enable
-    assign  test_dmem_addr = 16'h0000;      // Testbench: address to read/write memory
-    assign  test_dmem_data = 16'h0000;      // Testbench: value read/writen from/to memory
-    
+    assign  test_dmem_we = o_dmem_we;            // Testbench: data memory write enable
+    assign  test_dmem_addr = o_dmem_addr;      // Testbench: address to read/write memory
+    assign  test_dmem_data = o_dmem_towrite; // Testbench: value read/writen from/to memory
    /* Add $display(...) calls in the always block below to
     * print out debug information at the end of every cycle.
     *

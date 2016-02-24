@@ -1,4 +1,0 @@
-Vivado Simulator 2015.4
-Time resolution is 1 ps
-Simulation finished:        1011 test cases           0 errors [../../../test_data/test_lc4_regfile.input]
-$finish called at time : 10217 ns : File "C:/Users/Hannes/lab2/lab2/test_lc4_regfile.tf" Line 123

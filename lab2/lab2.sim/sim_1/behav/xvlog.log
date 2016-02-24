@@ -1,9 +1,0 @@
-INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/Hannes/lab2/lab2/include/register.v" into library xil_defaultlib
-INFO: [VRFC 10-311] analyzing module Nbit_reg
-INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/Hannes/lab2/lab2/lc4_regfile.v" into library xil_defaultlib
-INFO: [VRFC 10-311] analyzing module lc4_regfile
-INFO: [VRFC 10-311] analyzing module Nbit_mux8to1
-INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/Hannes/lab2/lab2/test_lc4_regfile.tf" into library xil_defaultlib
-INFO: [VRFC 10-311] analyzing module testbench_v
-INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/Hannes/lab2/lab2/lab2.sim/sim_1/behav/glbl.v" into library xil_defaultlib
-INFO: [VRFC 10-311] analyzing module glbl
