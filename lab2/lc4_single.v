@@ -70,14 +70,15 @@ module lc4_processor
    /*******************************
     * TODO: INSERT YOUR CODE HERE *
     *******************************/
-
+    
+    Nbit_reg #(3, 3'b000) nzp_reg (.in(nzp_new_bits), .out(curr_nzp), .clk(clk), .we(nzp_we), .gwe(gwe), .rst(rst));    
     // From the decoder
-    wire [2:0] r1sel;
+    wire [2:0]  r1sel;
     wire r1re;
-    wire [2:0] r2sel;
+    wire [2:0]  r2sel;
     wire r2re;
     wire nzp_we;
-    wire [2:0] wsel;
+    wire [2:0]  wsel;
     wire regfile_we;
     wire select_pc_plus_one;
     wire is_load;
@@ -105,35 +106,38 @@ module lc4_processor
                             16'h0000;  // 0 if no load / store??? CHECK THIS
     assign o_dmem_addr = ( is_load | is_store ) ? o_alu : 16'h0000;
     assign o_dmem_we = is_store;
-      
+            
+    wire [2:0]  nzp_new_bits;
+    assign nzp_new_bits[2] = i_wdata[15];
+    assign nzp_new_bits[1] = (i_wdata == 16'h0000);
+    assign nzp_new_bits[0] = (!i_wdata[15]) & (!nzp_new_bits[1]);
+    
     // BRANCH LOGIC
-    wire [2:0] curr_nzp = 3'b001; // TODO: change this
+    wire [2:0] curr_nzp; // TODO: change this
     wire o_branch = !( ( i_cur_insn[11:9] & curr_nzp ) == 3'b000);
-    
-    
+        
     // PC_MUX
     assign next_pc = ( (is_control_insn) ? 1 : (o_branch && is_branch) ) ? o_alu : pc + 1;
     
     assign o_cur_pc = pc;
-   // assign next_pc = pc + 1; // for now with ALU, not forever
-    
+    // assign next_pc = pc + 1; // for now with ALU, not forever
     
     // Set test wires to correct outputs
-    assign  test_stall = 2'b00;          // Testbench: is this a stall cycle? (don't compare the test values)
-    assign  test_cur_pc = pc;               // Testbench: program counter
-    assign  test_cur_insn = i_cur_insn;     // Testbench: instruction bits
-    assign  test_regfile_we = regfile_we;   // Testbench: register file write enable
-    assign  test_regfile_wsel = wsel;       // Testbench: which register to write in the register file 
-    assign  test_regfile_data = i_wdata;    // Testbench: value to write into the register file
-    assign  test_nzp_we = nzp_we;           // Testbench: NZP condition codes write enable
-    
-    assign  test_nzp_new_bits[2] = i_wdata[15];   // Testbench: value to write to NZP bits (Needs to be computed)
+    assign  test_stall = 2'b00;                         // Testbench: is this a stall cycle? (don't compare the test values)
+    assign  test_cur_pc = pc;                           // Testbench: program counter
+    assign  test_cur_insn = i_cur_insn;                 // Testbench: instruction bits
+    assign  test_regfile_we = regfile_we;               // Testbench: register file write enable
+    assign  test_regfile_wsel = wsel;                   // Testbench: which register to write in the register file 
+    assign  test_regfile_data = i_wdata;                // Testbench: value to write into the register file
+    assign  test_nzp_we = nzp_we;                       // Testbench: NZP condition codes write enable
+
+    assign  test_nzp_new_bits[2] = i_wdata[15];         // Testbench: value to write to NZP bits (Needs to be computed)
     assign  test_nzp_new_bits[1] = (i_wdata == 16'h0000);
-    assign  test_nzp_new_bits[0] = (!i_wdata[15]) & (!test_nzp_new_bits[1]) ; // wrong in our schematic
+    assign  test_nzp_new_bits[0] = (!i_wdata[15]) & (!test_nzp_new_bits[1]); // wrong in our schematic
     
-    assign  test_dmem_we = o_dmem_we;            // Testbench: data memory write enable
-    assign  test_dmem_addr = o_dmem_addr;      // Testbench: address to read/write memory
-    assign  test_dmem_data = o_dmem_towrite; // Testbench: value read/writen from/to memory
+    assign  test_dmem_we = o_dmem_we;                   // Testbench: data memory write enable
+    assign  test_dmem_addr = o_dmem_addr;               // Testbench: address to read/write memory
+    assign  test_dmem_data = o_dmem_towrite;            // Testbench: value read/writen from/to memory
    /* Add $display(...) calls in the always block below to
     * print out debug information at the end of every cycle.
     *
@@ -145,6 +149,7 @@ module lc4_processor
     */
    always @(posedge gwe) begin
       // $display("%d %h %h %h %h %h", $time, f_pc, d_pc, e_pc, m_pc, test_cur_pc);
+      $display("%d %h %b", $time, test_cur_pc, test_cur_insn);
       // if (o_dmem_we)
       //   $display("%d STORE %h <= %h", $time, o_dmem_addr, o_dmem_towrite);
 
@@ -157,7 +162,6 @@ module lc4_processor
       // Try adding a $display() call that prints out the PCs of
       // each pipeline stage in hex.  Then you can easily look up the
       // instructions in the .asm files in test_data.
-
       // basic if syntax:
       // if (cond) begin
       //    ...;

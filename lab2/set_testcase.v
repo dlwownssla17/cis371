@@ -33,8 +33,8 @@
  * port to rotate the wireframe on the display.
  */
  
- `define TEST_CASE "test_alu"
-// `define TEST_CASE "test_br"
+// `define TEST_CASE "test_alu"
+`define TEST_CASE "test_br"
 // `define TEST_CASE "test_mem"
 // `define TEST_CASE "test_ld_br"
 // `define TEST_CASE "test_all"
