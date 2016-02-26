@@ -92,8 +92,9 @@ module lc4_processor
     // Reg_File
     wire [15:0] o_rs_data;
     wire [15:0] o_rt_data;
-    // MUST BE COMPUTED, SET TO ZER0 FOR NOW (really mux of alu or mem)
-    wire [15:0] i_wdata = ( is_load  == 0 ) ? ( o_alu ) : ( 16'h0000 ); // need to change this for mem
+    wire [15:0] i_wdata = ( is_load  == 1 ) ? ( 16'h0000 ) :
+                          ( is_control_insn) ? ( pc + 1 ) :
+                          ( o_alu ); // need to change this for mem
     
     lc4_regfile regfile (clk, gwe, rst, r1sel, o_rs_data, r2sel, o_rt_data, wsel, i_wdata, regfile_we);
     
@@ -118,9 +119,7 @@ module lc4_processor
         
     // PC_MUX
     assign next_pc = ( (is_control_insn) ? 1 : (o_branch && is_branch) ) ? o_alu : pc + 1;
-    
     assign o_cur_pc = pc;
-    // assign next_pc = pc + 1; // for now with ALU, not forever
     
     // Set test wires to correct outputs
     assign  test_stall = 2'b00;                         // Testbench: is this a stall cycle? (don't compare the test values)
@@ -131,9 +130,9 @@ module lc4_processor
     assign  test_regfile_data = i_wdata;                // Testbench: value to write into the register file
     assign  test_nzp_we = nzp_we;                       // Testbench: NZP condition codes write enable
 
-    assign  test_nzp_new_bits[2] = i_wdata[15];         // Testbench: value to write to NZP bits (Needs to be computed)
-    assign  test_nzp_new_bits[1] = (i_wdata == 16'h0000);
-    assign  test_nzp_new_bits[0] = (!i_wdata[15]) & (!test_nzp_new_bits[1]); // wrong in our schematic
+    assign  test_nzp_new_bits[2] = nzp_new_bits[2];         // Testbench: value to write to NZP bits (Needs to be computed)
+    assign  test_nzp_new_bits[1] = nzp_new_bits[1];
+    assign  test_nzp_new_bits[0] = nzp_new_bits[0]; // wrong in our schematic
     
     assign  test_dmem_we = o_dmem_we;                   // Testbench: data memory write enable
     assign  test_dmem_addr = o_dmem_addr;               // Testbench: address to read/write memory
