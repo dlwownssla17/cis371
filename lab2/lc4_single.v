@@ -70,14 +70,15 @@ module lc4_processor
    /*******************************
     * TODO: INSERT YOUR CODE HERE *
     *******************************/
-
+    
+    Nbit_reg #(3, 3'b000) nzp_reg (.in(nzp_new_bits), .out(curr_nzp), .clk(clk), .we(nzp_we), .gwe(gwe), .rst(rst));    
     // From the decoder
-    wire [2:0] r1sel;
+    wire [2:0]  r1sel;
     wire r1re;
-    wire [2:0] r2sel;
+    wire [2:0]  r2sel;
     wire r2re;
     wire nzp_we;
-    wire [2:0] wsel;
+    wire [2:0]  wsel;
     wire regfile_we;
     wire select_pc_plus_one;
     wire is_load;
@@ -101,7 +102,8 @@ module lc4_processor
     lc4_alu alu (i_cur_insn, pc, o_rs_data, o_rt_data, o_alu);
     
     // MEMORY
-    assign o_dmem_towrite = ( is_store ) ? o_rt_data :              
+    assign o_dmem_towrite = ( is_load ) ? o_dmem_towrite :
+                            ( is_store ) ? o_rt_data  :              
                             16'h0000;  // 0 if no load / store??? CHECK THIS
     assign o_dmem_addr = ( is_load | is_store ) ? o_alu : 16'h0000;
     assign o_dmem_we = is_store;
@@ -187,3 +189,6 @@ module lc4_processor
       // The Objects pane will update to display the wires
       // in that module.
 
+      $display();
+   end
+endmodule
