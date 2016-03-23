@@ -52,7 +52,7 @@ module lc4_processor
  Nbit_reg #(16, 16'h0000) f_pc_reg (.in(next_pc), .out(f_pc), .clk(clk), .we(1'b1), .gwe(gwe), .rst(rst));  
 
  /** RETURN! **/
- assign o_cur_pc = (is_flush) ? x_next_pc : pc + 1;
+ assign o_cur_pc = (is_flush) ? x_pc : f_pc + 1;
 
 
  assign f_insn = (is_stall) ? (d_insn) : 
@@ -84,7 +84,7 @@ module lc4_processor
  Nbit_reg #(3, 3'b000) decode_reg (.in(nzp_new_bits), .out(curr_nzp), .clk(clk), .we(d_nzp_we), .gwe(gwe), .rst(rst));  
  lc4_decoder decoder (i_cur_insn, d_r1sel, d_r1re, d_r2sel, d_r2re, d_wsel, d_regfile_we, d_nzp_we, d_select_pc_plus_one, d_is_load, d_is_store, d_is_branch, d_is_control_insn);
 
- Nbit_reg #(16, 16'h0000) d_pc_reg (.in(pc), .out(d_pc), .clk(clk), .we(nzp_we), .gwe(gwe), .rst(rst));  
+ Nbit_reg #(16, 16'h0000) d_pc_reg (.in(f_pc), .out(d_pc), .clk(clk), .we(1'b1), .gwe(gwe), .rst(rst));  
 
 
  /** EXECUTE **/
@@ -109,14 +109,14 @@ module lc4_processor
  Nbit_reg #(1, 1'b0) x_is_load_reg (.in(d_is_load), .out(x_is_load), .clk(clk), .we(x_nzp_we), .gwe(gwe), .rst(rst));  
  Nbit_reg #(1, 1'b0) x_is_store_reg (.in(d_is_store), .out(x_is_store), .clk(clk), .we(d_nzp_we), .gwe(gwe), .rst(rst));  
  Nbit_reg #(1, 1'b0) x_wsel_reg (.in(d_wsel), .out(x_wsel), .clk(clk), .we(d_nzp_we), .gwe(gwe), .rst(rst));  
- Nbit_reg #(16, 16'h0000) x_pc_reg (.in(d_pc), .out(x_pc), .clk(clk), .we(nzp_we), .gwe(gwe), .rst(rst));  
+ Nbit_reg #(16, 16'h0000) x_pc_reg (.in(d_pc), .out(x_pc), .clk(clk), .we(1'b1), .gwe(gwe), .rst(rst));  
 
  wire [15:0] o_alu;
  // Reg_File
  wire [15:0] o_rs_data;
  wire [15:0] o_rt_data;
  wire [15:0] i_wdata = ( x_is_load  == 1 ) ? ( i_cur_dmem_data ) :
- ( x_is_control_insn) ? ( pc + 1 ) :
+ ( x_is_control_insn) ? ( x_pc + 1 ) :
  ( o_alu );
 
  lc4_regfile regfile (clk, gwe, rst, x_r1sel, o_rs_data, x_r2sel, o_rt_data, x_wsel, i_wdata, x_regfile_we);
@@ -125,11 +125,11 @@ module lc4_processor
  // BYPASS:
  wire [15:0] alu_1;
  assign alu_1 = ( (x_r1sel == m_wsel) && (m_regfile_we && m_is_load) ) ? m_oresult : 
- ( (x_r1sel == w_wsel) && (w_regfile_we) ) ? w_oresult : r1data;
+ ( (x_r1sel == w_wsel) && (w_regfile_we) ) ? w_oresult : x_r1data;
 
  wire [15:0] alu_2;
  assign alu_2 = ( (x_r2sel == m_wsel) && (m_regfile_we && m_is_load) ) ? m_wdata : 
- ( (x_r2sel == w_wsel) && (w_regfile_we) ) ? w_wdata : r2data;
+ ( (x_r2sel == w_wsel) && (w_regfile_we) ) ? w_wdata : x_r2data;
 
  // ALU
  lc4_alu alu (x_insn, x_pc, alu_1, alu_2, o_alu);
@@ -150,12 +150,14 @@ module lc4_processor
  wire m_is_store;
  wire m_is_control_insn;
  wire m_is_branch;
- wire m_wsel [2:0];
+ wire [2:0] m_wsel;
  wire m_regfile_we;
  wire m_nzp_we;
  wire m_r1data;
      wire m_r2data;
      wire [2:0] m_nzp;
+     wire [15:0] m_oresult;
+     wire [15:0] m_wdata;
    Nbit_reg #(3, 3'b000) mem_reg (.in(nzp_new_bits), .out(curr_nzp), .clk(clk), .we(m_nzp_we), .gwe(gwe), .rst(rst));  
    
       Nbit_reg #(1, 1'b0) m_is_load_reg (.in(x_is_load), .out(m_is_load), .clk(clk), .we(x_nzp_we), .gwe(gwe), .rst(rst));  
@@ -180,6 +182,8 @@ module lc4_processor
      wire w_nzp_we;
      wire w_r1data;
      wire w_r2data;
+        wire [15:0] w_wdata;
+     wire [15:0] w_oresult;
      
      Nbit_reg #(1, 1'b0) w_is_load_reg (.in(m_is_load), .out(w_is_load), .clk(clk), .we(x_nzp_we), .gwe(gwe), .rst(rst));  
      Nbit_reg #(1, 1'b0) w_is_store_reg (.in(m_is_store), .out(w_is_store), .clk(clk), .we(d_nzp_we), .gwe(gwe), .rst(rst));  
@@ -193,7 +197,7 @@ module lc4_processor
     
    
     assign o_dmem_towrite = //( is_load ) ? o_dmem_towrite :
-                            ( is_store ) ? o_rt_data  :              
+                            ( m_is_store ) ? o_rt_data  :              
                             16'h0000;  // 0 if no load / store??? CHECK THIS
     assign o_dmem_addr = ( w_is_load | w_is_store ) ? o_alu : 16'h0000;
     assign o_dmem_we = w_is_store;
@@ -208,7 +212,7 @@ module lc4_processor
     wire o_branch = !( ( i_cur_insn[11:9] & curr_nzp ) == 3'b000);
         
     // PC_MUX
-    assign next_pc = ( (is_control_insn) ? 1 : (o_branch && is_branch) ) ? o_alu : pc + 1;
+    assign next_pc = 16'h0000;//( (is_control_insn) ? 1 : (o_branch && is_branch) ) ? o_alu : pc + 1;
     //assign o_cur_pc = pc;
    
    
