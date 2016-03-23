@@ -4,42 +4,216 @@
 `default_nettype none
 
 module lc4_processor
-   (input  wire        clk,                // main clock
-    input  wire        rst,                // global reset
-    input  wire        gwe,                // global we for single-step clock
-                                    
-    output wire [15:0] o_cur_pc,           // Address to read from instruction memory
-    input  wire [15:0] i_cur_insn,         // Output of instruction memory
-    output wire [15:0] o_dmem_addr,        // Address to read/write from/to data memory
-    input  wire [15:0] i_cur_dmem_data,    // Output of data memory
-    output wire        o_dmem_we,          // Data memory write enable
-    output wire [15:0] o_dmem_towrite,     // Value to write to data memory
-   
-    output wire [1:0]  test_stall,         // Testbench: is this is stall cycle? (don't compare the test values)
-    output wire [15:0] test_cur_pc,        // Testbench: program counter
-    output wire [15:0] test_cur_insn,      // Testbench: instruction bits
-    output wire        test_regfile_we,    // Testbench: register file write enable
-    output wire [2:0]  test_regfile_wsel,  // Testbench: which register to write in the register file 
-    output wire [15:0] test_regfile_data,  // Testbench: value to write into the register file
-    output wire        test_nzp_we,        // Testbench: NZP condition codes write enable
-    output wire [2:0]  test_nzp_new_bits,  // Testbench: value to write to NZP bits
-    output wire        test_dmem_we,       // Testbench: data memory write enable
-    output wire [15:0] test_dmem_addr,     // Testbench: address to read/write memory
-    output wire [15:0] test_dmem_data,     // Testbench: value read/writen from/to memory
-   
-   
-    // State of the zedboard switches, LCD and LEDs
-    // You are welcome to use the Zedboard's LCD number display and LEDs
-    // for debugging purposes, but it isn't terribly useful.  Ditto for
-    // reading the switch positions from the Zedboard
+(input  wire        clk,                // main clock
+ input  wire        rst,                // global reset
+ input  wire        gwe,                // global we for single-step clock
 
-    input  wire [7:0]  switch_data,        // Current settings of the Zedboard switches
-    output wire [15:0] seven_segment_data, // Data to display to the Zedboard LCD
-    output wire [7:0]  led_data            // Which Zedboard LEDs should be turned on?
+ output wire [15:0] o_cur_pc,           // Address to read from instruction memory
+ input  wire [15:0] i_cur_insn,         // Output of instruction memory
+ output wire [15:0] o_dmem_addr,        // Address to read/write from/to data memory
+ input  wire [15:0] i_cur_dmem_data,    // Output of data memory
+ output wire        o_dmem_we,          // Data memory write enable
+ output wire [15:0] o_dmem_towrite,     // Value to write to data memory
 
-    );
+ output wire [1:0]  test_stall,         // Testbench: is this is stall cycle? (don't compare the test values)
+ output wire [15:0] test_cur_pc,        // Testbench: program counter
+ output wire [15:0] test_cur_insn,      // Testbench: instruction bits
+ output wire        test_regfile_we,    // Testbench: register file write enable
+ output wire [2:0]  test_regfile_wsel,  // Testbench: which register to write in the register file 
+ output wire [15:0] test_regfile_data,  // Testbench: value to write into the register file
+ output wire        test_nzp_we,        // Testbench: NZP condition codes write enable
+ output wire [2:0]  test_nzp_new_bits,  // Testbench: value to write to NZP bits
+ output wire        test_dmem_we,       // Testbench: data memory write enable
+ output wire [15:0] test_dmem_addr,     // Testbench: address to read/write memory
+ output wire [15:0] test_dmem_data,     // Testbench: value read/writen from/to memory
+
+
+ // State of the zedboard switches, LCD and LEDs
+ // You are welcome to use the Zedboard's LCD number display and LEDs
+ // for debugging purposes, but it isn't terribly useful.  Ditto for
+ // reading the switch positions from the Zedboard
+
+ input  wire [7:0]  switch_data,        // Current settings of the Zedboard switches
+ output wire [15:0] seven_segment_data, // Data to display to the Zedboard LCD
+ output wire [7:0]  led_data            // Which Zedboard LEDs should be turned on?
+
+ );
+
+ /*** YOUR CODE HERE ***/
+
+ /** FETCH **/
+ wire f_pc[15:0];
+ wire f_insn[15:0];
+ wire next_pc[15:0];
+
+ Nbit_reg #(16, 16'h0000) f_pc_reg (.in(next_pc), .out(pc), .clk(clk), .we(nzp_we), .gwe(gwe), .rst(rst));  
+
+ /** RETURN! **/
+ assign o_cur_pc = (is_flush) ? x_next_pc : pc + 1;
+
+
+ assign f_insn = (is_stall) ? (d_insn) : 
+ (is_flush) ? (16'h0000) : i_cur_insn;
+
+
+
+
+ /** DECODE **/
+ // From the decoder
+ wire d_pc [15:0];
+ wire d_insn [15:0];
+ wire d_r1sel [2:0];
+ wire d_r2sel [2:0];
+ wire d_r1re;
+ wire d_r2re;
+ wire d_select_pc_plus_one;
+ wire d_is_load;
+ wire d_is_store;
+ wire d_is_control_insn;
+ wire d_is_branch;
+ wire d_wsel [2:0];
+ wire d_regfile_we;
+ wire d_nzp_we;
+ wire d_r1data;
+ wire d_r2data;
+ wire is_stall;
+ wire is_flush;
+
+ Nbit_reg #(3, 3'b000) decode_reg (.in(nzp_new_bits), .out(curr_nzp), .clk(clk), .we(d_nzp_we), .gwe(gwe), .rst(rst));  
+ lc4_decoder decoder (i_cur_insn, d_r1sel, d_r1re, d_r2sel, d_r2re, d_wsel, d_regfile_we, d_nzp_we, d_select_pc_plus_one, d_is_load, d_is_store, d_is_branch, d_is_control_insn);
+
+ Nbit_reg #(16, 16'h0000) d_pc_reg (.in(pc), .out(d_pc), .clk(clk), .we(nzp_we), .gwe(gwe), .rst(rst));  
+
+
+ /** EXECUTE **/
+
+ wire x_pc [15:0];
+ wire x_insn [15:0];
+ wire x_r1sel [2:0];
+ wire x_r2sel [2:0];
+ wire x_r1re;
+ wire x_r2re;
+ wire x_select_pc_plus_one;
+ wire x_is_load;
+ wire x_is_store;
+ wire x_is_control_insn;
+ wire x_is_branch;
+ wire x_wsel [2:0];
+ wire x_regfile_we;
+ wire x_nzp_we;
+ wire x_r1data;
+ wire x_r2data;
+ wire x_pc [15:0];
+ Nbit_reg #(1, 1'b0) x_is_load_reg (.in(d_is_load), .out(x_is_load), .clk(clk), .we(x_nzp_we), .gwe(gwe), .rst(rst));  
+ Nbit_reg #(1, 1'b0) x_is_store_reg (.in(d_is_store), .out(x_is_store), .clk(clk), .we(d_nzp_we), .gwe(gwe), .rst(rst));  
+ Nbit_reg #(1, 1'b0) x_wsel_reg (.in(d_wsel), .out(x_wsel), .clk(clk), .we(d_nzp_we), .gwe(gwe), .rst(rst));  
+ Nbit_reg #(16, 16'h0000) x_pc_reg (.in(d_pc), .out(x_pc), .clk(clk), .we(nzp_we), .gwe(gwe), .rst(rst));  
+
+ wire [15:0] o_alu;
+ // Reg_File
+ wire [15:0] o_rs_data;
+ wire [15:0] o_rt_data;
+ wire [15:0] i_wdata = ( x_is_load  == 1 ) ? ( i_cur_dmem_data ) :
+ ( x_is_control_insn) ? ( pc + 1 ) :
+ ( o_alu );
+
+ lc4_regfile regfile (clk, gwe, rst, x_r1sel, o_rs_data, x_r2sel, o_rt_data, x_wsel, i_wdata, x_regfile_we);
+
+
+ // BYPASS:
+ wire alu_1 [15:0];
+ assign alu_1 = ( (x_r1sel == m_wsel) && (m_regfile_we && m_is_load) ) ? m_oresult : 
+ ( (x_r1sel == w_wsel) && (w_regfile_we) ) ? w_oresult : r1data;
+
+ wire alu_2 [15:0];
+ assign alu_2 = ( (x_r2sel == m_wsel) && (m_regfile_we && m_is_load) ) ? m_wdata : 
+ ( (x_r2sel == w_wsel) && (w_regfile_we) ) ? w_wdata : r2data;
+
+ // ALU
+ lc4_alu alu (x_insn, x_pc, alu_1, alu_2, o_alu);
+
+ wire [2:0]  x_nzp;
+ assign x_nzp[2] = i_wdata[15];
+ assign x_nzp[1] = (i_wdata == 16'h0000);
+ assign x_nzp[0] = (!i_wdata[15]) & (!nzp_new_bits[1]);
+
+
+ /** MEMORY **/
+ wire m_r1sel [2:0];
+ wire m_r2sel [2:0];
+ wire m_r1re;
+ wire m_r2re;
+ wire m_select_pc_plus_one;
+ wire m_is_load;
+ wire m_is_store;
+ wire m_is_control_insn;
+ wire m_is_branch;
+ wire m_wsel [2:0];
+ wire m_regfile_we;
+ wire m_nzp_we;
+ wire m_r1data;
+     wire m_r2data;
+     wire m_nzp [2:0];
+   Nbit_reg #(3, 3'b000) mem_reg (.in(nzp_new_bits), .out(curr_nzp), .clk(clk), .we(m_nzp_we), .gwe(gwe), .rst(rst));  
    
-   /*** YOUR CODE HERE ***/
+      Nbit_reg #(1, 1'b0) m_is_load_reg (.in(x_is_load), .out(m_is_load), .clk(clk), .we(x_nzp_we), .gwe(gwe), .rst(rst));  
+      Nbit_reg #(1, 1'b0) m_is_store_reg (.in(x_is_store), .out(m_is_store), .clk(clk), .we(d_nzp_we), .gwe(gwe), .rst(rst));  
+      Nbit_reg #(1, 1'b0) m_wsel_reg (.in(x_wsel), .out(m_wsel), .clk(clk), .we(d_nzp_we), .gwe(gwe), .rst(rst));  
+      Nbit_reg #(3, 3'b000) m_nzp_reg (.in(x_nzp), .out(m_nzp), .clk(clk), .we(w_nzp_we), .gwe(gwe), .rst(rst));    
+    
+   
+      
+   /** WRITEBACK **/
+     wire w_r1sel [2:0];
+     wire w_r2sel [2:0];
+     wire w_r1re;
+     wire w_r2re;
+     wire w_select_pc_plus_one;
+     wire w_is_load;
+     wire w_is_store;
+     wire w_is_control_insn;
+     wire w_is_branch;
+     wire w_wsel [2:0];
+     wire w_regfile_we;
+     wire w_nzp_we;
+     wire w_r1data;
+     wire w_r2data;
+     
+     Nbit_reg #(1, 1'b0) w_is_load_reg (.in(m_is_load), .out(w_is_load), .clk(clk), .we(x_nzp_we), .gwe(gwe), .rst(rst));  
+     Nbit_reg #(1, 1'b0) w_is_store_reg (.in(m_is_store), .out(w_is_store), .clk(clk), .we(d_nzp_we), .gwe(gwe), .rst(rst));  
+     Nbit_reg #(1, 1'b0) w_wsel_reg (.in(m_wsel), .out(w_wsel), .clk(clk), .we(d_nzp_we), .gwe(gwe), .rst(rst));  
+
+     Nbit_reg #(3, 3'b000) write_reg (.in(nzp_new_bits), .out(curr_nzp), .clk(clk), .we(w_nzp_we), .gwe(gwe), .rst(rst));  
+  
+     Nbit_reg #(3, 3'b000) nzp_reg (.in(nzp_new_bits), .out(curr_nzp), .clk(clk), .we(w_nzp_we), .gwe(gwe), .rst(rst));    
+   
+   
+    
+   
+    assign o_dmem_towrite = //( is_load ) ? o_dmem_towrite :
+                            ( is_store ) ? o_rt_data  :              
+                            16'h0000;  // 0 if no load / store??? CHECK THIS
+    assign o_dmem_addr = ( w_is_load | w_is_store ) ? o_alu : 16'h0000;
+    assign o_dmem_we = w_is_store;
+            
+    wire [2:0]  nzp_new_bits;
+    assign nzp_new_bits[2] = i_wdata[15];
+    assign nzp_new_bits[1] = (i_wdata == 16'h0000);
+    assign nzp_new_bits[0] = (!i_wdata[15]) & (!nzp_new_bits[1]);
+    
+    // BRANCH LOGIC
+    wire [2:0] curr_nzp; // TODO: change this
+    wire o_branch = !( ( i_cur_insn[11:9] & curr_nzp ) == 3'b000);
+        
+    // PC_MUX
+    assign next_pc = ( (is_control_insn) ? 1 : (o_branch && is_branch) ) ? o_alu : pc + 1;
+    //assign o_cur_pc = pc;
+   
+   
+   
+   
+   
+   
 
    /* Add $display(...) calls in the always block below to
     * print out debug information at the end of every cycle.
