@@ -1,0 +1,22 @@
+# compile verilog/system verilog design source files
+verilog xil_defaultlib  "../../../include/register.v" --include "../../../" --include "../../../include"
+verilog xil_defaultlib  "../../../include/bram.v" --include "../../../" --include "../../../include"
+verilog xil_defaultlib  "../../../include/delay_eight_cycles.v" --include "../../../" --include "../../../include"
+verilog xil_defaultlib  "../../../include/svga_timing_generation.v" --include "../../../" --include "../../../include"
+verilog xil_defaultlib  "../../../include/video_out.v" --include "../../../" --include "../../../include"
+verilog xil_defaultlib  "../../../lc4_pipeline.v" --include "../../../" --include "../../../include"
+verilog xil_defaultlib  "../../../include/lc4_memory.v" --include "../../../" --include "../../../include"
+verilog xil_defaultlib  "../../../include/fake_pb_kbd.v" --include "../../../" --include "../../../include"
+verilog xil_defaultlib  "../../../include/one_pulse.v" --include "../../../" --include "../../../include"
+verilog xil_defaultlib  "../../../include/clock_util.v" --include "../../../" --include "../../../include"
+verilog xil_defaultlib  "../../../include/clkdiv.v" --include "../../../" --include "../../../include"
+verilog xil_defaultlib  "../../../include/timer.v" --include "../../../" --include "../../../include"
+verilog xil_defaultlib  "../../../include/clkgen.v" --include "../../../" --include "../../../include"
+verilog xil_defaultlib  "../../../include/vga_controller.v" --include "../../../" --include "../../../include"
+verilog xil_defaultlib  "../../../lc4_system.v" --include "../../../" --include "../../../include"
+
+# compile glbl module
+verilog xil_defaultlib "glbl.v"
+
+# Do not sort compile order
+nosort
