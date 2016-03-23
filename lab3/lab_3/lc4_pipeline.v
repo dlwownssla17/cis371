@@ -105,7 +105,6 @@ module lc4_processor
  wire x_nzp_we;
  wire x_r1data;
  wire x_r2data;
- wire [15:0] x_pc;
  Nbit_reg #(1, 1'b0) x_is_load_reg (.in(d_is_load), .out(x_is_load), .clk(clk), .we(x_nzp_we), .gwe(gwe), .rst(rst));  
  Nbit_reg #(1, 1'b0) x_is_store_reg (.in(d_is_store), .out(x_is_store), .clk(clk), .we(d_nzp_we), .gwe(gwe), .rst(rst));  
  Nbit_reg #(1, 1'b0) x_wsel_reg (.in(d_wsel), .out(x_wsel), .clk(clk), .we(d_nzp_we), .gwe(gwe), .rst(rst));  
@@ -216,7 +215,24 @@ module lc4_processor
     //assign o_cur_pc = pc;
    
    
+ 
    
+       // Set test wires to correct outputs
+    assign  test_stall = 2'b00;                                             // Testbench: is this a stall cycle? (don't compare the test values)
+    assign  test_cur_pc = f_pc;                                               // Testbench: program counter
+    assign  test_cur_insn = i_cur_insn;                                     // Testbench: instruction bits
+    assign  test_regfile_we = w_regfile_we;                                   // Testbench: register file write enable
+    assign  test_regfile_wsel = w_wsel;                                       // Testbench: which register to write in the register file 
+    assign  test_regfile_data = 16'h0000;                                    // Testbench: value to write into the register file
+    assign  test_nzp_we = 1'b1;                                           // Testbench: NZP condition codes write enable
+
+    assign  test_nzp_new_bits[2] = 1'b1;                         // Testbench: value to write to NZP bits (Needs to be computed)
+    assign  test_nzp_new_bits[1] = 1'b0;
+    assign  test_nzp_new_bits[0] = 1'b0;                         // wrong in our schematic
+    
+    assign  test_dmem_we = o_dmem_we;                                       // Testbench: data memory write enable
+    assign  test_dmem_addr = o_dmem_addr;                                   // Testbench: address to read/write memory
+    assign  test_dmem_data = 16'h0000;;  // Testbench: value read/writen from/to memory
    
    
    
