@@ -41,12 +41,15 @@ module lc4_processor
 
  /*** YOUR CODE HERE ***/
 
+ wire is_stall;
+ wire is_flush;
+ 
  /** FETCH **/
- wire f_pc[15:0];
- wire f_insn[15:0];
- wire next_pc[15:0];
+ wire [15:0] f_pc;
+ wire [15:0]f_insn;
+ wire [15:0] next_pc;
 
- Nbit_reg #(16, 16'h0000) f_pc_reg (.in(next_pc), .out(pc), .clk(clk), .we(nzp_we), .gwe(gwe), .rst(rst));  
+ Nbit_reg #(16, 16'h0000) f_pc_reg (.in(next_pc), .out(f_pc), .clk(clk), .we(1'b1), .gwe(gwe), .rst(rst));  
 
  /** RETURN! **/
  assign o_cur_pc = (is_flush) ? x_next_pc : pc + 1;
@@ -60,10 +63,10 @@ module lc4_processor
 
  /** DECODE **/
  // From the decoder
- wire d_pc [15:0];
- wire d_insn [15:0];
- wire d_r1sel [2:0];
- wire d_r2sel [2:0];
+ wire [15:0] d_pc;
+ wire [15:0] d_insn;
+ wire [2:0] d_r1sel;
+ wire [2:0] d_r2sel;
  wire d_r1re;
  wire d_r2re;
  wire d_select_pc_plus_one;
@@ -71,13 +74,12 @@ module lc4_processor
  wire d_is_store;
  wire d_is_control_insn;
  wire d_is_branch;
- wire d_wsel [2:0];
+ wire [2:0] d_wsel;
  wire d_regfile_we;
  wire d_nzp_we;
  wire d_r1data;
  wire d_r2data;
- wire is_stall;
- wire is_flush;
+
 
  Nbit_reg #(3, 3'b000) decode_reg (.in(nzp_new_bits), .out(curr_nzp), .clk(clk), .we(d_nzp_we), .gwe(gwe), .rst(rst));  
  lc4_decoder decoder (i_cur_insn, d_r1sel, d_r1re, d_r2sel, d_r2re, d_wsel, d_regfile_we, d_nzp_we, d_select_pc_plus_one, d_is_load, d_is_store, d_is_branch, d_is_control_insn);
@@ -87,10 +89,10 @@ module lc4_processor
 
  /** EXECUTE **/
 
- wire x_pc [15:0];
- wire x_insn [15:0];
- wire x_r1sel [2:0];
- wire x_r2sel [2:0];
+ wire [15:0] x_pc;
+ wire [15:0] x_insn;
+ wire [15:0] x_r1sel;
+ wire [15:0] x_r2sel;
  wire x_r1re;
  wire x_r2re;
  wire x_select_pc_plus_one;
@@ -98,12 +100,12 @@ module lc4_processor
  wire x_is_store;
  wire x_is_control_insn;
  wire x_is_branch;
- wire x_wsel [2:0];
+ wire [2:0] x_wsel;
  wire x_regfile_we;
  wire x_nzp_we;
  wire x_r1data;
  wire x_r2data;
- wire x_pc [15:0];
+ wire [15:0] x_pc;
  Nbit_reg #(1, 1'b0) x_is_load_reg (.in(d_is_load), .out(x_is_load), .clk(clk), .we(x_nzp_we), .gwe(gwe), .rst(rst));  
  Nbit_reg #(1, 1'b0) x_is_store_reg (.in(d_is_store), .out(x_is_store), .clk(clk), .we(d_nzp_we), .gwe(gwe), .rst(rst));  
  Nbit_reg #(1, 1'b0) x_wsel_reg (.in(d_wsel), .out(x_wsel), .clk(clk), .we(d_nzp_we), .gwe(gwe), .rst(rst));  
@@ -121,11 +123,11 @@ module lc4_processor
 
 
  // BYPASS:
- wire alu_1 [15:0];
+ wire [15:0] alu_1;
  assign alu_1 = ( (x_r1sel == m_wsel) && (m_regfile_we && m_is_load) ) ? m_oresult : 
  ( (x_r1sel == w_wsel) && (w_regfile_we) ) ? w_oresult : r1data;
 
- wire alu_2 [15:0];
+ wire [15:0] alu_2;
  assign alu_2 = ( (x_r2sel == m_wsel) && (m_regfile_we && m_is_load) ) ? m_wdata : 
  ( (x_r2sel == w_wsel) && (w_regfile_we) ) ? w_wdata : r2data;
 
@@ -139,8 +141,8 @@ module lc4_processor
 
 
  /** MEMORY **/
- wire m_r1sel [2:0];
- wire m_r2sel [2:0];
+ wire [2:0] m_r1sel;
+ wire [2:0] m_r2sel;
  wire m_r1re;
  wire m_r2re;
  wire m_select_pc_plus_one;
@@ -153,7 +155,7 @@ module lc4_processor
  wire m_nzp_we;
  wire m_r1data;
      wire m_r2data;
-     wire m_nzp [2:0];
+     wire [2:0] m_nzp;
    Nbit_reg #(3, 3'b000) mem_reg (.in(nzp_new_bits), .out(curr_nzp), .clk(clk), .we(m_nzp_we), .gwe(gwe), .rst(rst));  
    
       Nbit_reg #(1, 1'b0) m_is_load_reg (.in(x_is_load), .out(m_is_load), .clk(clk), .we(x_nzp_we), .gwe(gwe), .rst(rst));  
@@ -164,8 +166,8 @@ module lc4_processor
    
       
    /** WRITEBACK **/
-     wire w_r1sel [2:0];
-     wire w_r2sel [2:0];
+     wire [2:0] w_r1sel;
+     wire [2:0] w_r2sel;
      wire w_r1re;
      wire w_r2re;
      wire w_select_pc_plus_one;
@@ -173,7 +175,7 @@ module lc4_processor
      wire w_is_store;
      wire w_is_control_insn;
      wire w_is_branch;
-     wire w_wsel [2:0];
+     wire [2:0] w_wsel;
      wire w_regfile_we;
      wire w_nzp_we;
      wire w_r1data;
