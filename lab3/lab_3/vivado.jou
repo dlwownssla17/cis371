@@ -1,0 +1,26 @@
+#-----------------------------------------------------------
+# Vivado v2015.4 (64-bit)
+# SW Build 1412921 on Wed Nov 18 09:43:45 MST 2015
+# IP Build 1412160 on Tue Nov 17 13:47:24 MST 2015
+# Start of session at: Tue Mar 22 20:23:16 2016
+# Process ID: 26856
+# Current directory: C:/Users/Hannes/lab2/lab3/lab_3
+# Command line: vivado.exe -gui_launcher_event rodinguilauncherevent29352 C:\Users\Hannes\lab2\lab3\lab_3\lab3.xpr
+# Log file: C:/Users/Hannes/lab2/lab3/lab_3/vivado.log
+# Journal file: C:/Users/Hannes/lab2/lab3/lab_3\vivado.jou
+#-----------------------------------------------------------
+start_gui
+open_project C:/Users/Hannes/lab2/lab3/lab_3/lab3.xpr
+reset_run synth_1
+launch_runs synth_1
+wait_on_run synth_1
+launch_simulation
+source lc4_system.tcl
+close_sim
+update_compile_order -fileset sources_1
+reset_run synth_1
+launch_runs synth_1
+wait_on_run synth_1
+reset_run synth_1
+launch_runs synth_1
+wait_on_run synth_1
