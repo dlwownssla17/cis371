@@ -89,13 +89,22 @@ module lc4_processor
     wire [2:0] d_wsel;
     wire d_regfile_we;
     wire d_nzp_we;
+    wire [0:15] d_ort_data;
+    wire [0:15] d_ors_data;
     wire [0:15] d_rt_data;
     wire [0:15] d_rs_data;
     
     /********** DECODE STAGE IMPLEMENTATION **********/
     lc4_decoder decoder (d_insn, d_r1sel, d_r1re, d_r2sel, d_r2re, d_wsel, d_regfile_we, d_nzp_we, d_select_pc_plus_one, d_is_load, d_is_store, d_is_branch, d_is_control_insn);
-    lc4_regfile regfile (clk, gwe, rst, d_r1sel, d_rs_data, x_r2sel, d_rt_data, w_wsel, w_oresult, w_regfile_we);
-  
+    lc4_regfile regfile (clk, gwe, rst, d_r1sel, d_ors_data, d_r2sel, d_ort_data, w_wsel, w_oresult, w_regfile_we);
+    
+    assign d_rs_data = (d_r1sel == w_wsel && w_regfile_we) ? w_oresult : d_ors_data;
+    assign d_rt_data = (d_r2sel == w_wsel && w_regfile_we) ? w_oresult : d_ort_data;
+    
+    //assign alu_1 =  ( (x_r1sel == m_wsel) && (m_regfile_we) ) ? m_oresult : 
+    //                    ( (x_r1sel == w_wsel) && (w_regfile_we) ) ? w_oresult : x_r1data;
+
+    
     /*********************************************************************************************************************/
     /****************************************************** EXECUTE ******************************************************/
     /*********************************************************************************************************************/
@@ -183,8 +192,8 @@ module lc4_processor
     wire [2:0] m_wsel;
     wire m_regfile_we;
     wire m_nzp_we;
-    wire m_r1data;
-    wire m_r2data;
+    wire [15:0] m_r1data;
+    wire [15:0] m_r2data;
     wire [2:0] m_nzp_bits;
     wire [15:0] m_oresult;
     wire [15:0] m_wdata;
@@ -242,8 +251,8 @@ module lc4_processor
     wire [2:0] w_wsel;
     wire w_regfile_we;
     wire w_nzp_we;
-    wire w_r1data;
-    wire w_r2data;
+    wire [15:0] w_r1data;
+    wire [15:0] w_r2data;
     wire [15:0] w_wdata;
     wire [15:0] w_oresult;
     wire [2:0] w_nzp_bits;
@@ -324,7 +333,7 @@ module lc4_processor
       $display("%d %h %h %h %h %h", $time, f_pc, d_pc, x_pc, m_pc, w_pc);
       $display("%d %h %h %h %h %h", $time, f_insn, d_insn, x_insn, m_insn, w_insn);
       // $write("pc: %h insn: %h (", w_pc, w_insn); pinstr(w_insn); $display(")");
-      $display("INSTRUCTION %h WROTE VALUE %h TO REGISTER %d", w_insn, w_oresult, w_wsel);
+      $display("INSTRUCTION %b WROTE VALUE %h TO REGISTER %d", w_insn, w_oresult, w_wsel);
       // $display("%d %h %b", $time, f_pc, f_insn);
       // $display("%d %h %b", $time, d_pc, d_insn);
       // if (o_dmem_we)
