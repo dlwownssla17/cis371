@@ -40,8 +40,10 @@ module lc4_processor
  );
 
     /*** YOUR CODE HERE ***/
-    wire is_stall = 0;
+    // IMPLEMENT STALL AND FLUSH LOGIC NEXT WEEK
+    wire [2:0] is_stall = 0;
     wire is_flush = 0; 
+    wire [1:0] f_stall = 0;
     /** FETCH **/
     wire [15:0] f_pc;
     wire [15:0] f_insn;
@@ -57,10 +59,15 @@ module lc4_processor
     
     /** DECODE **/
     wire [15:0] d_pc;
-    wire [15:0] d_insn;
+    wire [15:0] d_insn;    
+    wire [1:0] d_stall;
+
     /** FROM FETCH TO DECODE **/    
     Nbit_reg #(16, 16'h0000)    d_pc_reg    (.in(f_pc), .out(d_pc), .clk(clk), .we(1'b1), .gwe(gwe), .rst(rst));
     Nbit_reg #(16, 16'h0000)    d_insn_reg  (.in(f_insn), .out(d_insn), .clk(clk), .we(1'b1), .gwe(gwe), .rst(rst));
+    
+    // MIGHT NEED TO CHANGE THIS NEXT WEEK
+    Nbit_reg #(2, 2'b10)        d_stall_reg (.in(f_stall), .out(d_stall), .clk(clk), .we(1'b1), .gwe(gwe), .rst(rst));
     
     // From the decoder
     wire [2:0] d_r1sel;
@@ -77,7 +84,7 @@ module lc4_processor
     wire d_nzp_we;
     wire [0:15] d_rt_data;
     wire [0:15] d_rs_data;
-
+    
     /********** DECODE STAGE IMPLEMENTATION **********/
     lc4_decoder decoder (d_insn, d_r1sel, d_r1re, d_r2sel, d_r2re, d_wsel, d_regfile_we, d_nzp_we, d_select_pc_plus_one, d_is_load, d_is_store, d_is_branch, d_is_control_insn);
     lc4_regfile regfile (clk, gwe, rst, d_r1sel, d_rs_data, x_r2sel, d_rt_data, w_wsel, w_oresult, w_regfile_we);
@@ -101,6 +108,8 @@ module lc4_processor
     wire [15:0] x_r1data;
     wire [15:0] x_r2data;
    
+    wire [1:0] x_stall;
+   
     /** FROM DECODE TO EXECUTE **/ 
     Nbit_reg #(16, 16'h0000)    x_pc_reg                    (.in(d_pc), .out(x_pc), .clk(clk), .we(1'b1), .gwe(gwe), .rst(rst));
     Nbit_reg #(16, 16'h0000)    x_insn_reg                  (.in(d_insn), .out(x_insn), .clk(clk), .we(1'b1), .gwe(gwe), .rst(rst));
@@ -118,6 +127,9 @@ module lc4_processor
     Nbit_reg #(1, 1'b0)         x_nzp_we_reg                (.in(d_nzp_we), .out(x_nzp_we), .clk(clk), .we(1'b1), .gwe(gwe), .rst(rst));
     Nbit_reg #(16, 16'h0000)    x_r1data_reg                (.in(d_rs_data), .out(x_r1data), .clk(clk), .we(1'b1), .gwe(gwe), .rst(rst));
     Nbit_reg #(16, 16'h0000)    x_r2data_reg                (.in(d_rt_data), .out(x_r2data), .clk(clk), .we(1'b1), .gwe(gwe), .rst(rst));
+    
+    // MIGHT NEED TO CHANGE THIS NEXT WEEK 
+    Nbit_reg #(2, 2'b10)        x_stall_reg (.in(d_stall), .out(x_stall), .clk(clk), .we(1'b1), .gwe(gwe), .rst(rst));
     
     wire [2:0] curr_nzp; // FROM REGFILE
     
@@ -166,6 +178,8 @@ module lc4_processor
     wire [15:0] m_oresult;
     wire [15:0] m_wdata;
     
+    wire [1:0] m_stall;
+    
     /** FROM EXECUTE TO MEMORY **/
     Nbit_reg #(16, 16'h0000)    m_pc_reg                    (.in(x_pc), .out(m_pc), .clk(clk), .we(1'b1), .gwe(gwe), .rst(rst));
     Nbit_reg #(16, 16'h0000)    m_insn_reg                  (.in(x_insn), .out(m_insn), .clk(clk), .we(1'b1), .gwe(gwe), .rst(rst));
@@ -184,6 +198,9 @@ module lc4_processor
     Nbit_reg #(16, 16'h0000)    m_r1data_reg                (.in(x_r1data), .out(m_r1data), .clk(clk), .we(1'b1), .gwe(gwe), .rst(rst));
     Nbit_reg #(16, 16'h0000)    m_r2data_reg                (.in(x_r2data), .out(m_r2data), .clk(clk), .we(1'b1), .gwe(gwe), .rst(rst));
     Nbit_reg #(3, 3'b000)       m_nzp_reg                   (.in(x_nzp_bits), .out(m_nzp_bits), .clk(clk), .we(1'b1), .gwe(gwe), .rst(rst));
+    
+    // MIGHT NEED TO CHANGE THIS NEXT WEEK 
+    Nbit_reg #(2, 2'b10)        m_stall_reg (.in(x_stall), .out(m_stall), .clk(clk), .we(1'b1), .gwe(gwe), .rst(rst));
     
     /** SPECIAL FROM EXECUTE **/
     Nbit_reg #(16, 16'h0000)    m_oresult_reg                (.in(x_oresult), .out(m_oresult), .clk(clk), .we(1'b1), .gwe(gwe), .rst(rst));
@@ -217,6 +234,8 @@ module lc4_processor
     wire [15:0] w_oresult;
     wire [2:0] w_nzp_bits;
     
+    wire [1:0] w_stall;
+    
     /** FROM MEMORY TO WRITEBACK **/
     Nbit_reg #(16, 16'h0000)    w_pc_reg                    (.in(m_pc), .out(w_pc), .clk(clk), .we(1'b1), .gwe(gwe), .rst(rst));
     Nbit_reg #(16, 16'h0000)    w_insn_reg                  (.in(m_insn), .out(w_insn), .clk(clk), .we(1'b1), .gwe(gwe), .rst(rst));
@@ -236,6 +255,9 @@ module lc4_processor
     Nbit_reg #(16, 16'h0000)    w_r2data_reg                (.in(m_r2data), .out(w_r2data), .clk(clk), .we(1'b1), .gwe(gwe), .rst(rst));
     Nbit_reg #(3, 3'b000)       w_nzp_reg                   (.in(m_nzp_bits), .out(w_nzp_bits), .clk(clk), .we(1'b1), .gwe(gwe), .rst(rst));
 
+    // MIGHT NEED TO CHANGE THIS NEXT WEEK 
+    Nbit_reg #(2, 2'b10)        w_stall_reg (.in(m_stall), .out(w_stall), .clk(clk), .we(1'b1), .gwe(gwe), .rst(rst));
+
     /** SPECIAL FROM MEMORY **/
     Nbit_reg #(16, 16'h0000)    w_oresult_reg               (.in(m_oresult), .out(w_oresult), .clk(clk), .we(1'b1), .gwe(gwe), .rst(rst));
 
@@ -254,7 +276,7 @@ module lc4_processor
 
 
     // Set test wires to correct outputs
-    assign  test_stall = 2'b00;                                     // Testbench: is this a stall cycle? (don't compare the test values)
+    assign  test_stall = w_stall;                                   // Testbench: is this a stall cycle? (don't compare the test values)
     assign  test_cur_pc = w_pc;                                     // Testbench: program counter
     assign  test_cur_insn = w_insn;                                 // Testbench: instruction bits
     assign  test_regfile_we = w_regfile_we;                         // Testbench: register file write enable
@@ -283,7 +305,7 @@ module lc4_processor
 `ifndef NDEBUG
    always @(posedge gwe) begin
       // $display("%d %h %h %h %h %h", $time, f_pc, d_pc, e_pc, m_pc, test_cur_pc);
-      $display("%d %h %h %h %h", $time, f_pc, d_pc, x_pc, w_pc);
+      $display("%d %h %h %h %h %h", $time, f_pc, d_pc, x_pc, m_pc, w_pc);
       // $display("%d %h %b", $time, f_pc, f_insn);
       // $display("%d %h %b", $time, d_pc, d_insn);
       // if (o_dmem_we)
