@@ -55,7 +55,7 @@ module lc4_processor
     assign next_pc = (is_flush) ? x_pc : f_pc + 1;
     assign f_insn = (is_stall) ? (d_insn) : 
                     (is_flush) ? (16'h0000) : i_cur_insn;
-    assign o_cur_pc = next_pc; 
+    assign o_cur_pc = f_pc; 
     
     /** DECODE **/
     wire [15:0] d_pc;
@@ -264,7 +264,9 @@ module lc4_processor
     /********** WRITEBACK STAGE IMPLEMENTATION **********/    
     // Assign curr_nzp
     Nbit_reg #(3, 3'b000) nzp_reg (.in(w_nzp_bits), .out(curr_nzp), .clk(clk), .we(w_nzp_we), .gwe(gwe), .rst(rst));    
-    // WRITE TO REGFILE
+    // Write to regfile (see code in the decode stage)
+    
+    assign o_dmem_we = w_is_store; // Or should it be m_is_store instead?
     
     // BRANCH LOGIC
 //    wire [2:0] curr_nzp; // TODO: change this
@@ -289,7 +291,7 @@ module lc4_processor
     assign  test_nzp_new_bits[0] = w_nzp_bits[0];
     
     assign  test_dmem_we = o_dmem_we;                               // Testbench: data memory write enable
-    assign  test_dmem_addr = o_dmem_addr;                           // Testbench: address to read/write memory
+    assign  test_dmem_addr = 16'h0000;                              // Testbench: address to read/write memory
     assign  test_dmem_data = 16'h0000;                              // Testbench: value read/writen from/to memory
    
    
@@ -306,6 +308,7 @@ module lc4_processor
    always @(posedge gwe) begin
       // $display("%d %h %h %h %h %h", $time, f_pc, d_pc, e_pc, m_pc, test_cur_pc);
       $display("%d %h %h %h %h %h", $time, f_pc, d_pc, x_pc, m_pc, w_pc);
+      $display("%d %h %h %h %h %h", $time, f_insn, d_insn, x_insn, m_insn, w_insn);
       // $display("%d %h %b", $time, f_pc, f_insn);
       // $display("%d %h %b", $time, d_pc, d_insn);
       // if (o_dmem_we)
