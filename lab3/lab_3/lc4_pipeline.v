@@ -194,7 +194,7 @@ module lc4_processor
  ( w_nzp_we ) ? ( w_nzp_bits ) : ( curr_nzp );
 
  wire o_branch = !( ( x_insn[11:9] & br_nzp ) == 3'b000);
- assign is_flush = ( o_branch & x_is_branch ); // if we are taking a branch, flush old instrucions
+ assign is_flush = ( o_branch & x_is_branch ) | x_is_control_insn; // if we are taking a branch, flush old instrucions
 
  // PC_MUX
  //    assign  next_pc = 16'h0000;//( (is_control_insn) ? 1 : (o_branch && is_branch) ) ? o_alu : pc + 1;
