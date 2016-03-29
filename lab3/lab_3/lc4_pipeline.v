@@ -39,6 +39,8 @@ module lc4_processor
 
  );
 
+`include "include/lc4_prettyprint_errors.v"
+
  /*** YOUR CODE HERE ***/
  // IMPLEMENT STALL AND FLUSH LOGIC NEXT WEEK
  wire [1:0] is_stall = 0;
@@ -178,11 +180,11 @@ module lc4_processor
  // BYPASS:
  wire [15:0] alu_1;
  assign alu_1 =  ( (x_r1sel == m_wsel) && (m_regfile_we) ) ? m_oresult : 
- ( (x_r1sel == w_wsel) && (w_regfile_we) ) ? w_oresult : x_r1data;
+ ( (x_r1sel == w_wsel) && (w_regfile_we) ) ? w_result : x_r1data;
 
  wire [15:0] alu_2;
  assign alu_2 =  ( (x_r2sel == m_wsel) && (m_regfile_we) ) ? m_oresult :
- ( (x_r2sel == w_wsel) && (w_regfile_we) ) ? w_oresult : x_r2data;
+ ( (x_r2sel == w_wsel) && (w_regfile_we) ) ? w_result : x_r2data;
 
  // ALU
  lc4_alu alu (x_insn, x_pc, alu_1, alu_2, o_alu);
@@ -259,12 +261,19 @@ module lc4_processor
  // Nbit_reg #(3, 3'b000) mem_reg (.in(nzp_new_bits), .out(curr_nzp), .clk(clk), .we(m_nzp_we), .gwe(gwe), .rst(rst));  
 
  /********** MEMORY STAGE IMPLEMENTATION **********/ 
- // UPDATE NZP BITS IF LOAD 
- //assign o_dmem_towrite = ( m_is_store ) ? o_rt_data  :              
- //                        16'h0000;  // 0 if no load / store??? CHECK THIS
- //    assign o_dmem_addr = ( w_is_load | w_is_store ) ? o_alu : 16'h0000;
- //    assign o_dmem_we = w_is_store;
-
+ // UPDATE NZP BITS IF LOAD
+ wire [15:0] m_dmem_data; 
+ wire [15:0] m_dmem_addr;
+ wire m_dmem_we;
+ 
+ assign o_dmem_towrite = ( m_is_store ) ? m_r2data  :              
+                         16'h0000;  // 0 if no load / store??? CHECK THIS
+ assign o_dmem_addr = ( m_is_load | m_is_store ) ? m_oresult : 16'h0000;
+ assign o_dmem_we = m_is_store;
+ assign m_dmem_data = i_cur_dmem_data;
+ assign m_dmem_addr = o_dmem_addr;
+ assign m_dmem_we = o_dmem_we;
+ 
  /*************************************************************************************************************************/
  /****************************************************** WRITEBACK   ******************************************************/
  /*************************************************************************************************************************/
@@ -287,8 +296,13 @@ module lc4_processor
  wire [15:0] w_r2data;
  wire [15:0] w_wdata;
  wire [15:0] w_oresult;
+ wire [15:0] w_result;
  wire [2:0] w_nzp_bits;
 
+ wire [15:0] w_dmem_data; 
+ wire [15:0] w_dmem_addr;
+ wire w_dmem_we;
+ 
  wire [1:0] w_stall;
 
  /** FROM MEMORY TO WRITEBACK **/
@@ -309,20 +323,21 @@ module lc4_processor
  Nbit_reg #(16, 16'h0000)    w_r1data_reg                (.in(m_r1data), .out(w_r1data), .clk(clk), .we(1'b1), .gwe(gwe), .rst(rst));
  Nbit_reg #(16, 16'h0000)    w_r2data_reg                (.in(m_r2data), .out(w_r2data), .clk(clk), .we(1'b1), .gwe(gwe), .rst(rst));
  Nbit_reg #(3, 3'b000)       w_nzp_reg                   (.in(m_nzp_bits), .out(w_nzp_bits), .clk(clk), .we(1'b1), .gwe(gwe), .rst(rst));
-
- // MIGHT NEED TO CHANGE THIS NEXT WEEK 
+ 
  Nbit_reg #(2, 2'b10)        w_stall_reg                 (.in(m_stall), .out(w_stall), .clk(clk), .we(1'b1), .gwe(gwe), .rst(rst));
 
  /** SPECIAL FROM MEMORY **/
- Nbit_reg #(16, 16'h0000)    w_oresult_reg               (.in(m_oresult), .out(w_oresult), .clk(clk), .we(1'b1), .gwe(gwe), .rst(rst));
-
+ Nbit_reg #(16, 16'h0000)   w_oresult_reg               (.in(m_oresult), .out(w_oresult), .clk(clk), .we(1'b1), .gwe(gwe), .rst(rst));
+ Nbit_reg #(16, 16'h0000)   w_dmem_data_reg             (.in(m_dmem_data), .out(w_dmem_data), .clk(clk), .we(1'b1), .gwe(gwe), .rst(rst));
+ Nbit_reg #(16, 16'h0000)   w_dmem_addr_reg             (.in(m_dmem_addr), .out(w_dmem_addr), .clk(clk), .we(1'b1), .gwe(gwe), .rst(rst));
+ Nbit_reg #(1, 1'b0)        w_dmem_we_reg               (.in(m_dmem_we), .out(w_dmem_we), .clk(clk), .we(1'b1), .gwe(gwe), .rst(rst));
+ 
+ assign w_result = (w_is_load) ? w_dmem_data : w_oresult;
+ 
  /********** WRITEBACK STAGE IMPLEMENTATION **********/    
  // Assign curr_nzp
  Nbit_reg #(3, 3'b000) nzp_reg (.in(w_nzp_bits), .out(curr_nzp), .clk(clk), .we(w_nzp_we), .gwe(gwe), .rst(rst));    
  // Write to regfile (see code in the decode stage)
-
- assign o_dmem_we = w_is_store; // Or should it be m_is_store instead?
-
  // BRANCH LOGIC
  //    wire [2:0] curr_nzp; // TODO: change this
  //    wire o_branch = !( ( i_cur_insn[11:9] & curr_nzp ) == 3'b000);
@@ -345,9 +360,9 @@ module lc4_processor
  assign  test_nzp_new_bits[1] = w_nzp_bits[1];
  assign  test_nzp_new_bits[0] = w_nzp_bits[0];
 
- assign  test_dmem_we = o_dmem_we;                               // Testbench: data memory write enable
- assign  test_dmem_addr = 16'h0000;                              // Testbench: address to read/write memory
- assign  test_dmem_data = 16'h0000;                              // Testbench: value read/writen from/to memory
+ assign  test_dmem_we = w_dmem_we;                               // Testbench: data memory write enable
+ assign  test_dmem_addr = w_dmem_addr;                              // Testbench: address to read/write memory
+ assign  test_dmem_data = w_dmem_data;                              // Testbench: value read/writen from/to memory
 
 
  /* Add $display(...) calls in the always block below to
@@ -365,8 +380,8 @@ module lc4_processor
  $display("%d %h %h %h %h %h", $time, f_pc, d_pc, x_pc, m_pc, w_pc);
  $display("%d %h %h %h %h %h", $time, f_insn, d_insn, x_insn, m_insn, w_insn);
  $display("IS_FLUSH?? %d", is_flush);
- // $write("pc: %h insn: %h (", w_pc, w_insn); pinstr(w_insn); $display(")");
- $display("INSTRUCTION %b WROTE VALUE %h TO REGISTER %d", w_insn, w_oresult, w_wsel);
+ $write("pc: %h insn: %h (", w_pc, w_insn); pinstr(w_insn); $display(")");
+ $display("%d %h %h", $time, m_dmem_data, w_dmem_data);
  // $display("%d %h %b", $time, f_pc, f_insn);
  // $display("%d %h %b", $time, d_pc, d_insn);
  // if (o_dmem_we)
