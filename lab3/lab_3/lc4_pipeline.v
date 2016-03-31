@@ -110,7 +110,7 @@ module lc4_processor
  //assign alu_1 =  ( (x_r1sel == m_wsel) && (m_regfile_we) ) ? m_oresult : 
  //                    ( (x_r1sel == w_wsel) && (w_regfile_we) ) ? w_oresult : x_r1data;
 
- wire load_to_use_stall = ( x_is_load ) && (( d_r1sel == x_wsel ) || (( d_r2sel == x_wsel ) && !d_is_store ));
+ wire load_to_use_stall = ( x_is_load ) && (( d_r1sel == x_wsel ) || (( d_r2sel == x_wsel ) && (d_is_branch || d_is_load || d_regfile_we) ));
  /*********************************************************************************************************************/
  /****************************************************** EXECUTE ******************************************************/
  /*********************************************************************************************************************/
@@ -265,11 +265,11 @@ module lc4_processor
  // Nbit_reg #(3, 3'b000) mem_reg (.in(nzp_new_bits), .out(curr_nzp), .clk(clk), .we(m_nzp_we), .gwe(gwe), .rst(rst));  
 
  /********** MEMORY STAGE IMPLEMENTATION **********/ 
- // UPDATE NZP BITS IF LOAD
  wire [15:0]    m_dmem_data; 
  wire [15:0]    m_dmem_addr;
  wire [15:0]    m_dmem_towrite;
  wire           m_dmem_we;
+
  // 0 if no load / store??? CHECK THIS
  assign o_dmem_towrite = ( m_is_store ) ? ( ( w_regfile_we && ( w_wsel == m_r2sel ) ) ? w_result : m_r2data ) : 16'h0000;
  assign o_dmem_addr = ( m_is_load | m_is_store ) ? m_oalu : 16'h0000;
@@ -340,9 +340,14 @@ module lc4_processor
  
  assign w_result = ( w_is_load ) ? w_dmem_data : w_oresult;
  
+ wire [2:0] w_temp_nzp_bits;
+ assign w_temp_nzp_bits[2] = ( w_is_load ) ? (w_result[15]) : (w_nzp_bits[2]);
+ assign w_temp_nzp_bits[1] = ( w_is_load ) ? (w_result == 16'h0000) : w_nzp_bits[1];
+ assign w_temp_nzp_bits[0] = ( w_is_load ) ? ((!w_result[15]) & (!w_temp_nzp_bits[1])) : w_nzp_bits[0];
+ 
  /********** WRITEBACK STAGE IMPLEMENTATION **********/    
  // Assign curr_nzp
- Nbit_reg #(3, 3'b000) nzp_reg (.in(w_nzp_bits), .out(curr_nzp), .clk(clk), .we(w_nzp_we), .gwe(gwe), .rst(rst));    
+ Nbit_reg #(3, 3'b000) nzp_reg (.in(w_temp_nzp_bits), .out(curr_nzp), .clk(clk), .we(w_nzp_we), .gwe(gwe), .rst(rst));    
  // Write to regfile (see code in the decode stage)
  // BRANCH LOGIC
  //    wire [2:0] curr_nzp; // TODO: change this
@@ -362,9 +367,9 @@ module lc4_processor
  assign  test_regfile_data = w_result;                              // Testbench: value to write into the register file
  assign  test_nzp_we = w_nzp_we;                                    // Testbench: NZP condition codes write enable
 
- assign  test_nzp_new_bits[2] = w_nzp_bits[2];                      // Testbench: value to write to NZP bits (Needs to be computed)
- assign  test_nzp_new_bits[1] = w_nzp_bits[1];
- assign  test_nzp_new_bits[0] = w_nzp_bits[0];
+ assign  test_nzp_new_bits[2] = w_temp_nzp_bits[2];                      // Testbench: value to write to NZP bits (Needs to be computed)
+ assign  test_nzp_new_bits[1] = w_temp_nzp_bits[1];
+ assign  test_nzp_new_bits[0] = w_temp_nzp_bits[0];
 
  assign  test_dmem_we = w_dmem_we;                                  // Testbench: data memory write enable
  assign  test_dmem_addr = w_dmem_addr;                              // Testbench: address to read/write memory
@@ -392,7 +397,7 @@ module lc4_processor
  $write("w_pc: %h w_insn: %h (", w_pc, w_insn); pinstr(w_insn); $display(")");
  $display("flush: %d load_to_use: %d", is_flush, load_to_use_stall);
  // $display("%d,M_DATA is %h, M_R1 is %h, M_R2 is %h", $time, m_dmem_data, m_r1data, m_r2data);
- $display("%d,W_REG is %h, W_FROM_DATA is %h, W_TO_WRITE, W_ALU is %h, %b", $time, w_result, w_dmem_data, w_dmem_towrite, w_oresult, w_is_load);
+ $display("%d,W_REG is %h, W_FROM_DATA is %h, W_TO_WRITE %h, W_ALU is %h, %b", $time, w_result, w_dmem_data, w_dmem_towrite, w_oresult, w_is_load);
  $display("");
  // --- $display("%d", $time);
  // $display("%d %h %b", $time, f_pc, f_insn);

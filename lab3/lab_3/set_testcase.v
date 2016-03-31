@@ -33,12 +33,12 @@
  * port to rotate the wireframe on the display.
  */
  
-`define TEST_CASE "test_alu"
+// `define TEST_CASE "test_alu"
 // `define TEST_CASE "test_br"
 // `define TEST_CASE "test_mem"
 // `define TEST_CASE "test_ld_br"
 // `define TEST_CASE "test_all"
-// `define TEST_CASE "house"
+`define TEST_CASE "house"
 // `define TEST_CASE "wireframe"
 
 /* Define the full paths to the trace, output, and hex files.
