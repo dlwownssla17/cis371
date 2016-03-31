@@ -61,8 +61,9 @@ module lc4_processor
  assign next_pc = (load_to_use_stall) ? f_pc : (is_flush) ? o_alu : f_pc + 1;  // i think this is wrong, changed from x_pc to o_alu
  assign f_insn = (is_stall || load_to_use_stall) ? (d_insn) : 
  (is_flush) ? (16'h0000) : i_cur_insn;
- assign o_cur_pc = f_pc; 
-
+ wire [15:0] f_temp_pc = (is_stall || load_to_use_stall) ? d_pc : f_pc;
+ assign o_cur_pc = f_pc;
+  
  /*********************************************************************************************************************/
  /****************************************************** DECODE  ******************************************************/
  /*********************************************************************************************************************/
@@ -72,12 +73,12 @@ module lc4_processor
  wire [1:0] d_stall;
 
  /** FROM FETCH TO DECODE **/    
- Nbit_reg #(16, 16'h0000)    d_pc_reg    (.in(f_pc), .out(d_pc), .clk(clk), .we(1'b1), .gwe(gwe), .rst(rst));
+ Nbit_reg #(16, 16'h0000)    d_pc_reg    (.in(f_temp_pc), .out(d_pc), .clk(clk), .we(1'b1), .gwe(gwe), .rst(rst));
  Nbit_reg #(16, 16'h0000)    d_insn_reg  (.in(f_insn), .out(d_insn), .clk(clk), .we(1'b1), .gwe(gwe), .rst(rst));
 
  // MIGHT NEED TO CHANGE THIS NEXT WEEK
 
- wire [1:0] f_temp_stall = (load_to_use_stall) ? 2'd3 : ( is_flush ) ? 2'd2 : f_stall;
+ wire [1:0] f_temp_stall = ( is_flush ) ? 2'd2 : f_stall;
 
  Nbit_reg #(2, 2'b10)        d_stall_reg (.in(f_temp_stall), .out(d_stall), .clk(clk), .we(1'b1), .gwe(gwe), .rst(rst));
 
@@ -103,13 +104,13 @@ module lc4_processor
  lc4_decoder decoder (d_insn, d_r1sel, d_r1re, d_r2sel, d_r2re, d_wsel, d_regfile_we, d_nzp_we, d_select_pc_plus_one, d_is_load, d_is_store, d_is_branch, d_is_control_insn);
  lc4_regfile regfile (clk, gwe, rst, d_r1sel, d_ors_data, d_r2sel, d_ort_data, w_wsel, w_result, w_regfile_we);
 
- assign d_rs_data = (d_r1sel == w_wsel && w_regfile_we) ? w_oresult : d_ors_data;
- assign d_rt_data = (d_r2sel == w_wsel && w_regfile_we) ? w_oresult : d_ort_data;
+ assign d_rs_data = (d_r1sel == w_wsel && w_regfile_we) ? w_result : d_ors_data;
+ assign d_rt_data = (d_r2sel == w_wsel && w_regfile_we) ? w_result : d_ort_data;
 
  //assign alu_1 =  ( (x_r1sel == m_wsel) && (m_regfile_we) ) ? m_oresult : 
  //                    ( (x_r1sel == w_wsel) && (w_regfile_we) ) ? w_oresult : x_r1data;
 
- wire load_to_use_stall = x_is_load && (((d_r1sel == x_wsel) || (d_r2sel == x_wsel)) && d_is_load);
+ wire load_to_use_stall = ( x_is_load ) && (( d_r1sel == x_wsel ) || (( d_r2sel == x_wsel ) && !d_is_store ));
  /*********************************************************************************************************************/
  /****************************************************** EXECUTE ******************************************************/
  /*********************************************************************************************************************/
@@ -133,20 +134,20 @@ module lc4_processor
 
  wire [1:0]     x_stall;
 
- wire [15:0] d_temp_insn =  (d_stall || load_to_use_stall) ? (x_insn) : 
- (is_flush) ? (16'h0000) : d_insn;
+ wire [15:0] d_temp_insn =  ( d_stall ) ? (x_insn) : 
+ (is_flush || load_to_use_stall) ? (16'h0000) : d_insn;
 
 
- wire xt_r1re = (is_flush) ? 1'b0 : d_r1re;
- wire xt_r2re = (is_flush) ? 1'b0 : d_r2re;
- wire xt_select_pc_plus_one  = (is_flush) ? 1'b0 : d_select_pc_plus_one;
- wire xt_is_load = (is_flush) ? 1'b0 : d_is_load;
- wire xt_is_store = (is_flush) ? 1'b0 : d_is_store;
- wire xt_is_control_insn = (is_flush) ? 1'b0 : d_is_control_insn;
- wire xt_is_branch = (is_flush) ? 1'b0 : d_is_branch;
+ wire xt_r1re = (is_flush || load_to_use_stall) ? 1'b0 : d_r1re;
+ wire xt_r2re = (is_flush || load_to_use_stall) ? 1'b0 : d_r2re;
+ wire xt_select_pc_plus_one  = (is_flush || load_to_use_stall) ? 1'b0 : d_select_pc_plus_one;
+ wire xt_is_load = (is_flush || load_to_use_stall) ? 1'b0 : d_is_load;
+ wire xt_is_store = (is_flush || load_to_use_stall) ? 1'b0 : d_is_store;
+ wire xt_is_control_insn = (is_flush || load_to_use_stall) ? 1'b0 : d_is_control_insn;
+ wire xt_is_branch = (is_flush || load_to_use_stall) ? 1'b0 : d_is_branch;
 
- wire xt_regfile_we = (is_flush) ? 1'b0 : d_regfile_we;
- wire xt_nzp_we = (is_flush) ? 1'b0 : d_nzp_we;
+ wire xt_regfile_we = (is_flush || load_to_use_stall) ? 1'b0 : d_regfile_we;
+ wire xt_nzp_we = (is_flush || load_to_use_stall) ? 1'b0 : d_nzp_we;
 
 
  /** FROM DECODE TO EXECUTE **/ 
@@ -196,7 +197,7 @@ module lc4_processor
  ( w_nzp_we ) ? ( w_nzp_bits ) : ( curr_nzp );
 
  wire o_branch = !( ( x_insn[11:9] & br_nzp ) == 3'b000);
- assign is_flush = load_to_use_stall || (( o_branch & x_is_branch ) | x_is_control_insn); // if we are taking a branch, flush old instrucions
+ assign is_flush = (( o_branch & x_is_branch ) | x_is_control_insn); // if we are taking a branch, flush old instrucions
 
  // PC_MUX
  //    assign  next_pc = 16'h0000;//( (is_control_insn) ? 1 : (o_branch && is_branch) ) ? o_alu : pc + 1;
@@ -207,6 +208,8 @@ module lc4_processor
  assign x_nzp_bits[2] = x_oresult[15];
  assign x_nzp_bits[1] = (x_oresult == 16'h0000);
  assign x_nzp_bits[0] = (!x_oresult[15]) & (!x_nzp_bits[1]);
+ 
+ wire [15:0] x_temp_r2data = (x_is_store && x_r2sel == m_wsel && m_regfile_we) ? w_result : x_r2data;
 
  /*********************************************************************************************************************/
  /****************************************************** MEMORY  ******************************************************/
@@ -249,8 +252,8 @@ module lc4_processor
  Nbit_reg #(3, 3'b000)       m_wsel_reg                 (.in(x_wsel), .out(m_wsel), .clk(clk), .we(1'b1), .gwe(gwe), .rst(rst));
  Nbit_reg #(3, 3'b000)       m_regfile_we_reg           (.in(x_regfile_we), .out(m_regfile_we), .clk(clk), .we(1'b1), .gwe(gwe), .rst(rst));
  Nbit_reg #(1, 1'b0)         m_nzp_we_reg               (.in(x_nzp_we), .out(m_nzp_we), .clk(clk), .we(1'b1), .gwe(gwe), .rst(rst));
- Nbit_reg #(16, 16'h0000)    m_r1data_reg               (.in(x_r1data), .out(m_r1data), .clk(clk), .we(1'b1), .gwe(gwe), .rst(rst));
- Nbit_reg #(16, 16'h0000)    m_r2data_reg               (.in(x_r2data), .out(m_r2data), .clk(clk), .we(1'b1), .gwe(gwe), .rst(rst));
+ Nbit_reg #(16, 16'h0000)    m_r1data_reg               (.in(alu_1), .out(m_r1data), .clk(clk), .we(1'b1), .gwe(gwe), .rst(rst));
+ Nbit_reg #(16, 16'h0000)    m_r2data_reg               (.in(alu_2), .out(m_r2data), .clk(clk), .we(1'b1), .gwe(gwe), .rst(rst));
  Nbit_reg #(3, 3'b000)       m_nzp_reg                  (.in(x_nzp_bits), .out(m_nzp_bits), .clk(clk), .we(1'b1), .gwe(gwe), .rst(rst));
 
  // MIGHT NEED TO CHANGE THIS NEXT WEEK 
@@ -267,8 +270,8 @@ module lc4_processor
  wire [15:0]    m_dmem_addr;
  wire [15:0]    m_dmem_towrite;
  wire           m_dmem_we;
- 
- assign o_dmem_towrite = ( m_is_store ) ? m_r2data : 16'h0000;  // 0 if no load / store??? CHECK THIS
+ // 0 if no load / store??? CHECK THIS
+ assign o_dmem_towrite = ( m_is_store ) ? ( ( w_regfile_we && ( w_wsel == m_r2sel ) ) ? w_result : m_r2data ) : 16'h0000;
  assign o_dmem_addr = ( m_is_load | m_is_store ) ? m_oalu : 16'h0000;
  assign o_dmem_we = m_is_store;
  assign m_dmem_towrite = o_dmem_towrite;
@@ -382,15 +385,15 @@ module lc4_processor
  // $display("%d %h %h %h %h %h", $time, f_pc, d_pc, e_pc, m_pc, test_cur_pc);
  // $display("PC: %d %h %h %h %h %h", $time, f_pc, d_pc, x_pc, m_pc, w_pc);
  // $display("INSN: %d %h %h %h %h %h", $time, f_insn, d_insn, x_insn, m_insn, w_insn);
- // $display("IS_FLUSH?? %d", is_flush);
  $write("f_pc: %h f_insn: %h (", f_pc, f_insn); pinstr(f_insn); $display(")");
  $write("d_pc: %h d_insn: %h (", d_pc, d_insn); pinstr(d_insn); $display(")");
  $write("x_pc: %h x_insn: %h (", x_pc, x_insn); pinstr(x_insn); $display(")");
  $write("m_pc: %h m_insn: %h (", m_pc, m_insn); pinstr(m_insn); $display(")");
  $write("w_pc: %h w_insn: %h (", w_pc, w_insn); pinstr(w_insn); $display(")");
+ $display("flush: %d load_to_use: %d", is_flush, load_to_use_stall);
  // $display("%d,M_DATA is %h, M_R1 is %h, M_R2 is %h", $time, m_dmem_data, m_r1data, m_r2data);
- $display("%d,W_REG is %h, W_DATA is %h, W_ALU is %h, %b", $time, w_result, w_dmem_data, w_oresult, w_is_load);
- $display("LOAD_TO_USE_STALL: %h", load_to_use_stall);
+ $display("%d,W_REG is %h, W_FROM_DATA is %h, W_TO_WRITE, W_ALU is %h, %b", $time, w_result, w_dmem_data, w_dmem_towrite, w_oresult, w_is_load);
+ $display("");
  // --- $display("%d", $time);
  // $display("%d %h %b", $time, f_pc, f_insn);
  // $display("%d %h %b", $time, d_pc, d_insn);
