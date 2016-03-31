@@ -38,8 +38,8 @@
 // `define TEST_CASE "test_mem"
 // `define TEST_CASE "test_ld_br"
 // `define TEST_CASE "test_all"
-`define TEST_CASE "house"
-// `define TEST_CASE "wireframe"
+// `define TEST_CASE "house"
+`define TEST_CASE "wireframe"
 
 /* Define the full paths to the trace, output, and hex files.
  * INPUT_FILE and OUTPUT_FILE are used by the testbench,

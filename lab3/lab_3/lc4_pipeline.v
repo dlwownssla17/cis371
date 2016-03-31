@@ -118,7 +118,7 @@ module lc4_processor
  //assign alu_1 =  ( (x_r1sel == m_wsel) && (m_regfile_we) ) ? m_oresult : 
  //                    ( (x_r1sel == w_wsel) && (w_regfile_we) ) ? w_oresult : x_r1data;
 
- assign load_to_use_stall = ( x_is_load ) && (( d_r1sel == x_wsel ) || (( d_r2sel == x_wsel ) && (d_is_branch || d_is_load || d_regfile_we) ));
+ assign load_to_use_stall = ( x_is_load ) && (( d_r1sel == x_wsel ) || (( d_r2sel == x_wsel ) && (d_is_branch || d_is_load || d_regfile_we || d_nzp_we) ));
  /*********************************************************************************************************************/
  /****************************************************** EXECUTE ******************************************************/
  /*********************************************************************************************************************/
