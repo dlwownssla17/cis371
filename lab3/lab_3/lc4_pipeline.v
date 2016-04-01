@@ -118,7 +118,7 @@ module lc4_processor
  //assign alu_1 =  ( (x_r1sel == m_wsel) && (m_regfile_we) ) ? m_oresult : 
  //                    ( (x_r1sel == w_wsel) && (w_regfile_we) ) ? w_oresult : x_r1data;
 
- assign load_to_use_stall = ( x_is_load ) && (( d_r1sel == x_wsel ) || (( d_r2sel == x_wsel ) && (d_is_branch || d_is_load || d_regfile_we || d_nzp_we) ));
+ assign load_to_use_stall = ( x_is_load ) && (( d_r1sel == x_wsel && d_r1re ) || (( d_r2sel == x_wsel && d_r2re ) && (!d_is_store)));
  /*********************************************************************************************************************/
  /****************************************************** EXECUTE ******************************************************/
  /*********************************************************************************************************************/
@@ -178,7 +178,7 @@ module lc4_processor
 
  // MIGHT NEED TO CHANGE THIS NEXT WEEK 
  wire [1:0] d_temp_stall = ( load_to_use_stall ) ? 2'd3 : ( is_flush ) ? 2'd2 : d_stall;
- Nbit_reg #(2, 2'b10)        x_stall_reg                 (.in(d_temp_stall), .out(x_stall), .clk(clk), .we(1'b1), .gwe(gwe), .rst(rst));
+ Nbit_reg #(2, 2'b10)         x_stall_reg                 (.in(d_temp_stall), .out(x_stall), .clk(clk), .we(1'b1), .gwe(gwe), .rst(rst));
 
  wire [2:0] curr_nzp; // FROM REGFILE
 
