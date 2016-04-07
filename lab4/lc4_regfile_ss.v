@@ -51,25 +51,53 @@ module lc4_regfile_ss #(parameter n = 16)
 
    /*** Your Code Here ***/
    wire [n-1:0] r0v, r1v, r2v, r3v, r4v, r5v, r6v, r7v;
+   wire [n-1:0] r0d, r1d, r2d, r3d, r4d, r5d, r6d, r7d;
+   wire r0we, r1we, r2we, r3we, r4we, r5we, r6we, r7we;
    
-   Nbit_reg #(n) r0 (i_wdata, r0v, clk, ((i_rd_A == 3'd0) & i_rd_we_A) || ((i_rd_B == 3'd0) & i_rd_we_B), gwe, rst);
-   Nbit_reg #(n) r1 (i_wdata, r1v, clk, ((i_rd_A == 3'd1) & i_rd_we_A) || ((i_rd_B == 3'd1) & i_rd_we_B), gwe, rst);
-   Nbit_reg #(n) r2 (i_wdata, r2v, clk, ((i_rd_A == 3'd2) & i_rd_we_A) || ((i_rd_B == 3'd2) & i_rd_we_B), gwe, rst);
-   Nbit_reg #(n) r3 (i_wdata, r3v, clk, ((i_rd_A == 3'd3) & i_rd_we_A) || ((i_rd_B == 3'd3) & i_rd_we_B), gwe, rst);
-   Nbit_reg #(n) r4 (i_wdata, r4v, clk, ((i_rd_A == 3'd4) & i_rd_we_A) || ((i_rd_B == 3'd4) & i_rd_we_B), gwe, rst);
-   Nbit_reg #(n) r5 (i_wdata, r5v, clk, ((i_rd_A == 3'd5) & i_rd_we_A) || ((i_rd_B == 3'd5) & i_rd_we_B), gwe, rst);
-   Nbit_reg #(n) r6 (i_wdata, r6v, clk, ((i_rd_A == 3'd6) & i_rd_we_A) || ((i_rd_B == 3'd6) & i_rd_we_B), gwe, rst);
-   Nbit_reg #(n) r7 (i_wdata, r7v, clk, ((i_rd_A == 3'd7) & i_rd_we_A) || ((i_rd_B == 3'd7) & i_rd_we_B), gwe, rst);
+   assign r0weA = (i_rd_A == 3'd0) & i_rd_we_A;
+   assign r0weB = (i_rd_B == 3'd0) & i_rd_we_B;
+   assign r1weA = (i_rd_A == 3'd1) & i_rd_we_A;
+   assign r1weB = (i_rd_B == 3'd1) & i_rd_we_B;
+   assign r2weA = (i_rd_A == 3'd2) & i_rd_we_A;
+   assign r2weB = (i_rd_B == 3'd2) & i_rd_we_B;
+   assign r3weA = (i_rd_A == 3'd3) & i_rd_we_A;
+   assign r3weB = (i_rd_B == 3'd3) & i_rd_we_B;
+   assign r4weA = (i_rd_A == 3'd4) & i_rd_we_A;
+   assign r4weB = (i_rd_B == 3'd4) & i_rd_we_B;
+   assign r5weA = (i_rd_A == 3'd5) & i_rd_we_A;
+   assign r5weB = (i_rd_B == 3'd5) & i_rd_we_B;
+   assign r6weA = (i_rd_A == 3'd6) & i_rd_we_A;
+   assign r6weB = (i_rd_B == 3'd6) & i_rd_we_B;
+   assign r7weA = (i_rd_A == 3'd7) & i_rd_we_A;
+   assign r7weB = (i_rd_B == 3'd7) & i_rd_we_B;
+   
+   assign r0d = r0weB ? i_wdata_B : i_wdata_A;
+   assign r1d = r1weB ? i_wdata_B : i_wdata_A;
+   assign r2d = r2weB ? i_wdata_B : i_wdata_A;
+   assign r3d = r3weB ? i_wdata_B : i_wdata_A;
+   assign r4d = r4weB ? i_wdata_B : i_wdata_A;
+   assign r5d = r5weB ? i_wdata_B : i_wdata_A;
+   assign r6d = r6weB ? i_wdata_B : i_wdata_A;
+   assign r7d = r7weB ? i_wdata_B : i_wdata_A;
+   
+
+   /*** bypass!!! and change i_wdataA/B **/
+   Nbit_reg #(n) r0 (r0d, r0v, clk, r0we, gwe, rst);
+   Nbit_reg #(n) r1 (r1d, r1v, clk, r1we, gwe, rst);
+   Nbit_reg #(n) r2 (r2d, r2v, clk, r2we, gwe, rst);
+   Nbit_reg #(n) r3 (r3d, r3v, clk, r3we, gwe, rst);
+   Nbit_reg #(n) r4 (r4d, r4v, clk, r4we, gwe, rst);
+   Nbit_reg #(n) r5 (r5d, r5v, clk, r5we, gwe, rst);
+   Nbit_reg #(n) r6 (r6d, r6v, clk, r6we, gwe, rst);
+   Nbit_reg #(n) r7 (r7d, r7v, clk, r7we, gwe, rst);
 
    
-   Nbit_mux8to1 #(n) mux1A (i_rs_A, r0v, r1v, r2v, r3v, r4v, r5v, r6v, r7v, o_rs_data_A);
-   Nbit_mux8to1 #(n) mux2A (i_rt_A, r0v, r1v, r2v, r3v, r4v, r5v, r6v, r7v, o_rt_data_A);
+   Nbit_mux8to1 #(n) mux1A (i_rs_A, (r0we ? r0d : r0v), (r1we ? r1d : r1v), (r2we ? r2d : r2v), (r3we ? r3d : r3v), (r4we ? r4d : r4v), (r5we ? r5d : r5v), (r6we ? r6d : r6v), (r7we ? r7d : r7v), o_rs_data_A);
+   Nbit_mux8to1 #(n) mux2A (i_rt_A, (r0we ? r0d : r0v), (r1we ? r1d : r1v), (r2we ? r2d : r2v), (r3we ? r3d : r3v), (r4we ? r4d : r4v), (r5we ? r5d : r5v), (r6we ? r6d : r6v), (r7we ? r7d : r7v), o_rt_data_A);
    
-   Nbit_mux8to1 #(n) mux1B (i_rs_B, r0v, r1v, r2v, r3v, r4v, r5v, r6v, r7v, o_rs_data_B);
-   Nbit_mux8to1 #(n) mux2B (i_rt_B, r0v, r1v, r2v, r3v, r4v, r5v, r6v, r7v, o_rt_data_B);
+   Nbit_mux8to1 #(n) mux1B (i_rs_B, (r0we ? r0d : r0v), (r1we ? r1d : r1v), (r2we ? r2d : r2v), (r3we ? r3d : r3v), (r4we ? r4d : r4v), (r5we ? r5d : r5v), (r6we ? r6d : r6v), (r7we ? r7d : r7v), o_rs_data_B);
+   Nbit_mux8to1 #(n) mux2B (i_rt_B, (r0we ? r0d : r0v), (r1we ? r1d : r1v), (r2we ? r2d : r2v), (r3we ? r3d : r3v), (r4we ? r4d : r4v), (r5we ? r5d : r5v), (r6we ? r6d : r6v), (r7we ? r7d : r7v), o_rt_data_B);
 
-   
-   
    
    
    
