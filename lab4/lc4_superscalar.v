@@ -64,15 +64,14 @@ module lc4_processor(input wire         clk,             // main cock
  wire [1:0] f_stall = 0;
  wire load_to_use_stall;
  
- wire [2:0]     w_wsel;
+
  wire           x_is_load;
  wire [2:0]     m_wsel;
- wire           m_nzp_we;
  wire           w_nzp_we;
  wire           w_regfile_we;
 
  /*********************************************************************************************************************/
- /****************************************************** FETCH   ******************************************************/
+ /******************************************************  FETCH  ******************************************************/
  /*********************************************************************************************************************/
  /********** FETCH STAGE PREAMBLE **********/
  wire [15:0] f_pc;
@@ -85,7 +84,7 @@ module lc4_processor(input wire         clk,             // main cock
  /********** FETCH STAGE IMPLEMENTATION **********/
  assign next_pc = (load_to_use_stall) ? f_pc : (is_flush) ? o_alu : f_pc + 1;  // i think this is wrong, changed from x_pc to o_alu
  assign f_insnA = (is_stall || load_to_use_stall) ? (d_insnA) : 
- (is_flush) ? (16'h0000) : i_cur_insnA;
+ (is_flush) ? (16'h0000) : i_cur_insn_A;
   assign f_insnA = (is_stall || load_to_use_stall) ? (d_insnB) : 
  (is_flush) ? (16'h0000) : i_cur_insn_A;
 // wire [15:0] f_temp_pc = (is_stall || load_to_use_stall) ? d_pc : f_pc;
@@ -153,13 +152,17 @@ module lc4_processor(input wire         clk,             // main cock
  /********** DECODE STAGE IMPLEMENTATION **********/
  lc4_decoder decoderA (d_insnA, d_r1selA, d_r1reA, d_r2selA, d_r2reA, d_wselA, d_regfile_weA, d_nzp_weA, d_select_pc_plus_oneA, d_is_loadA, d_is_storeA, d_is_branchA, d_is_control_insnA);
  lc4_decoder decoderB (d_insnB, d_r1selB, d_r1reB, d_r2selB, d_r2reB, d_wselB, d_regfile_weB, d_nzp_weB, d_select_pc_plus_oneB, d_is_loadB, d_is_storeB, d_is_branchB, d_is_control_insnB);
- lc4_regfile_ss regfile (clk, gwe, rst, d_r1sel, d_ors_data, d_r2sel, d_ort_data, w_wsel, w_result, w_regfile_we);
+ lc4_regfile_ss regfile (.clk(clk), .gwe(gwe), .rst(rst), 
+            .i_rs_A(d_r1selA), .o_rs_data_A(d_ors_dataA), .i_rt_A(d_r2selA), .o_rt_data_A(d_ort_dataA), 
+            .i_rs_B(d_r1selB), .o_rs_data_B(d_ors_dataB), .i_rt_B(d_r2selB), .o_rt_data_B(d_ort_dataB), 
+            .i_rd_A(w_wselA), .i_rd_B(w_wselB), .i_wdata_A(w_resultA), .i_wdata_B(w_resultB), 
+            .i_rd_we_A(w_regfile_weA), .i_rd_we_B(w_regfile_weB) );
 
- assign d_rs_dataA = (d_r1selA == w_wselA && w_regfile_weA) ? w_result : d_ors_dataA;
- assign d_rt_dataA = (d_r2selA == w_wselA && w_regfile_weA) ? w_result : d_ort_dataA;
+ assign d_rs_dataA = (d_r1selA == w_wselA && w_regfile_weA) ? w_resultA : d_ors_dataA;
+ assign d_rt_dataA = (d_r2selA == w_wselA && w_regfile_weA) ? w_resultA : d_ort_dataA;
 
- assign d_rs_dataB = (d_r1selB == w_wselB && w_regfile_weB) ? w_result : d_ors_dataB;
- assign d_rt_dataB = (d_r2selB == w_wselB && w_regfile_weB) ? w_result : d_ort_dataB;
+ assign d_rs_dataB = (d_r1selB == w_wselB && w_regfile_weB) ? w_resultB : d_ors_dataB;
+ assign d_rt_dataB = (d_r2selB == w_wselB && w_regfile_weB) ? w_resultB : d_ort_dataB;
 
  //assign alu_1 =  ( (x_r1sel == m_wsel) && (m_regfile_we) ) ? m_oresult : 
  //                    ( (x_r1sel == w_wsel) && (w_regfile_we) ) ? w_oresult : x_r1data;
@@ -309,8 +312,8 @@ module lc4_processor(input wire         clk,             // main cock
  wire [2:0]     m_r2sel;
  wire           m_is_load;
  wire           m_is_store;
-  wire           m_regfile_we;
- //wire           m_nzp_we;
+ wire           m_regfile_we;
+ wire           m_nzp_we;
  wire [15:0]    m_r1data;
  wire [15:0]    m_r2data;
  wire [2:0]     m_nzp_bits;
@@ -378,6 +381,7 @@ module lc4_processor(input wire         clk,             // main cock
  wire [15:0]    w_insnA;
  wire [2:0]     w_r1selA;
  wire [2:0]     w_r2selA;
+ wire [2:0]     w_wselA;
  wire           w_is_loadA;
  wire           w_regfile_weA;
  wire           w_nzp_weA;
@@ -391,6 +395,7 @@ module lc4_processor(input wire         clk,             // main cock
  wire [15:0]    w_insnB;
  wire [2:0]     w_r1selB;
  wire [2:0]     w_r2selB;
+ wire [2:0]     w_wselB;
  wire           w_is_loadB;
  wire           w_regfile_weB;
  wire           w_nzp_weB;
