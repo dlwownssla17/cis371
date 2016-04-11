@@ -264,8 +264,22 @@ module lc4_processor(input wire         clk,             // main cock
  /********** EXECUTE STAGE IMPLEMENTATION **********/
 
  wire [15:0] x_pc_plus_one = x_pc+1;
+ wire [15:0] o_aluA;
  wire [15:0] o_alu;
- // BYPASS:
+ // BYPASSING FOR A:
+ wire [15:0] alu_1A;
+ assign alu_1 = ( (x_r1selA == m_wselB) && (m_regfile_weB) )   ? m_oresultB    : 
+                ( (x_r1selA == m_wselA) && (m_regfile_weA) )   ? m_oresultA    : 
+                ( (x_r1selA == w_wselB) && (w_regfile_weB) )   ? w_resultB     :
+                ( (x_r1selA == w_wselA) && (w_regfile_weA) )   ? w_resultA     : x_r1dataA;
+
+ wire [15:0] alu_2A;
+ assign alu_2A = ( (x_r2selA == m_wselB) && (m_regfile_weB) )   ? m_oresultB    : 
+                ( (x_r2selA == m_wselA) && (m_regfile_weA) )   ? m_oresultA    : 
+                ( (x_r2selA == w_wselB) && (w_regfile_weB) )   ? w_resultB     :
+                ( (x_r2selA == w_wselA) && (w_regfile_weA) )   ? w_resultA     : x_r1dataA;
+
+// BYPASSING FOR B:
  wire [15:0] alu_1;
  assign alu_1 =  ( (x_r1sel == m_wsel) && (m_regfile_we) ) ? m_oresult : 
                  ( (x_r1sel == w_wsel) && (w_regfile_we) ) ? w_result : x_r1data;
@@ -274,13 +288,14 @@ module lc4_processor(input wire         clk,             // main cock
  assign alu_2 = ( (x_r2sel == m_wsel) && (m_regfile_we) ) ? m_oresult :
                 ( (x_r2sel == w_wsel) && (w_regfile_we) ) ? w_result : x_r2data;
 
+
  // ALU
  lc4_alu aluA (x_insnA, x_pc, alu_1A, alu_2A, o_aluA);
  lc4_alu aluB (x_insnB, x_pc+1, alu_1B, alu_2B, o_aluB);
  wire [15:0] x_oresult = ( x_select_pc_plus_one ) ? ( x_pc_plus_one ) : ( o_alu ); 
 
  // BRANCH LOGIC
- wire [2:0] br_nzp; // TODO: change this
+ wire [2:0] br_nzp; // TODO: change this, but why?
  assign br_nzp = ( m_nzp_we ) ? ( m_nzp_bits ) : 
  ( w_nzp_we ) ? ( w_nzp_bits ) : ( curr_nzp );
 
