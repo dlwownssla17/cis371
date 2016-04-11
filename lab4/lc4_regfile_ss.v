@@ -52,7 +52,9 @@ module lc4_regfile_ss #(parameter n = 16)
    /*** Your Code Here ***/
    wire [n-1:0] r0v, r1v, r2v, r3v, r4v, r5v, r6v, r7v;
    wire [n-1:0] r0d, r1d, r2d, r3d, r4d, r5d, r6d, r7d;
-   wire r0we, r1we, r2we, r3we, r4we, r5we, r6we, r7we;
+   wire r0weA, r1weA, r2weA, r3weA, r4weA, r5weA, r6weA, r7weA;
+   wire r0weB, r1weB, r2weB, r3weB, r4weB, r5weB, r6weB, r7weB;
+
    
    assign r0weA = (i_rd_A == 3'd0) & i_rd_we_A;
    assign r0weB = (i_rd_B == 3'd0) & i_rd_we_B;
@@ -82,21 +84,21 @@ module lc4_regfile_ss #(parameter n = 16)
    
 
    /*** bypass!!! and change i_wdataA/B **/
-   Nbit_reg #(n) r0 (r0d, r0v, clk, r0we, gwe, rst);
-   Nbit_reg #(n) r1 (r1d, r1v, clk, r1we, gwe, rst);
-   Nbit_reg #(n) r2 (r2d, r2v, clk, r2we, gwe, rst);
-   Nbit_reg #(n) r3 (r3d, r3v, clk, r3we, gwe, rst);
-   Nbit_reg #(n) r4 (r4d, r4v, clk, r4we, gwe, rst);
-   Nbit_reg #(n) r5 (r5d, r5v, clk, r5we, gwe, rst);
-   Nbit_reg #(n) r6 (r6d, r6v, clk, r6we, gwe, rst);
-   Nbit_reg #(n) r7 (r7d, r7v, clk, r7we, gwe, rst);
+   Nbit_reg #(n) r0 (r0d, r0v, clk, r0weA || r0weB, gwe, rst);
+   Nbit_reg #(n) r1 (r1d, r1v, clk, r1weA || r1weB, gwe, rst);
+   Nbit_reg #(n) r2 (r2d, r2v, clk, r2weA || r2weB, gwe, rst);
+   Nbit_reg #(n) r3 (r3d, r3v, clk, r3weA || r3weB, gwe, rst);
+   Nbit_reg #(n) r4 (r4d, r4v, clk, r4weA || r4weB, gwe, rst);
+   Nbit_reg #(n) r5 (r5d, r5v, clk, r5weA || r5weB, gwe, rst);
+   Nbit_reg #(n) r6 (r6d, r6v, clk, r6weA || r6weB, gwe, rst);
+   Nbit_reg #(n) r7 (r7d, r7v, clk, r7weA || r7weB, gwe, rst);
 
    
-   Nbit_mux8to1 #(n) mux1A (i_rs_A, (r0we ? r0d : r0v), (r1we ? r1d : r1v), (r2we ? r2d : r2v), (r3we ? r3d : r3v), (r4we ? r4d : r4v), (r5we ? r5d : r5v), (r6we ? r6d : r6v), (r7we ? r7d : r7v), o_rs_data_A);
-   Nbit_mux8to1 #(n) mux2A (i_rt_A, (r0we ? r0d : r0v), (r1we ? r1d : r1v), (r2we ? r2d : r2v), (r3we ? r3d : r3v), (r4we ? r4d : r4v), (r5we ? r5d : r5v), (r6we ? r6d : r6v), (r7we ? r7d : r7v), o_rt_data_A);
+   Nbit_mux8to1 #(n) mux1A (i_rs_A, ((r0weA || r0weB) ? r0d : r0v), ((r1weA || r1weB) ? r1d : r1v), ((r2weA || r2weB) ? r2d : r2v), ((r3weA || r3weB) ? r3d : r3v), ((r4weA || r4weB) ? r4d : r4v), ((r5weA || r5weB) ? r5d : r5v), ((r6weA || r6weB) ? r6d : r6v), ((r7weA || r7weB) ? r7d : r7v), o_rs_data_A);
+   Nbit_mux8to1 #(n) mux2A (i_rt_A, ((r0weA || r0weB) ? r0d : r0v), ((r1weA || r1weB) ? r1d : r1v), ((r2weA || r2weB) ? r2d : r2v), ((r3weA || r3weB) ? r3d : r3v), ((r4weA || r4weB) ? r4d : r4v), ((r5weA || r5weB) ? r5d : r5v), ((r6weA || r6weB) ? r6d : r6v), ((r7weA || r7weB) ? r7d : r7v), o_rt_data_A);
    
-   Nbit_mux8to1 #(n) mux1B (i_rs_B, (r0we ? r0d : r0v), (r1we ? r1d : r1v), (r2we ? r2d : r2v), (r3we ? r3d : r3v), (r4we ? r4d : r4v), (r5we ? r5d : r5v), (r6we ? r6d : r6v), (r7we ? r7d : r7v), o_rs_data_B);
-   Nbit_mux8to1 #(n) mux2B (i_rt_B, (r0we ? r0d : r0v), (r1we ? r1d : r1v), (r2we ? r2d : r2v), (r3we ? r3d : r3v), (r4we ? r4d : r4v), (r5we ? r5d : r5v), (r6we ? r6d : r6v), (r7we ? r7d : r7v), o_rt_data_B);
+   Nbit_mux8to1 #(n) mux1B (i_rs_B, ((r0weA || r0weB) ? r0d : r0v), ((r1weA || r1weB) ? r1d : r1v), ((r2weA || r2weB) ? r2d : r2v), ((r3weA || r3weB) ? r3d : r3v), ((r4weA || r4weB) ? r4d : r4v), ((r5weA || r5weB) ? r5d : r5v), ((r6weA || r6weB) ? r6d : r6v), ((r7weA || r7weB) ? r7d : r7v), o_rs_data_B);
+   Nbit_mux8to1 #(n) mux2B (i_rt_B, ((r0weA || r0weB) ? r0d : r0v), ((r1weA || r1weB) ? r1d : r1v), ((r2weA || r2weB) ? r2d : r2v), ((r3weA || r3weB) ? r3d : r3v), ((r4weA || r4weB) ? r4d : r4v), ((r5weA || r5weB) ? r5d : r5v), ((r6weA || r6weB) ? r6d : r6v), ((r7weA || r7weB) ? r7d : r7v), o_rt_data_B);
 
    
    
