@@ -271,26 +271,28 @@ module lc4_processor(input wire         clk,             // main cock
  wire [15:0] o_alu;
  // BYPASSING FOR A:
  wire [15:0] alu_1A;
- assign alu_1 = ( (x_r1selA == m_wselB) && (m_regfile_weB) )   ? m_oresultB    : 
-                ( (x_r1selA == m_wselA) && (m_regfile_weA) )   ? m_oresultA    : 
-                ( (x_r1selA == w_wselB) && (w_regfile_weB) )   ? w_resultB     :
-                ( (x_r1selA == w_wselA) && (w_regfile_weA) )   ? w_resultA     : x_r1dataA;
+ assign alu_1A =    ( (x_r1selA == m_wselB) && (m_regfile_weB) )   ? m_oresultB    : 
+                    ( (x_r1selA == m_wselA) && (m_regfile_weA) )   ? m_oresultA    : 
+                    ( (x_r1selA == w_wselB) && (w_regfile_weB) )   ? w_resultB     :
+                    ( (x_r1selA == w_wselA) && (w_regfile_weA) )   ? w_resultA     : x_r1dataA;
 
  wire [15:0] alu_2A;
- assign alu_2A = ( (x_r2selA == m_wselB) && (m_regfile_weB) )   ? m_oresultB    : 
-                ( (x_r2selA == m_wselA) && (m_regfile_weA) )   ? m_oresultA    : 
-                ( (x_r2selA == w_wselB) && (w_regfile_weB) )   ? w_resultB     :
-                ( (x_r2selA == w_wselA) && (w_regfile_weA) )   ? w_resultA     : x_r1dataA;
+ assign alu_2A =    ( (x_r2selA == m_wselB) && (m_regfile_weB) )   ? m_oresultB    : 
+                    ( (x_r2selA == m_wselA) && (m_regfile_weA) )   ? m_oresultA    : 
+                    ( (x_r2selA == w_wselB) && (w_regfile_weB) )   ? w_resultB     :
+                    ( (x_r2selA == w_wselA) && (w_regfile_weA) )   ? w_resultA     : x_r2dataA;
 
 // BYPASSING FOR B:
- wire [15:0] alu_1;
- assign alu_1 =  ( (x_r1sel == m_wsel) && (m_regfile_we) ) ? m_oresult : 
-                 ( (x_r1sel == w_wsel) && (w_regfile_we) ) ? w_result : x_r1data;
+ assign alu_1B =    ( (x_r1selB == m_wselB) && (m_regfile_weB) )   ? m_oresultB    : 
+                    ( (x_r1selB == m_wselA) && (m_regfile_weA) )   ? m_oresultA    : 
+                    ( (x_r1selB == w_wselB) && (w_regfile_weB) )   ? w_resultB     :
+                    ( (x_r1selB == w_wselA) && (w_regfile_weA) )   ? w_resultA     : x_r1dataB;
 
- wire [15:0] alu_2;
- assign alu_2 = ( (x_r2sel == m_wsel) && (m_regfile_we) ) ? m_oresult :
-                ( (x_r2sel == w_wsel) && (w_regfile_we) ) ? w_result : x_r2data;
-
+ wire [15:0] alu_2A;
+ assign alu_2A =    ( (x_r2selB == m_wselB) && (m_regfile_weB) )   ? m_oresultB    : 
+                    ( (x_r2selB == m_wselA) && (m_regfile_weA) )   ? m_oresultA    : 
+                    ( (x_r2selB == w_wselB) && (w_regfile_weB) )   ? w_resultB     :
+                    ( (x_r2selB == w_wselA) && (w_regfile_weA) )   ? w_resultA     : x_r2dataB;
 
  // ALU
  lc4_alu aluA (x_insnA, x_pc, alu_1A, alu_2A, o_aluA);
