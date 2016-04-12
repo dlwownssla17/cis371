@@ -171,15 +171,15 @@ module lc4_processor(input wire         clk,             // main cock
             .i_rd_A(w_wselA), .i_rd_B(w_wselB), .i_wdata_A(w_resultA), .i_wdata_B(w_resultB), 
             .i_rd_we_A(w_regfile_weA), .i_rd_we_B(w_regfile_weB) );
 
- assign d_rs_dataA = (d_r1selA == w_wselA && w_regfile_weA) ? w_resultA : d_ors_dataA;
- assign d_rt_dataA = (d_r2selA == w_wselA && w_regfile_weA) ? w_resultA : d_ort_dataA;
+ assign d_rs_dataA =  d_ors_dataA; // (d_r1selA == w_wselA && w_regfile_weA) ? w_resultA : --> unnecissary due to regfile logic
+ assign d_rt_dataA =  d_ort_dataA; // (d_r2selA == w_wselA && w_regfile_weA) ? w_resultA : 
  
- assign d_rs_dataB = (d_r1selB == w_wselB && w_regfile_weB) ? w_resultB : d_ors_dataB;
- assign d_rt_dataB = (d_r2selB == w_wselB && w_regfile_weB) ? w_resultB : d_ort_dataB;
+ assign d_rs_dataB = d_ors_dataB; // (d_r1selB == w_wselB && w_regfile_weB) ? w_resultB : 
+ assign d_rt_dataB = d_ort_dataB; // (d_r2selB == w_wselB && w_regfile_weB) ? w_resultB : 
  
  // Maybe doesn't cover branching or single-cycle load_to_use superscalar stall
- // i dont think first case of superscalar stall is necissary 
- assign superscalar_stall = (d_wselA == d_wselB && d_regfile_weA && d_regfile_weB || ( (d_wselA == d_r1selB && d_r1reB) || (d_wselA == d_r2selB && d_r2reB)) && d_regfile_weA );
+ // i dont think first case of superscalar stall is necissary : d_wselA == d_wselB && d_regfile_weA && d_regfile_weB
+ assign superscalar_stall =  ( ( ((d_wselA == d_r1selB) && d_r1reB) || ((d_wselA == d_r2selB) && d_r2reB)) && d_regfile_weA ); //d_wselA == d_wselB && d_regfile_weA && d_regfile_weB || 
  assign load_to_use_stall = 1'd0; // ( x_is_load ) && (( d_r1sel == x_wsel && d_r1re ) || (( d_r2sel == x_wsel && d_r2re ) && (!d_is_store)));
  
  /*********************************************************************************************************************/
@@ -347,6 +347,17 @@ module lc4_processor(input wire         clk,             // main cock
   wire [2:0] br_nzpB; // TODO: change this, but why?
  assign br_nzpB = ( m_nzp_weB ) ? ( m_nzp_bitsB ) : 
  ( w_nzp_weB ) ? ( w_nzp_bitsB ) : ( curr_nzp );
+ 
+ // FOR after ALU: we probably only want a single Branch thing:
+ /*
+  wire [2:0] br_nzp;
+  assign br_nzp = 
+   ( m_nzp_weB ) ? ( m_nzp_bitsB ) : 
+   ( m_nzp_weA ) ? ( m_nzp_bitsA ) :
+   ( w_nzp_weB ) ? ( w_nzp_bitsB ) :
+   ( w_nzp_weA ) ? ( w_nzp_bitsA ) : ( curr_nzp );
+ 
+ */
 
  wire o_branch = !( ( x_insnA[11:9] & br_nzpA ) == 3'b000 || ( x_insnB[11:9] & br_nzpB ) == 3'b000); // this is wrong
  assign is_flush = (( o_branch & x_is_branchA ) | x_is_control_insnA); // if we are taking a branch, flush old instrucions -- wrong with superscalar
@@ -582,7 +593,7 @@ module lc4_processor(input wire         clk,             // main cock
  assign test_regfile_we_B = w_regfile_weB;                                                      
  assign test_regfile_wsel_A = w_wselA;                  // which register to write                              
  assign test_regfile_wsel_B = w_wselB;                                                          
- assign test_regfile_data_A = w_resultA;                // data to write to register file                      
+ assign test_regfile_data_A = w_resultA;  // (d_wselA == d_wselB && d_regfile_weA && d_regfile_weB) ? w_resultB :               // data to write to register file                      
  assign test_regfile_data_B = w_resultB;     
  
  assign test_nzp_we_A = w_nzp_weA;                      // nzp register write enable                      
@@ -645,6 +656,8 @@ module lc4_processor(input wire         clk,             // main cock
 
       $write("w_pcA: %h w_insnA: %h (", w_pc, w_insnA); pinstr(w_insnA); $display(")");
       $write("w_pcB: %h w_insnB: %h (", w_pc, w_insnB); pinstr(w_insnB); $display(")");
+      $write(" ");
+      $write("w_regfileA: %h w_regfileB: %h (", w_resultA, w_resultB); 
 /*  
       $display("flush: %d load_to_use: %d", is_flush, load_to_use_stall);
       // $display("%d,M_DATA is %h, M_R1 is %h, M_R2 is %h", $time, m_dmem_data, m_r1data, m_r2data);
