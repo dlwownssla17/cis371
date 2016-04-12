@@ -339,29 +339,10 @@ module lc4_processor(input wire         clk,             // main cock
  wire [15:0] x_oresultA = ( x_select_pc_plus_oneA ) ? ( x_pc_plus_oneA ) : ( o_aluA ); 
  wire [15:0] x_oresultB = ( x_select_pc_plus_oneB ) ? ( x_pc_plus_oneB ) : ( o_aluB ); 
 
- // BRANCH LOGIC
- wire [2:0] br_nzpA; // TODO: change this, but why?
- assign br_nzpA = ( m_nzp_weA ) ? ( m_nzp_bitsA ) : 
- ( w_nzp_weA ) ? ( w_nzp_bitsA ) : ( curr_nzp );
  
-  wire [2:0] br_nzpB; // TODO: change this, but why?
- assign br_nzpB = ( m_nzp_weB ) ? ( m_nzp_bitsB ) : 
- ( w_nzp_weB ) ? ( w_nzp_bitsB ) : ( curr_nzp );
  
- // FOR after ALU: we probably only want a single Branch thing:
- /*
-  wire [2:0] br_nzp;
-  assign br_nzp = 
-   ( m_nzp_weB ) ? ( m_nzp_bitsB ) : 
-   ( m_nzp_weA ) ? ( m_nzp_bitsA ) :
-   ( w_nzp_weB ) ? ( w_nzp_bitsB ) :
-   ( w_nzp_weA ) ? ( w_nzp_bitsA ) : ( curr_nzp );
- 
- */
 
- wire o_branch = !( ( x_insnA[11:9] & br_nzpA ) == 3'b000 || ( x_insnB[11:9] & br_nzpB ) == 3'b000); // this is wrong
- assign is_flush = (( o_branch & x_is_branchA ) | x_is_control_insnA); // if we are taking a branch, flush old instrucions -- wrong with superscalar
-
+ 
  // PC_MUX
  //    assign  next_pc = 16'h0000;//( (is_control_insn) ? 1 : (o_branch && is_branch) ) ? o_alu : pc + 1;
  //assign o_cur_pc = pc;
@@ -376,6 +357,22 @@ module lc4_processor(input wire         clk,             // main cock
  assign x_nzp_bitsB[2] = x_oresultB[15];
  assign x_nzp_bitsB[1] = (x_oresultB == 16'h0000);
  assign x_nzp_bitsB[0] = (!x_oresultB[15]) & (!x_nzp_bitsB[1]);
+ 
+ 
+ // BRANCH LOGIC
+  wire [2:0] br_nzpA; 
+  assign br_nzpA = 
+     ( m_nzp_weB ) ? ( m_nzp_bitsB ) : 
+     ( m_nzp_weA ) ? ( m_nzp_bitsA ) :
+     ( w_nzp_weB ) ? ( w_nzp_bitsB ) :
+     ( w_nzp_weA ) ? ( w_nzp_bitsA ) : ( curr_nzp );
+  
+  wire [2:0] br_nzpB; // what happens when you branch at B?
+  assign br_nzpB = ( x_nzp_weA ) ? ( x_nzp_bitsA ) : br_nzpA;
+  
+   wire o_branch = ( ( x_wselA & br_nzpA ) != 3'b000 || ( x_wselB & br_nzpB ) != 3'b000); // this is wrong
+   assign is_flush = (( o_branch & x_is_branchA ) | x_is_control_insnA); // if we are taking a branch, flush old instrucions -- wrong with superscalar
+
  
  wire [15:0] x_temp_r2dataA = (x_is_storeA && x_r2selA == m_wselA && m_regfile_weA) ? w_resultA : x_r2dataA;
  wire [15:0] x_temp_r2dataB = (x_is_storeB && x_r2selB == m_wselB && m_regfile_weB) ? w_resultB : x_r2dataB;
