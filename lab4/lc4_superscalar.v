@@ -57,6 +57,8 @@ module lc4_processor(input wire         clk,             // main cock
                      output wire [ 7:0] led_data             // set on/off status of zedboard's 8 leds
                      );
 
+`include "include/lc4_prettyprint_errors.v"
+
    /***  YOUR CODE HERE ***/
  // IMPLEMENT STALL AND FLUSH LOGIC NEXT WEEK
  wire [1:0] is_stall = 0;
@@ -83,9 +85,9 @@ module lc4_processor(input wire         clk,             // main cock
  assign next_pc = (load_to_use_stall) ? f_pc : (is_flush) ? o_aluA : f_pc + 1;  // idk if it should come from A or B
  assign f_insnA = (is_stall || load_to_use_stall) ? (d_insnA) : 
  (is_flush) ? (16'h0000) : i_cur_insn_A;
-  assign f_insnA = (is_stall || load_to_use_stall) ? (d_insnB) : 
- (is_flush) ? (16'h0000) : i_cur_insn_A;
-// wire [15:0] f_temp_pc = (is_stall || load_to_use_stall) ? d_pc : f_pc;
+ assign f_insnB = (is_stall || load_to_use_stall) ? (d_insnB) : 
+ (is_flush) ? (16'h0000) : i_cur_insn_B;
+ // wire [15:0] f_temp_pc = (is_stall || load_to_use_stall) ? d_pc : f_pc;
  assign o_cur_pc = f_pc;
   
  /*********************************************************************************************************************/
@@ -600,7 +602,7 @@ module lc4_processor(input wire         clk,             // main cock
       
  //     `ifndef NDEBUG
        always @(posedge gwe) begin
-/*
+
       $write("f_pcA: %h f_insnA: %h (", f_pc, f_insnA); pinstr(f_insnA); $display(")");
       $write("f_pcB: %h f_insnB: %h (", f_pc, f_insnB); pinstr(f_insnB); $display(")");
 
@@ -615,7 +617,7 @@ module lc4_processor(input wire         clk,             // main cock
 
       $write("w_pcA: %h w_insnA: %h (", w_pc, w_insnA); pinstr(w_insnA); $display(")");
       $write("w_pcB: %h w_insnB: %h (", w_pc, w_insnB); pinstr(w_insnB); $display(")");
-  
+/*  
       $display("flush: %d load_to_use: %d", is_flush, load_to_use_stall);
       // $display("%d,M_DATA is %h, M_R1 is %h, M_R2 is %h", $time, m_dmem_data, m_r1data, m_r2data);
       $display("%d,W_REG is %h, W_FROM_DATA is %h, W_TO_WRITE %h, W_ALU is %h, %b", $time, w_result, w_dmem_data, w_dmem_towrite, w_oresult, w_is_load);
