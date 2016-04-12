@@ -66,8 +66,7 @@ module lc4_processor(input wire         clk,             // main cock
  
 
  wire           x_is_load;
- wire           w_nzp_we;
- wire           w_regfile_we;
+
 
  /*********************************************************************************************************************/
  /******************************************************  FETCH  ******************************************************/
@@ -533,7 +532,7 @@ module lc4_processor(input wire         clk,             // main cock
  
  /********** WRITEBACK STAGE IMPLEMENTATION **********/    
  // Assign curr_nzp from B pipe
- Nbit_reg #(3, 3'b000) nzp_reg (.in(w_temp_nzp_bitsA), .out(curr_nzp), .clk(clk), .we(w_nzp_weA || w_nzp_weB), .gwe(gwe), .rst(rst));    
+ Nbit_reg #(3, 3'b000) nzp_reg (.in(w_temp_nzp_bitsB), .out(curr_nzp), .clk(clk), .we(w_nzp_weA || w_nzp_weB), .gwe(gwe), .rst(rst));    
  // Write to regfile (see code in the decode stage)
  // BRANCH LOGIC
  //    wire [2:0] curr_nzp; // TODO: change this
@@ -559,14 +558,22 @@ module lc4_processor(input wire         clk,             // main cock
  assign test_regfile_wsel_A = w_wselA;  			// which register to write                              
  assign test_regfile_wsel_B = w_wselB;                                                          
  assign test_regfile_data_A = w_resultA; 			// data to write to register file                      
- assign test_regfile_data_B = w_resultB;                                                        
-
+ assign test_regfile_data_B = w_resultB;     
+ 
+ assign test_nzp_we_A = w_nzp_weA; 			// nzp register write enable                      
+ assign test_nzp_we_B = w_nzp_weB;                                                     
+/*
  assign test_nzp_new_bits_A[2] = w_temp_nzp_bitsA[2]; 		// new nzp bits
  assign test_nzp_new_bits_A[1] = w_temp_nzp_bitsA[1];
  assign test_nzp_new_bits_A[0] = w_temp_nzp_bitsA[0];
  assign test_nzp_new_bits_B[2] = w_temp_nzp_bitsB[2];
  assign test_nzp_new_bits_B[1] = w_temp_nzp_bitsB[1];
  assign test_nzp_new_bits_B[0] = w_temp_nzp_bitsB[0];
+ EXCLUDING LOAD NZP FOR RIGHT NOW*/
+ 
+ assign test_nzp_new_bits_A = w_nzp_bitsA;
+ assign test_nzp_new_bits_B = w_nzp_bitsB;
+ 
  assign test_dmem_we_A = w_dmem_we;      // data memory write enable                                        
  assign test_dmem_we_B = w_dmem_we;                                                                         
  assign test_dmem_addr_A = w_dmem_addr;    // address to read/write from/to memory                            
@@ -586,11 +593,35 @@ module lc4_processor(input wire         clk,             // main cock
     * You do not need to resynthesize and re-implement if this is all you change;
     * just restart the simulation.
     */
-   always @(posedge gwe) begin
+
       // $display("%d %h %h %h %h %h", $time, f_pc, d_pc, e_pc, m_pc, test_cur_pc);
       // if (o_dmem_we)
       //   $display("%d STORE %h <= %h", $time, o_dmem_addr, o_dmem_towrite);
+      
+ //     `ifndef NDEBUG
+       always @(posedge gwe) begin
+/*
+      $write("f_pcA: %h f_insnA: %h (", f_pc, f_insnA); pinstr(f_insnA); $display(")");
+      $write("f_pcB: %h f_insnB: %h (", f_pc, f_insnB); pinstr(f_insnB); $display(")");
 
+      $write("d_pcA: %h d_insnA: %h (", d_pc, d_insnA); pinstr(d_insnA); $display(")");
+      $write("d_pcB: %h d_insnB: %h (", d_pc, d_insnB); pinstr(d_insnB); $display(")");
+      
+      $write("x_pcA: %h x_insnA: %h (", x_pc, x_insnA); pinstr(x_insnA); $display(")");
+      $write("x_pcB: %h x_insnB: %h (", x_pc, x_insnB); pinstr(x_insnB); $display(")");
+
+      $write("m_pcA: %h m_insnA: %h (", m_pc, m_insnA); pinstr(m_insnA); $display(")");
+      $write("m_pcB: %h m_insnB: %h (", m_pc, m_insnB); pinstr(m_insnB); $display(")");
+
+      $write("w_pcA: %h w_insnA: %h (", w_pc, w_insnA); pinstr(w_insnA); $display(")");
+      $write("w_pcB: %h w_insnB: %h (", w_pc, w_insnB); pinstr(w_insnB); $display(")");
+  
+      $display("flush: %d load_to_use: %d", is_flush, load_to_use_stall);
+      // $display("%d,M_DATA is %h, M_R1 is %h, M_R2 is %h", $time, m_dmem_data, m_r1data, m_r2data);
+      $display("%d,W_REG is %h, W_FROM_DATA is %h, W_TO_WRITE %h, W_ALU is %h, %b", $time, w_result, w_dmem_data, w_dmem_towrite, w_oresult, w_is_load);
+      $display("");
+
+*/
       // Start each $display() format string with a %d argument for time
       // it will make the output easier to read.  Use %b, %h, and %d
       // for binary, hex, and decimal output of additional variables.
@@ -631,4 +662,5 @@ module lc4_processor(input wire         clk,             // main cock
 
       $display();
    end
+ //   `endif
 endmodule
