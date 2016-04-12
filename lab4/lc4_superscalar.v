@@ -65,7 +65,7 @@ module lc4_processor(input wire         clk,             // main cock
  wire is_flush ; //= 0; 
  wire [1:0] f_stall = 0;
  wire load_to_use_stall;
- 
+ wire superscalar_stall;
 
  wire           x_is_load;
 
@@ -75,6 +75,7 @@ module lc4_processor(input wire         clk,             // main cock
  /*********************************************************************************************************************/
  /********** FETCH STAGE PREAMBLE **********/
  wire [15:0] f_pc;
+ wire [15:0] f_temp_pc;
  wire [15:0] f_insnA;
  wire [15:0] f_insnB;
  wire [15:0] next_pc;
@@ -82,14 +83,26 @@ module lc4_processor(input wire         clk,             // main cock
  Nbit_reg #(16, 16'h8200) f_pc_reg       (.in(next_pc), .out(f_pc), .clk(clk), .we(1'b1), .gwe(gwe), .rst(rst));  
 
  /********** FETCH STAGE IMPLEMENTATION **********/
- assign next_pc = (load_to_use_stall) ? f_pc : (is_flush) ? o_aluA : f_pc + 1;  // idk if it should come from A or B
- assign f_insnA = (is_stall || load_to_use_stall) ? (d_insnA) : 
- (is_flush) ? (16'h0000) : i_cur_insn_A;
- assign f_insnB = (is_stall || load_to_use_stall) ? (d_insnB) : 
- (is_flush) ? (16'h0000) : i_cur_insn_B;
+ assign next_pc =   ( load_to_use_stall )   ? f_pc      : 
+                    ( superscalar_stall )   ? f_pc+1    :
+                    ( is_flush )            ? o_aluA    : 
+                      f_pc + 2;  // idk if it should come from A or B
+                    
+ assign f_insnA =   ( is_stall || load_to_use_stall )   ?   (d_insnA)   :
+                    ( superscalar_stall )               ?   (d_insnB)   : 
+                    ( is_flush )                        ?   (16'h0000)  : 
+                      i_cur_insn_A;
+                    
+ assign f_insnB =   ( is_stall || load_to_use_stall )   ? (d_insnB)         :
+                    ( superscalar_stall )               ? (i_cur_insn_A)    : 
+                    ( is_flush )                        ? (16'h0000)        : 
+                      i_cur_insn_B;
+
  // wire [15:0] f_temp_pc = (is_stall || load_to_use_stall) ? d_pc : f_pc;
  assign o_cur_pc = f_pc;
-  
+ // Eh
+ assign f_temp_pc = ( superscalar_stall )   ? d_pc + 1  : f_pc;
+ 
  /*********************************************************************************************************************/
  /****************************************************** DECODE  ******************************************************/
  /*********************************************************************************************************************/
@@ -101,7 +114,7 @@ module lc4_processor(input wire         clk,             // main cock
  wire [1:0] d_stallB;
 
  /** FROM FETCH TO DECODE **/    
- Nbit_reg #(16, 16'h0000)    d_pc_reg    (.in(f_pc), .out(d_pc), .clk(clk), .we(!(is_stall || load_to_use_stall)), .gwe(gwe), .rst(rst));
+ Nbit_reg #(16, 16'h0000)    d_pc_reg    (.in(f_temp_pc), .out(d_pc), .clk(clk), .we(!(is_stall || load_to_use_stall)), .gwe(gwe), .rst(rst));
 
  Nbit_reg #(16, 16'h0000)    d_insn_regA  (.in(f_insnA), .out(d_insnA), .clk(clk), .we(1'b1), .gwe(gwe), .rst(rst));
  Nbit_reg #(16, 16'h0000)    d_insn_regB  (.in(f_insnB), .out(d_insnB), .clk(clk), .we(1'b1), .gwe(gwe), .rst(rst));
@@ -160,14 +173,14 @@ module lc4_processor(input wire         clk,             // main cock
 
  assign d_rs_dataA = (d_r1selA == w_wselA && w_regfile_weA) ? w_resultA : d_ors_dataA;
  assign d_rt_dataA = (d_r2selA == w_wselA && w_regfile_weA) ? w_resultA : d_ort_dataA;
-
+ 
  assign d_rs_dataB = (d_r1selB == w_wselB && w_regfile_weB) ? w_resultB : d_ors_dataB;
  assign d_rt_dataB = (d_r2selB == w_wselB && w_regfile_weB) ? w_resultB : d_ort_dataB;
-
- //assign alu_1 =  ( (x_r1sel == m_wsel) && (m_regfile_we) ) ? m_oresult : 
- //                    ( (x_r1sel == w_wsel) && (w_regfile_we) ) ? w_oresult : x_r1data;
-
+ 
+ // Maybe doesn't cover branching or single-cycle load_to_use superscalar stall
+ assign superscalar_stall = (d_wselA == d_wselB && d_regfile_weA && d_regfile_weB);
  assign load_to_use_stall = 1'd0; // ( x_is_load ) && (( d_r1sel == x_wsel && d_r1re ) || (( d_r2sel == x_wsel && d_r2re ) && (!d_is_store)));
+ 
  /*********************************************************************************************************************/
  /****************************************************** EXECUTE ******************************************************/
  /*********************************************************************************************************************/
@@ -208,33 +221,33 @@ module lc4_processor(input wire         clk,             // main cock
  wire [1:0]     x_stallA;
  wire [1:0]     x_stallB;
 
- wire [15:0] d_temp_insnA =  ( d_stallA ) ? (x_insnA) : 
- (is_flush || load_to_use_stall) ? (16'h0000) : d_insnA;
+ wire [15:0] d_temp_insnA = ( d_stallA ) ? (x_insnA) : 
+                            (is_flush || load_to_use_stall) ? (16'h0000) : d_insnA;
 
- wire [15:0] d_temp_insnB =  ( d_stallB ) ? (x_insnB) : 
- (is_flush || load_to_use_stall) ? (16'h0000) : d_insnB;
+ wire [15:0] d_temp_insnB = ( d_stallB ) ? (x_insnB) : 
+                            ( is_flush || load_to_use_stall || superscalar_stall ) ? (16'h0000) : d_insnB;
 
- wire xt_r1reA = (is_flush || load_to_use_stall) ? 1'b0 : d_r1reA;
- wire xt_r2reA = (is_flush || load_to_use_stall) ? 1'b0 : d_r2reA;
+ wire xt_r1reA =                (is_flush || load_to_use_stall) ? 1'b0 : d_r1reA;
+ wire xt_r2reA =                (is_flush || load_to_use_stall) ? 1'b0 : d_r2reA;
  wire xt_select_pc_plus_oneA  = (is_flush || load_to_use_stall) ? 1'b0 : d_select_pc_plus_oneA;
- wire xt_is_loadA = (is_flush || load_to_use_stall) ? 1'b0 : d_is_loadA;
- wire xt_is_storeA = (is_flush || load_to_use_stall) ? 1'b0 : d_is_storeA;
- wire xt_is_control_insnA = (is_flush || load_to_use_stall) ? 1'b0 : d_is_control_insnA;
- wire xt_is_branchA = (is_flush || load_to_use_stall) ? 1'b0 : d_is_branchA;
+ wire xt_is_loadA =             (is_flush || load_to_use_stall) ? 1'b0 : d_is_loadA;
+ wire xt_is_storeA =            (is_flush || load_to_use_stall) ? 1'b0 : d_is_storeA;
+ wire xt_is_control_insnA =     (is_flush || load_to_use_stall) ? 1'b0 : d_is_control_insnA;
+ wire xt_is_branchA =           (is_flush || load_to_use_stall) ? 1'b0 : d_is_branchA;
 
- wire xt_regfile_weA = (is_flush || load_to_use_stall) ? 1'b0 : d_regfile_weA;
- wire xt_nzp_weA = (is_flush || load_to_use_stall) ? 1'b0 : d_nzp_weA;
+ wire xt_regfile_weA =          (is_flush || load_to_use_stall) ? 1'b0 : d_regfile_weA;
+ wire xt_nzp_weA =              (is_flush || load_to_use_stall) ? 1'b0 : d_nzp_weA;
 
- wire xt_r1reB = (is_flush || load_to_use_stall) ? 1'b0 : d_r1reB;
- wire xt_r2reB = (is_flush || load_to_use_stall) ? 1'b0 : d_r2reB;
- wire xt_select_pc_plus_oneB  = (is_flush || load_to_use_stall) ? 1'b0 : d_select_pc_plus_oneB;
- wire xt_is_loadB = (is_flush || load_to_use_stall) ? 1'b0 : d_is_loadB;
- wire xt_is_storeB = (is_flush || load_to_use_stall) ? 1'b0 : d_is_storeB;
- wire xt_is_control_insnB = (is_flush || load_to_use_stall) ? 1'b0 : d_is_control_insnB;
- wire xt_is_branchB = (is_flush || load_to_use_stall) ? 1'b0 : d_is_branchB;
+ wire xt_r1reB =                (is_flush || load_to_use_stall || superscalar_stall) ? 1'b0 : d_r1reB;
+ wire xt_r2reB =                (is_flush || load_to_use_stall || superscalar_stall) ? 1'b0 : d_r2reB;
+ wire xt_select_pc_plus_oneB  = (is_flush || load_to_use_stall || superscalar_stall) ? 1'b0 : d_select_pc_plus_oneB;
+ wire xt_is_loadB =             (is_flush || load_to_use_stall || superscalar_stall) ? 1'b0 : d_is_loadB;
+ wire xt_is_storeB =            (is_flush || load_to_use_stall || superscalar_stall) ? 1'b0 : d_is_storeB;
+ wire xt_is_control_insnB =     (is_flush || load_to_use_stall || superscalar_stall) ? 1'b0 : d_is_control_insnB;
+ wire xt_is_branchB =           (is_flush || load_to_use_stall || superscalar_stall) ? 1'b0 : d_is_branchB;
 
- wire xt_regfile_weB = (is_flush || load_to_use_stall) ? 1'b0 : d_regfile_weB;
- wire xt_nzp_weB = (is_flush || load_to_use_stall) ? 1'b0 : d_nzp_weB;
+ wire xt_regfile_weB =          (is_flush || load_to_use_stall || superscalar_stall) ? 1'b0 : d_regfile_weB;
+ wire xt_nzp_weB =              (is_flush || load_to_use_stall || superscalar_stall) ? 1'b0 : d_nzp_weB;
 
  /** FROM DECODE TO EXECUTE **/ 
  Nbit_reg #(16, 16'h0000)    x_pc_reg                     (.in(d_pc), .out(x_pc), .clk(clk), .we(1'b1), .gwe(gwe), .rst(rst));
@@ -270,11 +283,18 @@ module lc4_processor(input wire         clk,             // main cock
  Nbit_reg #(16, 16'h0000)    x_r1data_regB                (.in(d_rs_dataB), .out(x_r1dataB), .clk(clk), .we(1'b1), .gwe(gwe), .rst(rst));
  Nbit_reg #(16, 16'h0000)    x_r2data_regB                (.in(d_rt_dataB), .out(x_r2dataB), .clk(clk), .we(1'b1), .gwe(gwe), .rst(rst));
 
- // MIGHT NEED TO CHANGE THIS NEXT WEEK 
- wire [1:0] d_temp_stallA = ( load_to_use_stall ) ? 2'd3 : ( is_flush ) ? 2'd2 : d_stallA;
+ 
+ wire [1:0] d_temp_stallA = ( load_to_use_stall ) ? 2'd3 : 
+                            ( is_flush ) ?          2'd2 : 
+                              d_stallA;
+                              
  Nbit_reg #(2, 2'b10)         x_stall_regA                 (.in(d_temp_stallA), .out(x_stallA), .clk(clk), .we(1'b1), .gwe(gwe), .rst(rst));
 
- wire [1:0] d_temp_stallB = ( load_to_use_stall ) ? 2'd3 : ( is_flush ) ? 2'd2 : d_stallB;
+ wire [1:0] d_temp_stallB = ( load_to_use_stall )   ? 2'd3 : 
+                            ( is_flush )            ? 2'd2 : 
+                            ( superscalar_stall )   ? 2'd1 :
+                              d_stallB;
+                              
  Nbit_reg #(2, 2'b10)         x_stall_regB                 (.in(d_temp_stallB), .out(x_stallB), .clk(clk), .we(1'b1), .gwe(gwe), .rst(rst));
 
 
@@ -432,7 +452,8 @@ module lc4_processor(input wire         clk,             // main cock
  wire [15:0]    m_dmem_addr;
  wire [15:0]    m_dmem_towrite;
  wire           m_dmem_we;
-
+ 
+ // Needs work next week
  // 0 if no load / store??? CHECK THIS
  assign o_dmem_towrite = ( m_is_storeA ) ? ( ( w_regfile_weA && ( w_wselA == m_r2selA ) ) ? w_resultA : m_r2dataA ) : 16'h0000;
  assign o_dmem_addr = ( m_is_loadA | m_is_storeA ) ? m_oaluA : 16'h0000;
@@ -546,23 +567,20 @@ module lc4_processor(input wire         clk,             // main cock
 
 
  // Set test wires to correct outputs
- assign test_stall_A = w_stallA;         			// is this a stall cycle?  (0: no stall,
- assign test_stall_B = w_stallB;        				// 1: pipeline stall, 2: branch stall, 3: load stall)
-
- assign test_cur_pc_A = w_pc;      				// program counter       
+ assign test_stall_A = w_stallA;                        // is this a stall cycle?  (0: no stall,
+ assign test_stall_B = w_stallB;                        // 1: pipeline stall, 2: branch stall, 3: load stall)
+ assign test_cur_pc_A = w_pc;                           // program counter       
  assign test_cur_pc_B = w_pc + 1;
-
- assign test_cur_insn_A = w_insnA;     				// instruction bits                                      
+ assign test_cur_insn_A = w_insnA;                      // instruction bits                                      
  assign test_cur_insn_B = w_insnB;                                                              
-
  assign test_regfile_we_A = w_regfile_weA;   			// register file write-enable                      
  assign test_regfile_we_B = w_regfile_weB;                                                      
- assign test_regfile_wsel_A = w_wselA;  			// which register to write                              
+ assign test_regfile_wsel_A = w_wselA;                  // which register to write                              
  assign test_regfile_wsel_B = w_wselB;                                                          
- assign test_regfile_data_A = w_resultA; 			// data to write to register file                      
+ assign test_regfile_data_A = w_resultA;                // data to write to register file                      
  assign test_regfile_data_B = w_resultB;     
  
- assign test_nzp_we_A = w_nzp_weA; 			// nzp register write enable                      
+ assign test_nzp_we_A = w_nzp_weA;                      // nzp register write enable                      
  assign test_nzp_we_B = w_nzp_weB;                                                     
 /*
  assign test_nzp_new_bits_A[2] = w_temp_nzp_bitsA[2]; 		// new nzp bits
@@ -575,12 +593,12 @@ module lc4_processor(input wire         clk,             // main cock
  
  assign test_nzp_new_bits_A = w_nzp_bitsA;
  assign test_nzp_new_bits_B = w_nzp_bitsB;
- 
- assign test_dmem_we_A = w_dmem_we;      // data memory write enable                                        
+
+ assign test_dmem_we_A = w_dmem_we;                 // data memory write enable                                        
  assign test_dmem_we_B = w_dmem_we;                                                                         
- assign test_dmem_addr_A = w_dmem_addr;    // address to read/write from/to memory                            
+ assign test_dmem_addr_A = w_dmem_addr;             // address to read/write from/to memory                            
  assign test_dmem_addr_B = w_dmem_addr;                                                                       
- assign test_dmem_data_A = 16'h0000;    // data to read/write from/to memory                               
+ assign test_dmem_data_A = 16'h0000;                // data to read/write from/to memory                               
  assign test_dmem_data_B = 16'h0000;                                                                       
  //assign  test_dmem_data = w_is_load ? w_dmem_data : w_dmem_towrite; // Testbench: value read/writen from/to memory
 
@@ -603,6 +621,11 @@ module lc4_processor(input wire         clk,             // main cock
  //     `ifndef NDEBUG
        always @(posedge gwe) begin
 
+      $write("superscalar_stall: %b", superscalar_stall);
+
+      $write("f_pcA: %h i_cur_insnA: %h (", f_pc, i_cur_insn_A); pinstr(i_cur_insn_A); $display(")");
+      $write("f_pcB: %h i_cur_insnB: %h (", f_pc, i_cur_insn_B); pinstr(i_cur_insn_B); $display(")");
+      
       $write("f_pcA: %h f_insnA: %h (", f_pc, f_insnA); pinstr(f_insnA); $display(")");
       $write("f_pcB: %h f_insnB: %h (", f_pc, f_insnB); pinstr(f_insnB); $display(")");
 
