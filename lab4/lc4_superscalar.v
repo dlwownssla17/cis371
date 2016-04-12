@@ -178,7 +178,8 @@ module lc4_processor(input wire         clk,             // main cock
  assign d_rt_dataB = (d_r2selB == w_wselB && w_regfile_weB) ? w_resultB : d_ort_dataB;
  
  // Maybe doesn't cover branching or single-cycle load_to_use superscalar stall
- assign superscalar_stall = (d_wselA == d_wselB && d_regfile_weA && d_regfile_weB);
+ // i dont think first case of superscalar stall is necissary 
+ assign superscalar_stall = (d_wselA == d_wselB && d_regfile_weA && d_regfile_weB || ( (d_wselA == d_r1selB && d_r1reB) || (d_wselA == d_r2selB && d_r2reB)) && d_regfile_weA );
  assign load_to_use_stall = 1'd0; // ( x_is_load ) && (( d_r1sel == x_wsel && d_r1re ) || (( d_r2sel == x_wsel && d_r2re ) && (!d_is_store)));
  
  /*********************************************************************************************************************/
@@ -543,19 +544,23 @@ module lc4_processor(input wire         clk,             // main cock
  assign w_resultA = ( w_is_loadA ) ? w_dmem_data : w_oresultA;
  assign w_resultB = ( w_is_loadB ) ? w_dmem_data : w_oresultB;
 
- wire [2:0] w_temp_nzp_bitsA;
+ wire [2:0] w_temp_nzp_bitsA = w_nzp_bitsA;
+ /*
  assign w_temp_nzp_bitsA[2] = ( w_is_loadA ) ? (w_resultA[15]) : (w_nzp_bitsA[2]);
  assign w_temp_nzp_bitsA[1] = ( w_is_loadA ) ? (w_resultA == 16'h0000) : w_nzp_bitsA[1];
  assign w_temp_nzp_bitsA[0] = ( w_is_loadA ) ? ((!w_resultA[15]) & (!w_temp_nzp_bitsA[1])) : w_nzp_bitsA[0];
- 
- wire [2:0] w_temp_nzp_bitsB;
+ */
+ wire [2:0] w_temp_nzp_bitsB = w_nzp_bitsB;
+ /*
  assign w_temp_nzp_bitsB[2] = ( w_is_loadB ) ? (w_resultB[15]) : (w_nzp_bitsB[2]);
  assign w_temp_nzp_bitsB[1] = ( w_is_loadB ) ? (w_resultB == 16'h0000) : w_nzp_bitsB[1];
  assign w_temp_nzp_bitsB[0] = ( w_is_loadB ) ? ((!w_resultB[15]) & (!w_temp_nzp_bitsB[1])) : w_nzp_bitsB[0];
+ */
+  wire [2:0] w_nzp_into_reg = ( w_nzp_weB ) ? w_temp_nzp_bitsB : w_temp_nzp_bitsA;
  
  /********** WRITEBACK STAGE IMPLEMENTATION **********/    
  // Assign curr_nzp from B pipe
- Nbit_reg #(3, 3'b000) nzp_reg (.in(w_temp_nzp_bitsB), .out(curr_nzp), .clk(clk), .we(w_nzp_weA || w_nzp_weB), .gwe(gwe), .rst(rst));    
+ Nbit_reg #(3, 3'b000) nzp_reg (.in(w_nzp_into_reg), .out(curr_nzp), .clk(clk), .we(w_nzp_weA || w_nzp_weB), .gwe(gwe), .rst(rst));    
  // Write to regfile (see code in the decode stage)
  // BRANCH LOGIC
  //    wire [2:0] curr_nzp; // TODO: change this
