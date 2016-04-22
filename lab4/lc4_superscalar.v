@@ -340,8 +340,20 @@ module lc4_processor(input wire         clk,             // main cock
  wire [15:0] x_oresultB = ( x_select_pc_plus_oneB ) ? ( x_pc_plus_oneB ) : ( o_aluB ); 
 
  
+ // branch in A
+  wire [15:0] x_temp_insnB = ( is_flushA ) ? (16'h0000) : x_insnB;
  
+  wire mt_r1reB =                (is_flushA ) ? 1'b0 : x_r1reB;
+  wire mt_r2reB =                (is_flushA ) ? 1'b0 : x_r2reB;
+  wire mt_is_loadB =             (is_flushA ) ? 1'b0 : x_is_loadB;
+  wire mt_is_storeB =            (is_flushA ) ? 1'b0 : x_is_storeB;
+  wire mt_is_control_insnB =     (is_flushA ) ? 1'b0 : x_is_control_insnB;
+  wire mt_is_branchB =           (is_flushA ) ? 1'b0 : x_is_branchB;
+ 
+  wire mt_regfile_weB =          (is_flushA ) ? 1'b0 : x_regfile_weB;
+  wire mt_nzp_weB =              (is_flushA ) ? 1'b0 : x_nzp_weB;
 
+  wire [1:0] x_temp_stallB = ( is_flushA ) ? 2'd2 : x_stallB;
  
  // PC_MUX
  //    assign  next_pc = 16'h0000;//( (is_control_insn) ? 1 : (o_branch && is_branch) ) ? o_alu : pc + 1;
@@ -370,10 +382,14 @@ module lc4_processor(input wire         clk,             // main cock
   wire [2:0] br_nzpB; // what happens when you branch at B?
   assign br_nzpB = ( x_nzp_weA ) ? ( x_nzp_bitsA ) : br_nzpA;
   
-   wire o_branch = ( ( x_wselA & br_nzpA ) != 3'b000 || ( x_wselB & br_nzpB ) != 3'b000); // this is wrong
-   assign is_flush = (( o_branch & x_is_branchA ) | x_is_control_insnA); // if we are taking a branch, flush old instrucions -- wrong with superscalar
+   wire o_branchA = (( x_wselA & br_nzpA ) != 3'b000);  // this is wrong
+   wire o_branchB = (( x_wselB & br_nzpB ) != 3'b000); // this is wrong
 
- 
+   wire is_flushA = (( o_branchA & x_is_branchA ) | x_is_control_insnA);
+   wire is_flushB = (( o_branchB & x_is_branchB ) | x_is_control_insnB);
+   
+   assign is_flush = (is_flushA || is_flushB); // if we are taking a branch, flush old instrucions -- wrong with superscalar
+
  wire [15:0] x_temp_r2dataA = (x_is_storeA && x_r2selA == m_wselA && m_regfile_weA) ? w_resultA : x_r2dataA;
  wire [15:0] x_temp_r2dataB = (x_is_storeB && x_r2selB == m_wselB && m_regfile_weB) ? w_resultB : x_r2dataB;
 
@@ -430,14 +446,14 @@ module lc4_processor(input wire         clk,             // main cock
  Nbit_reg #(16, 16'h0000)    m_r2data_regA               (.in(alu_2A), .out(m_r2dataA), .clk(clk), .we(1'b1), .gwe(gwe), .rst(rst));
  Nbit_reg #(3, 3'b000)       m_nzp_regA                  (.in(x_nzp_bitsA), .out(m_nzp_bitsA), .clk(clk), .we(1'b1), .gwe(gwe), .rst(rst));
 
- Nbit_reg #(16, 16'h0000)    m_insn_regB                 (.in(x_insnB), .out(m_insnB), .clk(clk), .we(1'b1), .gwe(gwe), .rst(rst));
+ Nbit_reg #(16, 16'h0000)    m_insn_regB                 (.in(x_temp_insnB), .out(m_insnB), .clk(clk), .we(1'b1), .gwe(gwe), .rst(rst));
  Nbit_reg #(3, 3'b000)       m_r1sel_regB                (.in(x_r1selB), .out(m_r1selB), .clk(clk), .we(1'b1), .gwe(gwe), .rst(rst));
  Nbit_reg #(3, 3'b000)       m_r2sel_regB                (.in(x_r2selB), .out(m_r2selB), .clk(clk), .we(1'b1), .gwe(gwe), .rst(rst));
- Nbit_reg #(1, 1'b0)         m_is_load_regB              (.in(x_is_loadB), .out(m_is_loadB), .clk(clk), .we(1'b1), .gwe(gwe), .rst(rst));
- Nbit_reg #(1, 1'b0)         m_is_store_regB             (.in(x_is_storeB), .out(m_is_storeB), .clk(clk), .we(1'b1), .gwe(gwe), .rst(rst));
+ Nbit_reg #(1, 1'b0)         m_is_load_regB              (.in(mt_is_loadB), .out(m_is_loadB), .clk(clk), .we(1'b1), .gwe(gwe), .rst(rst));
+ Nbit_reg #(1, 1'b0)         m_is_store_regB             (.in(mt_is_storeB), .out(m_is_storeB), .clk(clk), .we(1'b1), .gwe(gwe), .rst(rst));
  Nbit_reg #(3, 3'b000)       m_wsel_regB                 (.in(x_wselB), .out(m_wselB), .clk(clk), .we(1'b1), .gwe(gwe), .rst(rst));
- Nbit_reg #(3, 3'b000)       m_regfile_we_regB           (.in(x_regfile_weB), .out(m_regfile_weB), .clk(clk), .we(1'b1), .gwe(gwe), .rst(rst));
- Nbit_reg #(1, 1'b0)         m_nzp_we_regB               (.in(x_nzp_weB), .out(m_nzp_weB), .clk(clk), .we(1'b1), .gwe(gwe), .rst(rst));
+ Nbit_reg #(3, 3'b000)       m_regfile_we_regB           (.in(mt_regfile_weB), .out(m_regfile_weB), .clk(clk), .we(1'b1), .gwe(gwe), .rst(rst));
+ Nbit_reg #(1, 1'b0)         m_nzp_we_regB               (.in(mt_nzp_weB), .out(m_nzp_weB), .clk(clk), .we(1'b1), .gwe(gwe), .rst(rst));
  Nbit_reg #(16, 16'h0000)    m_r1data_regB               (.in(alu_1B), .out(m_r1dataB), .clk(clk), .we(1'b1), .gwe(gwe), .rst(rst));
  Nbit_reg #(16, 16'h0000)    m_r2data_regB               (.in(alu_2B), .out(m_r2dataB), .clk(clk), .we(1'b1), .gwe(gwe), .rst(rst));
  Nbit_reg #(3, 3'b000)       m_nzp_regB                  (.in(x_nzp_bitsB), .out(m_nzp_bitsB), .clk(clk), .we(1'b1), .gwe(gwe), .rst(rst));
@@ -445,7 +461,7 @@ module lc4_processor(input wire         clk,             // main cock
 
  // MIGHT NEED TO CHANGE THIS NEXT WEEK 
  Nbit_reg #(2, 2'b10)        m_stall_regA                (.in(x_stallA), .out(m_stallA), .clk(clk), .we(1'b1), .gwe(gwe), .rst(rst));
- Nbit_reg #(2, 2'b10)        m_stall_regB                (.in(x_stallB), .out(m_stallB), .clk(clk), .we(1'b1), .gwe(gwe), .rst(rst));
+ Nbit_reg #(2, 2'b10)        m_stall_regB                (.in(x_temp_stallB), .out(m_stallB), .clk(clk), .we(1'b1), .gwe(gwe), .rst(rst));
 
  /** SPECIAL FROM EXECUTE **/
  Nbit_reg #(16, 16'h0000)    m_oresult_regA              (.in(x_oresultA), .out(m_oresultA), .clk(clk), .we(1'b1), .gwe(gwe), .rst(rst));
@@ -634,7 +650,10 @@ module lc4_processor(input wire         clk,             // main cock
  //     `ifndef NDEBUG
        always @(posedge gwe) begin
 
-      $write("superscalar_stall: %b", superscalar_stall);
+      $write("superscalar_stall: %b", superscalar_stall); $display(" ");
+      $write("is flush? %b A?: %b B? %b", is_flush, is_flushA, is_flushB); $display(" ");
+      $write("is flush-- stall A?: %b B? %b", w_stallA, w_stallB); $display(" ");
+
 
       $write("f_pcA: %h i_cur_insnA: %h (", f_pc, i_cur_insn_A); pinstr(i_cur_insn_A); $display(")");
       $write("f_pcB: %h i_cur_insnB: %h (", f_pc, i_cur_insn_B); pinstr(i_cur_insn_B); $display(")");
@@ -653,8 +672,8 @@ module lc4_processor(input wire         clk,             // main cock
 
       $write("w_pcA: %h w_insnA: %h (", w_pc, w_insnA); pinstr(w_insnA); $display(")");
       $write("w_pcB: %h w_insnB: %h (", w_pc, w_insnB); pinstr(w_insnB); $display(")");
+      $write("w_regfileA: %h w_regfileB: %h ", w_resultA, w_resultB); 
       $write(" ");
-      $write("w_regfileA: %h w_regfileB: %h (", w_resultA, w_resultB); 
 /*  
       $display("flush: %d load_to_use: %d", is_flush, load_to_use_stall);
       // $display("%d,M_DATA is %h, M_R1 is %h, M_R2 is %h", $time, m_dmem_data, m_r1data, m_r2data);
